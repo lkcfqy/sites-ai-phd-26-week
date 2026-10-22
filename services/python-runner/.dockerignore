@@ -1,0 +1,7 @@
+__pycache__
+tests
+*.md
+*.json
+server.py
+*.log
+.env

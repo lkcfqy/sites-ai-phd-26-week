@@ -1,0 +1,5189 @@
+[
+  {
+    "lessonId": "w08-d5",
+    "title": "选择研究主线：用证据决定下一阶段",
+    "prompt": "为三条方向填写真实可确认的信息，不确定项写“未知”；选择主线和备选，写一页任务卡：数据单位、目标、划分、基线、指标、算力、与个人博士课题的关联。",
+    "fields": [
+      {
+        "key": "directions",
+        "label": "三方向可得性",
+        "type": "list",
+        "requirement": "每方向记录 track、task、dataStatus、computeStatus、source；未知项使用 unknown。"
+      },
+      {
+        "key": "primary",
+        "label": "主线及有限任务",
+        "type": "text",
+        "requirement": "从 vision、timeseries、language 选一条并缩小到具体任务。"
+      },
+      {
+        "key": "backup",
+        "label": "备选方向",
+        "type": "text",
+        "requirement": "说明主线资源不可得时的替代方向。"
+      },
+      {
+        "key": "contract",
+        "label": "任务契约",
+        "type": "list",
+        "requirement": "记录 unit、target、split、baseline、metric、budget。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "directions",
+        "message": "请提交三方向可得性；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "directions",
+        "min": 3,
+        "message": "三方向可得性至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "directions",
+        "keys": [
+          "track",
+          "task",
+          "dataStatus",
+          "computeStatus",
+          "source"
+        ],
+        "message": "三方向可得性每项需要字段：track, task, dataStatus, computeStatus, source。"
+      },
+      {
+        "type": "required",
+        "field": "primary",
+        "message": "请提交主线及有限任务；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "backup",
+        "message": "请提交备选方向；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "contract",
+        "message": "请提交任务契约；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "contract",
+        "min": 1,
+        "message": "任务契约至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "contract",
+        "keys": [
+          "unit",
+          "target",
+          "split",
+          "baseline",
+          "metric",
+          "budget"
+        ],
+        "message": "任务契约每项需要字段：unit, target, split, baseline, metric, budget。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "优先选有合法可得数据、CPU小基线和明确输出的任务。",
+      "未知的数据许可、GPU或接口不能写成已获得。",
+      "选主线不代表同时修完三条专项。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w11-d5",
+    "title": "迁移学习、冻结与域差异",
+    "prompt": "写一份真实视觉任务的迁移实验计划，包含随机初始化、冻结预训练和全模型微调三个对照。",
+    "fields": [
+      {
+        "key": "conditions",
+        "label": "三种对照",
+        "type": "list",
+        "requirement": "字符串数组：random_initialization、frozen_pretrained、full_finetune。"
+      },
+      {
+        "key": "comparisonRows",
+        "label": "公平对照表",
+        "type": "list",
+        "requirement": "每组记录 condition、weightsSource、trainableLayers、split、trainingBudget、selectionRule。"
+      },
+      {
+        "key": "domainGap",
+        "label": "域差异与停止条件",
+        "type": "text",
+        "requirement": "说明预训练域与任务域的输入、标签或对象差异及停止增加复杂度的条件。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "conditions",
+        "message": "请提交三种对照；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "conditions",
+        "min": 3,
+        "message": "三种对照至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "conditions",
+        "values": [
+          "random_initialization",
+          "frozen_pretrained",
+          "full_finetune"
+        ],
+        "message": "三种对照须覆盖：random_initialization, frozen_pretrained, full_finetune。"
+      },
+      {
+        "type": "required",
+        "field": "comparisonRows",
+        "message": "请提交公平对照表；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "comparisonRows",
+        "min": 3,
+        "message": "公平对照表至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "comparisonRows",
+        "keys": [
+          "condition",
+          "weightsSource",
+          "trainableLayers",
+          "split",
+          "trainingBudget",
+          "selectionRule"
+        ],
+        "message": "公平对照表每项需要字段：condition, weightsSource, trainableLayers, split, trainingBudget, selectionRule。"
+      },
+      {
+        "type": "required",
+        "field": "domainGap",
+        "message": "请提交域差异与停止条件；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "随机权重加冻结仅检查接口，不是预训练迁移。",
+      "统一划分、训练预算和搜索机会，不能把三组同时换数据当迁移收益。",
+      "未取得权重或未执行时保留计划，不填写推测的实测成绩。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w12-d5",
+    "title": "建立训练基线与消融记录",
+    "prompt": "为第13–16周主攻方向写一页实验协议，列出基线、评估单位、主指标和一项消融。",
+    "fields": [
+      {
+        "key": "protocol",
+        "label": "实验协议",
+        "type": "list",
+        "requirement": "每项记录 task、unit、split、baseline、metric、budget、selectionRule。"
+      },
+      {
+        "key": "ablation",
+        "label": "一项消融",
+        "type": "list",
+        "requirement": "记录 changedFactor、control、expectedDirection、disproof。"
+      },
+      {
+        "key": "randomness",
+        "label": "重复与随机性",
+        "type": "text",
+        "requirement": "区分训练种子、划分种子和确定性复跑；记录适用的重复方案。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "protocol",
+        "message": "请提交实验协议；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "protocol",
+        "min": 1,
+        "message": "实验协议至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "protocol",
+        "keys": [
+          "task",
+          "unit",
+          "split",
+          "baseline",
+          "metric",
+          "budget",
+          "selectionRule"
+        ],
+        "message": "实验协议每项需要字段：task, unit, split, baseline, metric, budget, selectionRule。"
+      },
+      {
+        "type": "required",
+        "field": "ablation",
+        "message": "请提交一项消融；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "ablation",
+        "min": 1,
+        "message": "一项消融至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "ablation",
+        "keys": [
+          "changedFactor",
+          "control",
+          "expectedDirection",
+          "disproof"
+        ],
+        "message": "一项消融每项需要字段：changedFactor, control, expectedDirection, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "randomness",
+        "message": "请提交重复与随机性；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "基线与改动须回答同一个任务、使用同一评价单位。",
+      "固定随机种子不消除数据泄漏。",
+      "合成小例的正确输出不证明真实专项泛化。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-vision-d1",
+    "title": "图像任务：类别、框与像素不是同一种标签",
+    "prompt": "为一个真实缺陷问题分别设计分类、检测和分割标注，说明各自能回答与不能回答的问题。",
+    "fields": [
+      {
+        "key": "outputs",
+        "label": "三种标签契约",
+        "type": "list",
+        "requirement": "分别记录 task、labelFormat、coordinateSystem、emptyAnnotation、canAnswer、cannotAnswer。"
+      },
+      {
+        "key": "taskKinds",
+        "label": "覆盖的任务",
+        "type": "list",
+        "requirement": "字符串数组含 classification、detection、segmentation。"
+      },
+      {
+        "key": "choice",
+        "label": "选择与理由",
+        "type": "text",
+        "requirement": "说明哪个标签粒度支持实际缺陷问题、为何成本合理。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "outputs",
+        "message": "请提交三种标签契约；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "outputs",
+        "min": 3,
+        "message": "三种标签契约至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "outputs",
+        "keys": [
+          "task",
+          "labelFormat",
+          "coordinateSystem",
+          "emptyAnnotation",
+          "canAnswer",
+          "cannotAnswer"
+        ],
+        "message": "三种标签契约每项需要字段：task, labelFormat, coordinateSystem, emptyAnnotation, canAnswer, cannotAnswer。"
+      },
+      {
+        "type": "required",
+        "field": "taskKinds",
+        "message": "请提交覆盖的任务；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "taskKinds",
+        "min": 3,
+        "message": "覆盖的任务至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "taskKinds",
+        "values": [
+          "classification",
+          "detection",
+          "segmentation"
+        ],
+        "message": "覆盖的任务须覆盖：classification, detection, segmentation。"
+      },
+      {
+        "type": "required",
+        "field": "choice",
+        "message": "请提交选择与理由；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "类别不能定位缺陷，边界框不能充当像素级面积真值。",
+      "明确像素/归一化坐标、左闭右开和空标注规则。",
+      "待采集数据应标计划，示意标签不是实测标注。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-vision-d3",
+    "title": "对象与拍摄批次：按独立来源划分",
+    "prompt": "为真实或待收集视觉数据建立元数据表，制定对象分组与设备留出两种评估方案。",
+    "fields": [
+      {
+        "key": "metadata",
+        "label": "来源元数据",
+        "type": "list",
+        "requirement": "每行含 sampleId、objectId、deviceId、captureBatch、label、knownStatus。"
+      },
+      {
+        "key": "splits",
+        "label": "两种划分方案",
+        "type": "list",
+        "requirement": "记录 scheme、generalizationTarget、trainGroups、validationGroups、testGroups。"
+      },
+      {
+        "key": "coverage",
+        "label": "覆盖缺口",
+        "type": "text",
+        "requirement": "说明标签、设备或对象未覆盖范围及无法认证的新来源能力。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "metadata",
+        "message": "请提交来源元数据；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "metadata",
+        "min": 3,
+        "message": "来源元数据至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "metadata",
+        "keys": [
+          "sampleId",
+          "objectId",
+          "deviceId",
+          "captureBatch",
+          "label",
+          "knownStatus"
+        ],
+        "message": "来源元数据每项需要字段：sampleId, objectId, deviceId, captureBatch, label, knownStatus。"
+      },
+      {
+        "type": "required",
+        "field": "splits",
+        "message": "请提交两种划分方案；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "splits",
+        "min": 2,
+        "message": "两种划分方案至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "splits",
+        "keys": [
+          "scheme",
+          "generalizationTarget",
+          "trainGroups",
+          "validationGroups",
+          "testGroups"
+        ],
+        "message": "两种划分方案每项需要字段：scheme, generalizationTarget, trainGroups, validationGroups, testGroups。"
+      },
+      {
+        "type": "required",
+        "field": "coverage",
+        "message": "请提交覆盖缺口；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "对象隔离与设备留出回答不同问题，分别写外推目标。",
+      "来源ID缺失不能用不同文件名冒充独立来源。",
+      "规则只查元数据结构；真实组交集须在运行产物中计算。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-vision-d5",
+    "title": "混淆矩阵、宏平均与难例检查",
+    "prompt": "为所选视觉任务制定主指标与错误审核表，至少记录五类可能的失败来源。",
+    "fields": [
+      {
+        "key": "primaryMetric",
+        "label": "主指标与理由",
+        "type": "text",
+        "requirement": "说明 macro-F1、召回率等指标与任务成本的关系。"
+      },
+      {
+        "key": "zeroDivision",
+        "label": "零分母政策",
+        "type": "text",
+        "requirement": "明确没有预测正例或没有真阳性时各指标的定义和展示方式。"
+      },
+      {
+        "key": "failureAudit",
+        "label": "五类失败审核",
+        "type": "list",
+        "requirement": "每项含 category、condition、evidenceStatus、sampleOrPlannedCheck。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "primaryMetric",
+        "message": "请提交主指标与理由；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "zeroDivision",
+        "message": "请提交零分母政策；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "failureAudit",
+        "message": "请提交五类失败审核；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "failureAudit",
+        "min": 5,
+        "message": "五类失败审核至少需要5项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "failureAudit",
+        "keys": [
+          "category",
+          "condition",
+          "evidenceStatus",
+          "sampleOrPlannedCheck"
+        ],
+        "message": "五类失败审核每项需要字段：category, condition, evidenceStatus, sampleOrPlannedCheck。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "整体准确率高不代表少数类被找到。",
+      "实际难例用样本ID及预测定位，未运行只能写待查类别。",
+      "宏平均先逐类计算再等权平均，不能混作全样本准确率。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-timeseries-d1",
+    "title": "时间轴、采样频率与缺测",
+    "prompt": "为一条真实或计划获取的传感器序列制定时间检查表与仅使用过去信息的缺测处理。",
+    "fields": [
+      {
+        "key": "timeContract",
+        "label": "时间契约",
+        "type": "list",
+        "requirement": "记录 timestampUnit、samplingFrequency、timezone、segmentId、targetTime。"
+      },
+      {
+        "key": "missingPolicy",
+        "label": "缺测处理",
+        "type": "list",
+        "requirement": "每项含 case、availableUntil、rule、cannotUse。"
+      },
+      {
+        "key": "segmentBoundary",
+        "label": "段落与拼接边界",
+        "type": "text",
+        "requirement": "说明重启、设备切换、长间断时是否重新开始窗口。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "timeContract",
+        "message": "请提交时间契约；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "timeContract",
+        "min": 1,
+        "message": "时间契约至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "timeContract",
+        "keys": [
+          "timestampUnit",
+          "samplingFrequency",
+          "timezone",
+          "segmentId",
+          "targetTime"
+        ],
+        "message": "时间契约每项需要字段：timestampUnit, samplingFrequency, timezone, segmentId, targetTime。"
+      },
+      {
+        "type": "required",
+        "field": "missingPolicy",
+        "message": "请提交缺测处理；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "missingPolicy",
+        "min": 3,
+        "message": "缺测处理至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "missingPolicy",
+        "keys": [
+          "case",
+          "availableUntil",
+          "rule",
+          "cannotUse"
+        ],
+        "message": "缺测处理每项需要字段：case, availableUntil, rule, cannotUse。"
+      },
+      {
+        "type": "required",
+        "field": "segmentBoundary",
+        "message": "请提交段落与拼接边界；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "缺测不是观测为零，两者保留不同标记。",
+      "双向插值会把未来信息带入历史预测。",
+      "不同设备或工况段不能按行号直接拼成一条连续序列。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-language-d1",
+    "title": "文本任务、标签与分词单位",
+    "prompt": "为一个文本分类或手册检索任务写数据契约，比较字符与词单位各自保留和丢失的信息。",
+    "fields": [
+      {
+        "key": "dataContract",
+        "label": "文本任务契约",
+        "type": "list",
+        "requirement": "含 task、inputUnit、output、labelSource、sourceGroup、rawTextLocation。"
+      },
+      {
+        "key": "tokenUnits",
+        "label": "字符与词比较",
+        "type": "list",
+        "requirement": "分别记录 unit、retainedInformation、lostInformation、example。"
+      },
+      {
+        "key": "auditPolicy",
+        "label": "原文核对与隐私",
+        "type": "text",
+        "requirement": "用行号或去标识片段定位原文，不发布个人短信内容。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "dataContract",
+        "message": "请提交文本任务契约；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "dataContract",
+        "min": 1,
+        "message": "文本任务契约至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "dataContract",
+        "keys": [
+          "task",
+          "inputUnit",
+          "output",
+          "labelSource",
+          "sourceGroup",
+          "rawTextLocation"
+        ],
+        "message": "文本任务契约每项需要字段：task, inputUnit, output, labelSource, sourceGroup, rawTextLocation。"
+      },
+      {
+        "type": "required",
+        "field": "tokenUnits",
+        "message": "请提交字符与词比较；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "tokenUnits",
+        "min": 2,
+        "message": "字符与词比较至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "tokenUnits",
+        "keys": [
+          "unit",
+          "retainedInformation",
+          "lostInformation",
+          "example"
+        ],
+        "message": "字符与词比较每项需要字段：unit, retainedInformation, lostInformation, example。"
+      },
+      {
+        "type": "required",
+        "field": "auditPolicy",
+        "message": "请提交原文核对与隐私；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "分类标签与检索相关性标注不是同一种输出。",
+      "字符表示可保留拼写片段，词表示会受分词与未知词影响。",
+      "原文没有发送者ID时不能声称按发送者隔离。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-language-d4",
+    "title": "线性文本分类与可解释权重",
+    "prompt": "为真实文本任务规划多数类、朴素贝叶斯和TF-IDF线性模型三组，审查最高正负权重词。",
+    "fields": [
+      {
+        "key": "models",
+        "label": "三基线标识",
+        "type": "list",
+        "requirement": "字符串数组含 majority、naive_bayes、tfidf_linear。"
+      },
+      {
+        "key": "comparison",
+        "label": "公平比较表",
+        "type": "list",
+        "requirement": "每项含 model、split、representationFitScope、searchBudget、metric。"
+      },
+      {
+        "key": "weightAudit",
+        "label": "权重审核",
+        "type": "list",
+        "requirement": "记录 token、sign、modelId、artifactOrPlannedCheck、possibleShortcut。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "models",
+        "message": "请提交三基线标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "models",
+        "min": 3,
+        "message": "三基线标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "models",
+        "values": [
+          "majority",
+          "naive_bayes",
+          "tfidf_linear"
+        ],
+        "message": "三基线标识须覆盖：majority, naive_bayes, tfidf_linear。"
+      },
+      {
+        "type": "required",
+        "field": "comparison",
+        "message": "请提交公平比较表；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "comparison",
+        "min": 3,
+        "message": "公平比较表至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "comparison",
+        "keys": [
+          "model",
+          "split",
+          "representationFitScope",
+          "searchBudget",
+          "metric"
+        ],
+        "message": "公平比较表每项需要字段：model, split, representationFitScope, searchBudget, metric。"
+      },
+      {
+        "type": "required",
+        "field": "weightAudit",
+        "message": "请提交权重审核；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "weightAudit",
+        "min": 2,
+        "message": "权重审核至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "weightAudit",
+        "keys": [
+          "token",
+          "sign",
+          "modelId",
+          "artifactOrPlannedCheck",
+          "possibleShortcut"
+        ],
+        "message": "权重审核每项需要字段：token, sign, modelId, artifactOrPlannedCheck, possibleShortcut。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "词表与IDF只能在训练内拟合，三模型使用同一划分。",
+      "权重符号取决于正类编码，先核对类映射。",
+      "没有拟合产物时不能编造最高权重词；填写待查位置。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w13-language-d5",
+    "title": "来源、近重复与标签质量",
+    "prompt": "为文本任务制定来源分组、近重复审核和标签歧义规则，抽查十条样例。",
+    "fields": [
+      {
+        "key": "auditSamples",
+        "label": "十例审核或待查清单",
+        "type": "list",
+        "requirement": "每项含 rowId、sourceStatus、duplicateDecision、labelAmbiguity、action。"
+      },
+      {
+        "key": "grouping",
+        "label": "来源与近重复规则",
+        "type": "text",
+        "requirement": "在看测试成绩前定义规范化、阈值和同组处理。"
+      },
+      {
+        "key": "ambiguity",
+        "label": "标签歧义政策",
+        "type": "text",
+        "requirement": "记录冲突标签、边界样本与人工未知项如何保留或排除。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "auditSamples",
+        "message": "请提交十例审核或待查清单；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "auditSamples",
+        "min": 10,
+        "message": "十例审核或待查清单至少需要10项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "auditSamples",
+        "keys": [
+          "rowId",
+          "sourceStatus",
+          "duplicateDecision",
+          "labelAmbiguity",
+          "action"
+        ],
+        "message": "十例审核或待查清单每项需要字段：rowId, sourceStatus, duplicateDecision, labelAmbiguity, action。"
+      },
+      {
+        "type": "required",
+        "field": "grouping",
+        "message": "请提交来源与近重复规则；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "ambiguity",
+        "message": "请提交标签歧义政策；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "近重复阈值是审计信号，不证明所有语义重复都已消除。",
+      "剔除规则事前冻结，不能只删除降低测试成绩的样本。",
+      "待查清单可提交结构材料，但不能当十条真实审核完成。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-vision-d4",
+    "title": "微调实验：层级学习率与域匹配",
+    "prompt": "制定冻结、最后一层解冻和全模型微调三阶段方案，规定何时继续及何时停止增加复杂度。",
+    "fields": [
+      {
+        "key": "stages",
+        "label": "三阶段标识",
+        "type": "list",
+        "requirement": "字符串数组含 frozen、last_layer_unfreeze、full_finetune。"
+      },
+      {
+        "key": "stagePlan",
+        "label": "阶段方案",
+        "type": "list",
+        "requirement": "记录 stage、trainableLayers、learningRates、weightsSource、continueRule、stopRule。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "stages",
+        "message": "请提交三阶段标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "stages",
+        "min": 3,
+        "message": "三阶段标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "stages",
+        "values": [
+          "frozen",
+          "last_layer_unfreeze",
+          "full_finetune"
+        ],
+        "message": "三阶段标识须覆盖：frozen, last_layer_unfreeze, full_finetune。"
+      },
+      {
+        "type": "required",
+        "field": "stagePlan",
+        "message": "请提交阶段方案；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "stagePlan",
+        "min": 3,
+        "message": "阶段方案至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "stagePlan",
+        "keys": [
+          "stage",
+          "trainableLayers",
+          "learningRates",
+          "weightsSource",
+          "continueRule",
+          "stopRule"
+        ],
+        "message": "阶段方案每项需要字段：stage, trainableLayers, learningRates, weightsSource, continueRule, stopRule。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "最后一层和骨干学习率分别写清，不依赖库默认值猜测。",
+      "继续或停止依据验证及资源限制，不能看测试再决定。",
+      "未运行的三阶段计划不是已获得的微调收益。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-vision-d5",
+    "title": "输入梯度与捷径的反事实检查",
+    "prompt": "设计背景替换、目标遮挡和亮度改变三项检查，说明每项保持与破坏了哪些条件。",
+    "fields": [
+      {
+        "key": "checks",
+        "label": "三类反事实标识",
+        "type": "list",
+        "requirement": "字符串数组含 background_replacement、object_occlusion、brightness_change。"
+      },
+      {
+        "key": "counterfactuals",
+        "label": "扰动检查表",
+        "type": "list",
+        "requirement": "每项含 check、preserved、broken、labelValidity、predictionEvidence、alternativeExplanation。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "checks",
+        "message": "请提交三类反事实标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "checks",
+        "min": 3,
+        "message": "三类反事实标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "checks",
+        "values": [
+          "background_replacement",
+          "object_occlusion",
+          "brightness_change"
+        ],
+        "message": "三类反事实标识须覆盖：background_replacement, object_occlusion, brightness_change。"
+      },
+      {
+        "type": "required",
+        "field": "counterfactuals",
+        "message": "请提交扰动检查表；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "counterfactuals",
+        "min": 3,
+        "message": "扰动检查表至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "counterfactuals",
+        "keys": [
+          "check",
+          "preserved",
+          "broken",
+          "labelValidity",
+          "predictionEvidence",
+          "alternativeExplanation"
+        ],
+        "message": "扰动检查表每项需要字段：check, preserved, broken, labelValidity, predictionEvidence, alternativeExplanation。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "目标遮挡可能破坏标签语义，不能与标签保持扰动混评。",
+      "显示分数也保留原始与扰动样本对应关系。",
+      "输入梯度或扰动关联不能单独证明模型使用某个因果机制。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-timeseries-d2",
+    "title": "滚动起点验证与时间间隔",
+    "prompt": "为任务设计三折滚动验证，规定窗口类型、目标跨度、间隔和每折处理拟合范围。",
+    "fields": [
+      {
+        "key": "folds",
+        "label": "三折滚动索引",
+        "type": "list",
+        "requirement": "每项含 fold、trainStart、trainEnd、validationStart、validationEnd、horizon、gap、fitUntil。"
+      },
+      {
+        "key": "window",
+        "label": "窗口类型与理由",
+        "type": "text",
+        "requirement": "写扩展窗或固定长度窗，以及与任务可得信息的关系。"
+      },
+      {
+        "key": "gapReason",
+        "label": "间隔理由",
+        "type": "text",
+        "requirement": "说明多步目标、标签延迟或窗口依赖为什么需要相应gap。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "folds",
+        "message": "请提交三折滚动索引；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "folds",
+        "min": 3,
+        "message": "三折滚动索引至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "folds",
+        "keys": [
+          "fold",
+          "trainStart",
+          "trainEnd",
+          "validationStart",
+          "validationEnd",
+          "horizon",
+          "gap",
+          "fitUntil"
+        ],
+        "message": "三折滚动索引每项需要字段：fold, trainStart, trainEnd, validationStart, validationEnd, horizon, gap, fitUntil。"
+      },
+      {
+        "type": "required",
+        "field": "window",
+        "message": "请提交窗口类型与理由；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "gapReason",
+        "message": "请提交间隔理由；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "每折训练结束必须早于验证目标可得时刻。",
+      "标准化和缺测处理每折只fit其历史训练。",
+      "索引字段齐全仅证明材料完整，合法时间顺序由程序数据审计核对。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-timeseries-d4",
+    "title": "多变量与外生输入的可用性",
+    "prompt": "列出五个候选外生特征，分别标明历史可见、未来可知或未来不可知，并设计一个消融。",
+    "fields": [
+      {
+        "key": "features",
+        "label": "五个外生特征",
+        "type": "list",
+        "requirement": "每项含 feature、availableAt、predictionAt、availabilityClass、missingPolicy。"
+      },
+      {
+        "key": "ablation",
+        "label": "合法外生信息消融",
+        "type": "list",
+        "requirement": "含 baselineInputs、changedFeature、sameBudget、metric、disproof。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "features",
+        "message": "请提交五个外生特征；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "features",
+        "min": 5,
+        "message": "五个外生特征至少需要5项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "features",
+        "keys": [
+          "feature",
+          "availableAt",
+          "predictionAt",
+          "availabilityClass",
+          "missingPolicy"
+        ],
+        "message": "五个外生特征每项需要字段：feature, availableAt, predictionAt, availabilityClass, missingPolicy。"
+      },
+      {
+        "type": "required",
+        "field": "ablation",
+        "message": "请提交合法外生信息消融；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "ablation",
+        "min": 1,
+        "message": "合法外生信息消融至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "ablation",
+        "keys": [
+          "baselineInputs",
+          "changedFeature",
+          "sameBudget",
+          "metric",
+          "disproof"
+        ],
+        "message": "合法外生信息消融每项需要字段：baselineInputs, changedFeature, sameBudget, metric, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "日历未来可知，未来实测传感器通常不可知。",
+      "事后表中的维修结果不能用于维修发生前的预测。",
+      "允许的输入范围必须按预测时刻计算，不按文件存在性决定。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-language-d1",
+    "title": "嵌入向量与余弦相似度",
+    "prompt": "规划词面检索与语义嵌入检索对照，列出同义、否定、数字与专业术语四类测试问题。",
+    "fields": [
+      {
+        "key": "queryTypes",
+        "label": "四类检索难点",
+        "type": "list",
+        "requirement": "字符串数组含 synonym、negation、numbers、domain_terms。"
+      },
+      {
+        "key": "queries",
+        "label": "真实来源测试问题",
+        "type": "list",
+        "requirement": "每项含 query、type、documentId、evidenceLocator、expectedRelevantIds。"
+      },
+      {
+        "key": "sharedProtocol",
+        "label": "同库公平对照",
+        "type": "text",
+        "requirement": "规定同一文档库、切块、top-k、相关性标注及词面/嵌入预算。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "queryTypes",
+        "message": "请提交四类检索难点；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "queryTypes",
+        "min": 4,
+        "message": "四类检索难点至少需要4项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "queryTypes",
+        "values": [
+          "synonym",
+          "negation",
+          "numbers",
+          "domain_terms"
+        ],
+        "message": "四类检索难点须覆盖：synonym, negation, numbers, domain_terms。"
+      },
+      {
+        "type": "required",
+        "field": "queries",
+        "message": "请提交真实来源测试问题；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "queries",
+        "min": 4,
+        "message": "真实来源测试问题至少需要4项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "queries",
+        "keys": [
+          "query",
+          "type",
+          "documentId",
+          "evidenceLocator",
+          "expectedRelevantIds"
+        ],
+        "message": "真实来源测试问题每项需要字段：query, type, documentId, evidenceLocator, expectedRelevantIds。"
+      },
+      {
+        "type": "required",
+        "field": "sharedProtocol",
+        "message": "请提交同库公平对照；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "语义相近不代表否定或数字条件相同。",
+      "相同检索库、切块和top-k，才能归因于表示。",
+      "没有实际嵌入模型调用时提交计划，不填写虚構召回率。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-language-d3",
+    "title": "子词、未知词与长度预算",
+    "prompt": "为中英专业术语、数字和长文档建立分词审核表，说明截断可能删除哪些证据。",
+    "fields": [
+      {
+        "key": "tokenAudit",
+        "label": "四类分词审核",
+        "type": "list",
+        "requirement": "每项含 category、originalText、tokenizerId、tokenOrPending、lengthLimit、lostEvidence。"
+      },
+      {
+        "key": "categories",
+        "label": "四类样例标识",
+        "type": "list",
+        "requirement": "字符串数组含 chinese_terms、english_terms、numbers、long_document。"
+      },
+      {
+        "key": "algorithm",
+        "label": "算法区别",
+        "type": "text",
+        "requirement": "说明词、字符、子词及特殊token；不把不同模型算法混称。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "tokenAudit",
+        "message": "请提交四类分词审核；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "tokenAudit",
+        "min": 4,
+        "message": "四类分词审核至少需要4项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "tokenAudit",
+        "keys": [
+          "category",
+          "originalText",
+          "tokenizerId",
+          "tokenOrPending",
+          "lengthLimit",
+          "lostEvidence"
+        ],
+        "message": "四类分词审核每项需要字段：category, originalText, tokenizerId, tokenOrPending, lengthLimit, lostEvidence。"
+      },
+      {
+        "type": "required",
+        "field": "categories",
+        "message": "请提交四类样例标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "categories",
+        "min": 4,
+        "message": "四类样例标识至少需要4项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "categories",
+        "values": [
+          "chinese_terms",
+          "english_terms",
+          "numbers",
+          "long_document"
+        ],
+        "message": "四类样例标识须覆盖：chinese_terms, english_terms, numbers, long_document。"
+      },
+      {
+        "type": "required",
+        "field": "algorithm",
+        "message": "请提交算法区别；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "token数量不是汉字数，不同分词器结果不同。",
+      "截断可能删除数值、限制或否定证据，记录具体删除位置。",
+      "未运行分词器时保留待运行，不能猜测精确token ID。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-language-d4",
+    "title": "Transformer：上下文与计算成本",
+    "prompt": "为文本分类与长手册检索分别选合理上下文方案，列长度、算力和信息损失的权衡。",
+    "fields": [
+      {
+        "key": "contextPlans",
+        "label": "两个任务上下文方案",
+        "type": "list",
+        "requirement": "每项含 task、lengthLimit、chunking、computeBudget、lostInformation、baseline。"
+      },
+      {
+        "key": "tradeoff",
+        "label": "信息与成本权衡",
+        "type": "text",
+        "requirement": "分别说明分类与长手册检索需要什么信息以及可接受的截断。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "contextPlans",
+        "message": "请提交两个任务上下文方案；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "contextPlans",
+        "min": 2,
+        "message": "两个任务上下文方案至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "contextPlans",
+        "keys": [
+          "task",
+          "lengthLimit",
+          "chunking",
+          "computeBudget",
+          "lostInformation",
+          "baseline"
+        ],
+        "message": "两个任务上下文方案每项需要字段：task, lengthLimit, chunking, computeBudget, lostInformation, baseline。"
+      },
+      {
+        "type": "required",
+        "field": "tradeoff",
+        "message": "请提交信息与成本权衡；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "长文档检索需要证据召回，分类未必需要把全手册塞入上下文。",
+      "把上下文长度和并行批次写成可执行限制。",
+      "小数据适配方案不能承诺自行预训练大型Transformer。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w14-language-d5",
+    "title": "预训练适配：冻结、微调与领域差距",
+    "prompt": "制定TF-IDF、冻结小编码器与微调编码器三组对照，列领域适配风险与停止条件。",
+    "fields": [
+      {
+        "key": "conditions",
+        "label": "三方案标识",
+        "type": "list",
+        "requirement": "字符串数组含 tfidf、frozen_encoder、finetuned_encoder。"
+      },
+      {
+        "key": "adaptationPlan",
+        "label": "语言适配对照",
+        "type": "list",
+        "requirement": "每项含 condition、weightsSource、tokenizerSource、split、budget、stopRule。"
+      },
+      {
+        "key": "risks",
+        "label": "领域风险",
+        "type": "text",
+        "requirement": "说明语种、专业术语、长度、标签和来源变化。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "conditions",
+        "message": "请提交三方案标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "conditions",
+        "min": 3,
+        "message": "三方案标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "conditions",
+        "values": [
+          "tfidf",
+          "frozen_encoder",
+          "finetuned_encoder"
+        ],
+        "message": "三方案标识须覆盖：tfidf, frozen_encoder, finetuned_encoder。"
+      },
+      {
+        "type": "required",
+        "field": "adaptationPlan",
+        "message": "请提交语言适配对照；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "adaptationPlan",
+        "min": 3,
+        "message": "语言适配对照至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "adaptationPlan",
+        "keys": [
+          "condition",
+          "weightsSource",
+          "tokenizerSource",
+          "split",
+          "budget",
+          "stopRule"
+        ],
+        "message": "语言适配对照每项需要字段：condition, weightsSource, tokenizerSource, split, budget, stopRule。"
+      },
+      {
+        "type": "required",
+        "field": "risks",
+        "message": "请提交领域风险；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "编码器权重与tokenizer须配套并有版本。",
+      "统一划分、验证选择和搜索预算，不用额外数据混淆适配收益。",
+      "权重和GPU不可得时先做TF-IDF，不伪造编码器结果。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w15-vision-d3",
+    "title": "类别不平衡与Focal Loss的作用",
+    "prompt": "在固定不平衡训练划分下规划普通损失、类别权重和Focal Loss对照，预先确定少数类指标。",
+    "fields": [
+      {
+        "key": "losses",
+        "label": "三损失标识",
+        "type": "list",
+        "requirement": "字符串数组含 ordinary_loss、class_weight、focal_loss。"
+      },
+      {
+        "key": "comparison",
+        "label": "不平衡对照",
+        "type": "list",
+        "requirement": "每项含 loss、trainingSplit、samplingRule、hyperparameterBudget、minorityMetric、overallMetric。"
+      },
+      {
+        "key": "hypothesis",
+        "label": "事前假设",
+        "type": "text",
+        "requirement": "说明希望改善哪个错误、怎样的少数类或总体退步会否定假设。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "losses",
+        "message": "请提交三损失标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "losses",
+        "min": 3,
+        "message": "三损失标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "losses",
+        "values": [
+          "ordinary_loss",
+          "class_weight",
+          "focal_loss"
+        ],
+        "message": "三损失标识须覆盖：ordinary_loss, class_weight, focal_loss。"
+      },
+      {
+        "type": "required",
+        "field": "comparison",
+        "message": "请提交不平衡对照；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "comparison",
+        "min": 3,
+        "message": "不平衡对照至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "comparison",
+        "keys": [
+          "loss",
+          "trainingSplit",
+          "samplingRule",
+          "hyperparameterBudget",
+          "minorityMetric",
+          "overallMetric"
+        ],
+        "message": "不平衡对照每项需要字段：loss, trainingSplit, samplingRule, hyperparameterBudget, minorityMetric, overallMetric。"
+      },
+      {
+        "type": "required",
+        "field": "hypothesis",
+        "message": "请提交事前假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "只换损失；额外重采样应另列条件。",
+      "Focal Loss不自动保证少数类召回上升。",
+      "少数类指标与总体代价并列，验证确定参数，测试不选模型。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w15-language-d4",
+    "title": "证据问答：检索与回答分开检查",
+    "prompt": "设计检索成功但回答错误、检索失败和无答案三类案例，分别制定审核标准。",
+    "fields": [
+      {
+        "key": "cases",
+        "label": "三层失败标识",
+        "type": "list",
+        "requirement": "字符串数组含 retrieved_but_wrong_answer、retrieval_failure、unanswerable。"
+      },
+      {
+        "key": "audit",
+        "label": "分层证据问答案例",
+        "type": "list",
+        "requirement": "每项含 type、question、retrievedIds、answerOrPending、evidenceLocator、failureLayer、acceptanceRule。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "cases",
+        "message": "请提交三层失败标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "cases",
+        "min": 3,
+        "message": "三层失败标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "cases",
+        "values": [
+          "retrieved_but_wrong_answer",
+          "retrieval_failure",
+          "unanswerable"
+        ],
+        "message": "三层失败标识须覆盖：retrieved_but_wrong_answer, retrieval_failure, unanswerable。"
+      },
+      {
+        "type": "required",
+        "field": "audit",
+        "message": "请提交分层证据问答案例；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "audit",
+        "min": 3,
+        "message": "分层证据问答案例至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "audit",
+        "keys": [
+          "type",
+          "question",
+          "retrievedIds",
+          "answerOrPending",
+          "evidenceLocator",
+          "failureLayer",
+          "acceptanceRule"
+        ],
+        "message": "分层证据问答案例每项需要字段：type, question, retrievedIds, answerOrPending, evidenceLocator, failureLayer, acceptanceRule。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "检索命中但答案改错数字属于回答层失败。",
+      "无答案问题应显示证据不足，不拼凑看似相关的句子。",
+      "未配置生成模型时可设计案例，不能编造已调用的回答。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w15-language-d5",
+    "title": "回答评价：事实、完整性与拒答",
+    "prompt": "为十个专业问答样例建立逐陈述审核表，至少包含数字、条件、多证据和无答案问题。",
+    "fields": [
+      {
+        "key": "qaSamples",
+        "label": "十例逐陈述审核",
+        "type": "list",
+        "requirement": "每项含 questionId、questionType、claim、sourceLocator、supportStatus、missingCondition、action。"
+      },
+      {
+        "key": "questionTypes",
+        "label": "必须覆盖的问题",
+        "type": "list",
+        "requirement": "字符串数组含 numbers、conditions、multi_evidence、unanswerable。"
+      },
+      {
+        "key": "rubric",
+        "label": "一致的答案规则",
+        "type": "text",
+        "requirement": "规定事实、完整性、条件覆盖和正确拒答，区别于词面相似。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "qaSamples",
+        "message": "请提交十例逐陈述审核；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "qaSamples",
+        "min": 10,
+        "message": "十例逐陈述审核至少需要10项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "qaSamples",
+        "keys": [
+          "questionId",
+          "questionType",
+          "claim",
+          "sourceLocator",
+          "supportStatus",
+          "missingCondition",
+          "action"
+        ],
+        "message": "十例逐陈述审核每项需要字段：questionId, questionType, claim, sourceLocator, supportStatus, missingCondition, action。"
+      },
+      {
+        "type": "required",
+        "field": "questionTypes",
+        "message": "请提交必须覆盖的问题；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "questionTypes",
+        "min": 4,
+        "message": "必须覆盖的问题至少需要4项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "questionTypes",
+        "values": [
+          "numbers",
+          "conditions",
+          "multi_evidence",
+          "unanswerable"
+        ],
+        "message": "必须覆盖的问题须覆盖：numbers, conditions, multi_evidence, unanswerable。"
+      },
+      {
+        "type": "required",
+        "field": "rubric",
+        "message": "请提交一致的答案规则；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "相同词出现不能证明数值、单位和条件正确。",
+      "多段证据回答须逐陈述定位，缺失时显式拒绝该主张。",
+      "十项结构齐全不表示引用已由原文支持。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-vision-d1",
+    "title": "稳健性：噪声、光照与来源变化",
+    "prompt": "为你的视觉基线规定三种合理扰动和一个真实来源留出，列出标签保持范围。",
+    "fields": [
+      {
+        "key": "perturbations",
+        "label": "三种合理扰动",
+        "type": "list",
+        "requirement": "每项含 name、range、labelPreservingCondition、disproof、sourceStatus。"
+      },
+      {
+        "key": "sourceHoldout",
+        "label": "真实来源留出",
+        "type": "list",
+        "requirement": "记录 sourceId、knownStatus、sealedUntil、generalizationTarget。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "perturbations",
+        "message": "请提交三种合理扰动；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "perturbations",
+        "min": 3,
+        "message": "三种合理扰动至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "perturbations",
+        "keys": [
+          "name",
+          "range",
+          "labelPreservingCondition",
+          "disproof",
+          "sourceStatus"
+        ],
+        "message": "三种合理扰动每项需要字段：name, range, labelPreservingCondition, disproof, sourceStatus。"
+      },
+      {
+        "type": "required",
+        "field": "sourceHoldout",
+        "message": "请提交真实来源留出；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "sourceHoldout",
+        "min": 1,
+        "message": "真实来源留出至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "sourceHoldout",
+        "keys": [
+          "sourceId",
+          "knownStatus",
+          "sealedUntil",
+          "generalizationTarget"
+        ],
+        "message": "真实来源留出每项需要字段：sourceId, knownStatus, sealedUntil, generalizationTarget。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "人为噪声鲁棒性不能冒充新设备或新书写者泛化。",
+      "只在标签保持范围内聚合稳健性指标。",
+      "缺新来源数据时保留待取得状态，不能用公开旧测试顶替。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-vision-d3",
+    "title": "消融增强、结构与输入尺寸",
+    "prompt": "预注册一个视觉消融：写假设、唯一变化、控制条件、主指标和推翻假设的结果。",
+    "fields": [
+      {
+        "key": "changedFactor",
+        "label": "唯一主要变化",
+        "type": "text",
+        "requirement": "只列一个主要因素，其他条件列入控制表。"
+      },
+      {
+        "key": "protocol",
+        "label": "视觉消融预注册",
+        "type": "list",
+        "requirement": "含 hypothesis、control、metric、effectThreshold、disproof、testBoundary。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "changedFactor",
+        "message": "请提交唯一主要变化；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "protocol",
+        "message": "请提交视觉消融预注册；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "protocol",
+        "min": 1,
+        "message": "视觉消融预注册至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "protocol",
+        "keys": [
+          "hypothesis",
+          "control",
+          "metric",
+          "effectThreshold",
+          "disproof",
+          "testBoundary"
+        ],
+        "message": "视觉消融预注册每项需要字段：hypothesis, control, metric, effectThreshold, disproof, testBoundary。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "增强、结构和输入尺寸同时变化就不能识别单一收益来源。",
+      "先确定主指标和否定条件，再查看测试。",
+      "负结果是完整实验结果，不应被新的最高分替换。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-vision-d4",
+    "title": "参数量、内存与推理成本",
+    "prompt": "为两个视觉基线建立成本表，列参数、输入尺寸、批次、推理条件和实际测量计划。",
+    "fields": [
+      {
+        "key": "costTable",
+        "label": "两个视觉基线成本",
+        "type": "list",
+        "requirement": "每项含 model、parameters、inputSize、batchSize、device、precision、warmup、measurementStatus。"
+      },
+      {
+        "key": "measurement",
+        "label": "测量计划",
+        "type": "text",
+        "requirement": "规定延迟重复、同步、统计方式和准确率对应运行；未测项写未知。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "costTable",
+        "message": "请提交两个视觉基线成本；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "costTable",
+        "min": 2,
+        "message": "两个视觉基线成本至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "costTable",
+        "keys": [
+          "model",
+          "parameters",
+          "inputSize",
+          "batchSize",
+          "device",
+          "precision",
+          "warmup",
+          "measurementStatus"
+        ],
+        "message": "两个视觉基线成本每项需要字段：model, parameters, inputSize, batchSize, device, precision, warmup, measurementStatus。"
+      },
+      {
+        "type": "required",
+        "field": "measurement",
+        "message": "请提交测量计划；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "延迟受设备、批次和预热影响，没有这些条件的数字不可比。",
+      "参数量不能替代峰值内存和推理时间。",
+      "计划中的时间预算不是已经测出的延迟。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-vision-d5",
+    "title": "交付视觉可靠基线与研究问题",
+    "prompt": "完成视觉基线报告，并列出一个论文复现候选与一个能被推翻的研究假设。",
+    "fields": [
+      {
+        "key": "reportSections",
+        "label": "基线报告八项",
+        "type": "list",
+        "requirement": "字符串数组含 task、data、split、method、metrics、cost、errors、limits。"
+      },
+      {
+        "key": "report",
+        "label": "可核对报告",
+        "type": "list",
+        "requirement": "每项含 section、content、evidenceLocator、status。"
+      },
+      {
+        "key": "paperUrl",
+        "label": "候选论文全文",
+        "type": "url",
+        "requirement": "优先选研究页中已核对可读全文的一篇；元信息或标题不代替正文。"
+      },
+      {
+        "key": "hypothesis",
+        "label": "可反驳假设",
+        "type": "list",
+        "requirement": "含 object、change、control、metric、condition、disproof。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "reportSections",
+        "message": "请提交基线报告八项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "reportSections",
+        "min": 8,
+        "message": "基线报告八项至少需要8项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "reportSections",
+        "values": [
+          "task",
+          "data",
+          "split",
+          "method",
+          "metrics",
+          "cost",
+          "errors",
+          "limits"
+        ],
+        "message": "基线报告八项须覆盖：task, data, split, method, metrics, cost, errors, limits。"
+      },
+      {
+        "type": "required",
+        "field": "report",
+        "message": "请提交可核对报告；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "report",
+        "min": 8,
+        "message": "可核对报告至少需要8项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "report",
+        "keys": [
+          "section",
+          "content",
+          "evidenceLocator",
+          "status"
+        ],
+        "message": "可核对报告每项需要字段：section, content, evidenceLocator, status。"
+      },
+      {
+        "type": "required",
+        "field": "paperUrl",
+        "message": "请提交候选论文全文；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "hypothesis",
+        "message": "请提交可反驳假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "hypothesis",
+        "min": 1,
+        "message": "可反驳假设至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "hypothesis",
+        "keys": [
+          "object",
+          "change",
+          "control",
+          "metric",
+          "condition",
+          "disproof"
+        ],
+        "message": "可反驳假设每项需要字段：object, change, control, metric, condition, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "每个实测数字回到运行ID和预测产物；未运行项留待运行。",
+      "原文与本地数据、划分和参数差异逐项记录，不能冒称原数值复现。",
+      "小型digits不能认证自然缺陷场景或新书写者能力。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-timeseries-d1",
+    "title": "漂移、工况切换与重训",
+    "prompt": "设计固定模型、定期重训和误差触发重训三种策略，注明标签延迟和可用训练范围。",
+    "fields": [
+      {
+        "key": "strategies",
+        "label": "三策略标识",
+        "type": "list",
+        "requirement": "字符串数组含 fixed、periodic_retrain、error_triggered_retrain。"
+      },
+      {
+        "key": "updatePolicies",
+        "label": "更新策略",
+        "type": "list",
+        "requirement": "每项含 strategy、labelDelay、trigger、availableTrainingUntil、updateBudget、failureRule。"
+      },
+      {
+        "key": "interpretation",
+        "label": "漂移与故障",
+        "type": "text",
+        "requirement": "说明误差变化的其他可能来源及为什么不能直接称设备故障。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "strategies",
+        "message": "请提交三策略标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "strategies",
+        "min": 3,
+        "message": "三策略标识至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "strategies",
+        "values": [
+          "fixed",
+          "periodic_retrain",
+          "error_triggered_retrain"
+        ],
+        "message": "三策略标识须覆盖：fixed, periodic_retrain, error_triggered_retrain。"
+      },
+      {
+        "type": "required",
+        "field": "updatePolicies",
+        "message": "请提交更新策略；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "updatePolicies",
+        "min": 3,
+        "message": "更新策略至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "updatePolicies",
+        "keys": [
+          "strategy",
+          "labelDelay",
+          "trigger",
+          "availableTrainingUntil",
+          "updateBudget",
+          "failureRule"
+        ],
+        "message": "更新策略每项需要字段：strategy, labelDelay, trigger, availableTrainingUntil, updateBudget, failureRule。"
+      },
+      {
+        "type": "required",
+        "field": "interpretation",
+        "message": "请提交漂移与故障；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "触发误差必须等待标签到达；不能事后知道误差再提前重训。",
+      "三策略使用相同可得信息和评价时点。",
+      "统计漂移本身不能证明设备损坏。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-timeseries-d4",
+    "title": "序列消融与预算比较",
+    "prompt": "预注册一个时间序列消融，区分模型结构、历史长度和合法外生信息三种可能收益。",
+    "fields": [
+      {
+        "key": "factors",
+        "label": "三个收益来源",
+        "type": "list",
+        "requirement": "字符串数组含 model_structure、history_length、legal_exogenous_information。"
+      },
+      {
+        "key": "ablation",
+        "label": "时间序列消融",
+        "type": "list",
+        "requirement": "每项含 changedFactor、controlFactors、availableInformation、budget、metric、disproof。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "factors",
+        "message": "请提交三个收益来源；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "factors",
+        "min": 3,
+        "message": "三个收益来源至少需要3项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "factors",
+        "values": [
+          "model_structure",
+          "history_length",
+          "legal_exogenous_information"
+        ],
+        "message": "三个收益来源须覆盖：model_structure, history_length, legal_exogenous_information。"
+      },
+      {
+        "type": "required",
+        "field": "ablation",
+        "message": "请提交时间序列消融；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "ablation",
+        "min": 1,
+        "message": "时间序列消融至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "ablation",
+        "keys": [
+          "changedFactor",
+          "controlFactors",
+          "availableInformation",
+          "budget",
+          "metric",
+          "disproof"
+        ],
+        "message": "时间序列消融每项需要字段：changedFactor, controlFactors, availableInformation, budget, metric, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "历史更长、结构更强和外生数据更多应分开比较。",
+      "相同预测任务、调参机会和标签到达边界。",
+      "先写否定条件，保留全部失败年份和负结果。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-timeseries-d5",
+    "title": "交付序列基线与可复现协议",
+    "prompt": "完成时间序列基线报告，选择一篇资源可行的复现论文并提出可证伪假设。",
+    "fields": [
+      {
+        "key": "reportSections",
+        "label": "基线报告八项",
+        "type": "list",
+        "requirement": "字符串数组含 task、data、split、method、metrics、cost、errors、limits。"
+      },
+      {
+        "key": "report",
+        "label": "可核对报告",
+        "type": "list",
+        "requirement": "每项含 section、content、evidenceLocator、status。"
+      },
+      {
+        "key": "paperUrl",
+        "label": "候选论文全文",
+        "type": "url",
+        "requirement": "优先选研究页中已核对可读全文的一篇；元信息或标题不代替正文。"
+      },
+      {
+        "key": "hypothesis",
+        "label": "可反驳假设",
+        "type": "list",
+        "requirement": "含 object、change、control、metric、condition、disproof。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "reportSections",
+        "message": "请提交基线报告八项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "reportSections",
+        "min": 8,
+        "message": "基线报告八项至少需要8项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "reportSections",
+        "values": [
+          "task",
+          "data",
+          "split",
+          "method",
+          "metrics",
+          "cost",
+          "errors",
+          "limits"
+        ],
+        "message": "基线报告八项须覆盖：task, data, split, method, metrics, cost, errors, limits。"
+      },
+      {
+        "type": "required",
+        "field": "report",
+        "message": "请提交可核对报告；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "report",
+        "min": 8,
+        "message": "可核对报告至少需要8项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "report",
+        "keys": [
+          "section",
+          "content",
+          "evidenceLocator",
+          "status"
+        ],
+        "message": "可核对报告每项需要字段：section, content, evidenceLocator, status。"
+      },
+      {
+        "type": "required",
+        "field": "paperUrl",
+        "message": "请提交候选论文全文；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "hypothesis",
+        "message": "请提交可反驳假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "hypothesis",
+        "min": 1,
+        "message": "可反驳假设至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "hypothesis",
+        "keys": [
+          "object",
+          "change",
+          "control",
+          "metric",
+          "condition",
+          "disproof"
+        ],
+        "message": "可反驳假设每项需要字段：object, change, control, metric, condition, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "每个实测数字回到运行ID和预测产物；未运行项留待运行。",
+      "原文与本地数据、划分和参数差异逐项记录，不能冒称原数值复现。",
+      "太阳黑子序列不是工业故障或真实设备部署证据。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-language-d1",
+    "title": "否定、数字与扰动测试",
+    "prompt": "制作十二组最小对照，覆盖否定、数值、条件和同义改写，并区分应变与不变目标。",
+    "fields": [
+      {
+        "key": "minimalPairs",
+        "label": "十二组最小对照",
+        "type": "list",
+        "requirement": "每组含 pairId、type、original、changed、expectedRelation、target、reason。"
+      },
+      {
+        "key": "types",
+        "label": "四类条件标识",
+        "type": "list",
+        "requirement": "字符串数组含 negation、numbers、conditions、synonym。"
+      },
+      {
+        "key": "failureLocation",
+        "label": "失败定位计划",
+        "type": "text",
+        "requirement": "规定原始来源、衍生文本同组与应变/不变结果如何核对。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "minimalPairs",
+        "message": "请提交十二组最小对照；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "minimalPairs",
+        "min": 12,
+        "message": "十二组最小对照至少需要12项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "minimalPairs",
+        "keys": [
+          "pairId",
+          "type",
+          "original",
+          "changed",
+          "expectedRelation",
+          "target",
+          "reason"
+        ],
+        "message": "十二组最小对照每项需要字段：pairId, type, original, changed, expectedRelation, target, reason。"
+      },
+      {
+        "type": "required",
+        "field": "types",
+        "message": "请提交四类条件标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "types",
+        "min": 4,
+        "message": "四类条件标识至少需要4项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "types",
+        "values": [
+          "negation",
+          "numbers",
+          "conditions",
+          "synonym"
+        ],
+        "message": "四类条件标识须覆盖：negation, numbers, conditions, synonym。"
+      },
+      {
+        "type": "required",
+        "field": "failureLocation",
+        "message": "请提交失败定位计划；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "同义改写通常保持目标，否定和金额改变可能要求目标变化。",
+      "所有衍生句与原句留同一来源组，不能跨训练/测试。",
+      "十二组对照的有效性需要语义核对，不能由条数认证。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-language-d4",
+    "title": "检索与适配消融：隔离真正收益",
+    "prompt": "预注册一个检索或文本分类消融，明确单项改变、评价层、成本和推翻条件。",
+    "fields": [
+      {
+        "key": "protocol",
+        "label": "语言消融协议",
+        "type": "list",
+        "requirement": "含 task、changedFactor、controls、evaluationLayer、metric、cost、disproof。"
+      },
+      {
+        "key": "separation",
+        "label": "评价层与归因",
+        "type": "text",
+        "requirement": "明确改变的是检索、表示还是生成，其他层保持一致。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "protocol",
+        "message": "请提交语言消融协议；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "protocol",
+        "min": 1,
+        "message": "语言消融协议至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "protocol",
+        "keys": [
+          "task",
+          "changedFactor",
+          "controls",
+          "evaluationLayer",
+          "metric",
+          "cost",
+          "disproof"
+        ],
+        "message": "语言消融协议每项需要字段：task, changedFactor, controls, evaluationLayer, metric, cost, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "separation",
+        "message": "请提交评价层与归因；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "检索召回增加不自动代表回答正确性提升。",
+      "改变检索库、top-k和模型会产生多个混淆因素。",
+      "公平比较包括数据、搜索和推理成本，不只看分数。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w16-language-d5",
+    "title": "交付语言基线与研究入口",
+    "prompt": "完成语言基线报告，选择一篇资源可行论文，并提交一个可证伪研究假设。",
+    "fields": [
+      {
+        "key": "reportSections",
+        "label": "基线报告八项",
+        "type": "list",
+        "requirement": "字符串数组含 task、data、split、method、metrics、cost、errors、limits。"
+      },
+      {
+        "key": "report",
+        "label": "可核对报告",
+        "type": "list",
+        "requirement": "每项含 section、content、evidenceLocator、status。"
+      },
+      {
+        "key": "paperUrl",
+        "label": "候选论文全文",
+        "type": "url",
+        "requirement": "优先选研究页中已核对可读全文的一篇；元信息或标题不代替正文。"
+      },
+      {
+        "key": "hypothesis",
+        "label": "可反驳假设",
+        "type": "list",
+        "requirement": "含 object、change、control、metric、condition、disproof。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "reportSections",
+        "message": "请提交基线报告八项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "reportSections",
+        "min": 8,
+        "message": "基线报告八项至少需要8项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "reportSections",
+        "values": [
+          "task",
+          "data",
+          "split",
+          "method",
+          "metrics",
+          "cost",
+          "errors",
+          "limits"
+        ],
+        "message": "基线报告八项须覆盖：task, data, split, method, metrics, cost, errors, limits。"
+      },
+      {
+        "type": "required",
+        "field": "report",
+        "message": "请提交可核对报告；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "report",
+        "min": 8,
+        "message": "可核对报告至少需要8项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "report",
+        "keys": [
+          "section",
+          "content",
+          "evidenceLocator",
+          "status"
+        ],
+        "message": "可核对报告每项需要字段：section, content, evidenceLocator, status。"
+      },
+      {
+        "type": "required",
+        "field": "paperUrl",
+        "message": "请提交候选论文全文；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "hypothesis",
+        "message": "请提交可反驳假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "hypothesis",
+        "min": 1,
+        "message": "可反驳假设至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "hypothesis",
+        "keys": [
+          "object",
+          "change",
+          "control",
+          "metric",
+          "condition",
+          "disproof"
+        ],
+        "message": "可反驳假设每项需要字段：object, change, control, metric, condition, disproof。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "每个实测数字回到运行ID和预测产物；未运行项留待运行。",
+      "原文与本地数据、划分和参数差异逐项记录，不能冒称原数值复现。",
+      "英语SMS分类不是中文维修问答或未配置模型接口调用。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w17-d3",
+    "title": "三遍阅读与证据定位",
+    "prompt": "选择一篇真实论文做第一遍和第二遍，写150字概述，并提取3项主张及其页码或图表定位。对一个关键方法画出输入到输出的流程。",
+    "fields": [
+      {
+        "key": "paperUrl",
+        "label": "论文全文地址",
+        "type": "url",
+        "requirement": "真实可读全文、作者公开全文或期刊开放PDF。"
+      },
+      {
+        "key": "summary",
+        "label": "论文概述",
+        "type": "text",
+        "requirement": "约150字，说明问题、方法和结果范围，不照抄摘要。"
+      },
+      {
+        "key": "claims",
+        "label": "三项主张定位",
+        "type": "list",
+        "requirement": "每项含 claim、claimType、locator、supportStatus；缺失定位明示 missing。"
+      },
+      {
+        "key": "flow",
+        "label": "方法输入到输出",
+        "type": "list",
+        "requirement": "至少三步，每项含 step、input、operation、output。"
+      },
+      {
+        "key": "openQuestions",
+        "label": "未解决问题",
+        "type": "list",
+        "requirement": "至少两条正文未给出或尚未理解的具体问题。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "paperUrl",
+        "message": "请提交论文全文地址；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "summary",
+        "message": "请提交论文概述；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "claims",
+        "message": "请提交三项主张定位；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "claims",
+        "min": 3,
+        "message": "三项主张定位至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "claims",
+        "keys": [
+          "claim",
+          "claimType",
+          "locator",
+          "supportStatus"
+        ],
+        "message": "三项主张定位每项需要字段：claim, claimType, locator, supportStatus。"
+      },
+      {
+        "type": "required",
+        "field": "flow",
+        "message": "请提交方法输入到输出；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "flow",
+        "min": 3,
+        "message": "方法输入到输出至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "flow",
+        "keys": [
+          "step",
+          "input",
+          "operation",
+          "output"
+        ],
+        "message": "方法输入到输出每项需要字段：step, input, operation, output。"
+      },
+      {
+        "type": "required",
+        "field": "openQuestions",
+        "message": "请提交未解决问题；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "openQuestions",
+        "min": 2,
+        "message": "未解决问题至少需要2项。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "原文没给的默认参数、种子和测试边界标未知，不以常识补造。",
+      "将观察、作者解释和自己的推断分开。",
+      "主张须回到具体表格、页或节；论文标题不能支持实验数字。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w17-d4",
+    "title": "文献矩阵与可比性",
+    "prompt": "建立至少5篇真实论文的文献矩阵。选出两篇指标相同但协议不同的论文，写出为何不能直接按分数排名。",
+    "fields": [
+      {
+        "key": "papers",
+        "label": "五篇真实文献矩阵",
+        "type": "list",
+        "requirement": "每项含 title、sourceUrl、fullTextLocator、task、dataset、split、metric、budget、missingFields。"
+      },
+      {
+        "key": "incomparablePair",
+        "label": "不可比分数对",
+        "type": "list",
+        "requirement": "含 paperA、paperB、sameMetric、protocolDifference、whyNotRank。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "papers",
+        "message": "请提交五篇真实文献矩阵；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "papers",
+        "min": 5,
+        "message": "五篇真实文献矩阵至少需要5项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "papers",
+        "keys": [
+          "title",
+          "sourceUrl",
+          "fullTextLocator",
+          "task",
+          "dataset",
+          "split",
+          "metric",
+          "budget",
+          "missingFields"
+        ],
+        "message": "五篇真实文献矩阵每项需要字段：title, sourceUrl, fullTextLocator, task, dataset, split, metric, budget, missingFields。"
+      },
+      {
+        "type": "required",
+        "field": "incomparablePair",
+        "message": "请提交不可比分数对；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "incomparablePair",
+        "min": 1,
+        "message": "不可比分数对至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "incomparablePair",
+        "keys": [
+          "paperA",
+          "paperB",
+          "sameMetric",
+          "protocolDifference",
+          "whyNotRank"
+        ],
+        "message": "不可比分数对每项需要字段：paperA, paperB, sameMetric, protocolDifference, whyNotRank。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "缺失指标或预算不填0；0是实际数值。",
+      "同名指标仍可能单位、划分和聚合不同。",
+      "五条来源结构完成以后，还须核对全文是否支撑所填行。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w17-d5",
+    "title": "写一份有边界的迷你综述",
+    "prompt": "写800字迷你综述，围绕2–3个问题组织，至少引用5篇已核实真实论文；增加一个证据冲突段和一份补学清单。",
+    "fields": [
+      {
+        "key": "review",
+        "label": "有边界的迷你综述",
+        "type": "text",
+        "requirement": "约800字，围绕2–3个问题组织证据，不按论文逐条堆砌。"
+      },
+      {
+        "key": "questions",
+        "label": "组织问题",
+        "type": "list",
+        "requirement": "列2–3个具体比较或研究问题。"
+      },
+      {
+        "key": "references",
+        "label": "至少五篇真实来源",
+        "type": "list",
+        "requirement": "每项含 title、sourceUrl、locator、supportedClaim。"
+      },
+      {
+        "key": "conflicts",
+        "label": "证据冲突分析",
+        "type": "list",
+        "requirement": "每项含 claimA、sourceA、claimB、sourceB、protocolDifference、unresolved。"
+      },
+      {
+        "key": "learningGaps",
+        "label": "补学清单",
+        "type": "list",
+        "requirement": "每条说明欠缺知识及下一课/资料。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "review",
+        "message": "请提交有边界的迷你综述；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "questions",
+        "message": "请提交组织问题；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "questions",
+        "min": 2,
+        "message": "组织问题至少需要2项。"
+      },
+      {
+        "type": "required",
+        "field": "references",
+        "message": "请提交至少五篇真实来源；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "references",
+        "min": 5,
+        "message": "至少五篇真实来源至少需要5项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "references",
+        "keys": [
+          "title",
+          "sourceUrl",
+          "locator",
+          "supportedClaim"
+        ],
+        "message": "至少五篇真实来源每项需要字段：title, sourceUrl, locator, supportedClaim。"
+      },
+      {
+        "type": "required",
+        "field": "conflicts",
+        "message": "请提交证据冲突分析；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "conflicts",
+        "min": 1,
+        "message": "证据冲突分析至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "conflicts",
+        "keys": [
+          "claimA",
+          "sourceA",
+          "claimB",
+          "sourceB",
+          "protocolDifference",
+          "unresolved"
+        ],
+        "message": "证据冲突分析每项需要字段：claimA, sourceA, claimB, sourceB, protocolDifference, unresolved。"
+      },
+      {
+        "type": "required",
+        "field": "learningGaps",
+        "message": "请提交补学清单；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "learningGaps",
+        "min": 1,
+        "message": "补学清单至少需要1项。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "合成教学节点、算法名和数据集介绍不能充当五篇论文。",
+      "不同分数先核对协议，再判断是否真的矛盾。",
+      "未知研究空白只能说在已检索范围未发现，不能称全球首次。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w18-d1",
+    "title": "复现一个主张，而不是模仿全部论文",
+    "prompt": "选定一篇真实论文的一个表格或主张，写范围说明和提前成功标准；给每项简化写出可能影响。",
+    "fields": [
+      {
+        "key": "paperUrl",
+        "label": "原始论文全文",
+        "type": "url",
+        "requirement": "选择可取得数据和CPU可跑的有限实验。"
+      },
+      {
+        "key": "targetClaim",
+        "label": "具体复现目标",
+        "type": "text",
+        "requirement": "定位原文页/节/图表中的一个可检查主张。"
+      },
+      {
+        "key": "deviations",
+        "label": "逐项偏离表",
+        "type": "list",
+        "requirement": "每项含 item、original、local、reason、likelyImpact、claimBoundary。"
+      },
+      {
+        "key": "successRule",
+        "label": "事前成功标准",
+        "type": "text",
+        "requirement": "区分方法实现、协议对齐与数值容差，负结果不因无提升而自动失败。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "paperUrl",
+        "message": "请提交原始论文全文；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "targetClaim",
+        "message": "请提交具体复现目标；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "deviations",
+        "message": "请提交逐项偏离表；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "deviations",
+        "min": 1,
+        "message": "逐项偏离表至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "deviations",
+        "keys": [
+          "item",
+          "original",
+          "local",
+          "reason",
+          "likelyImpact",
+          "claimBoundary"
+        ],
+        "message": "逐项偏离表每项需要字段：item, original, local, reason, likelyImpact, claimBoundary。"
+      },
+      {
+        "type": "required",
+        "field": "successRule",
+        "message": "请提交事前成功标准；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "只复现一个清楚主张，避免无限复制全篇实验。",
+      "换数据、划分或预处理必须收缩到方法适配声明。",
+      "先冻结成功标准，不能按最后最好看的数字改标准。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w20-d5",
+    "title": "复现报告与可重跑证据包",
+    "prompt": "完成本周复现报告与证据包。为3个主要结论逐项写观察、解释、进一步验证，并用清单找缺项。",
+    "fields": [
+      {
+        "key": "sections",
+        "label": "报告八项标识",
+        "type": "list",
+        "requirement": "字符串数组含 question、paper_protocol、deviations、environment、results、ablation、errors、limits。"
+      },
+      {
+        "key": "report",
+        "label": "报告及产物定位",
+        "type": "list",
+        "requirement": "每项含 section、content、artifactPath、status。"
+      },
+      {
+        "key": "conclusions",
+        "label": "三项主要结论",
+        "type": "list",
+        "requirement": "每项含 observation、interpretation、furtherCheck、runId、artifactLocator。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "sections",
+        "message": "请提交报告八项标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "sections",
+        "min": 8,
+        "message": "报告八项标识至少需要8项。"
+      },
+      {
+        "type": "containsValues",
+        "field": "sections",
+        "values": [
+          "question",
+          "paper_protocol",
+          "deviations",
+          "environment",
+          "results",
+          "ablation",
+          "errors",
+          "limits"
+        ],
+        "message": "报告八项标识须覆盖：question, paper_protocol, deviations, environment, results, ablation, errors, limits。"
+      },
+      {
+        "type": "required",
+        "field": "report",
+        "message": "请提交报告及产物定位；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "report",
+        "min": 8,
+        "message": "报告及产物定位至少需要8项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "report",
+        "keys": [
+          "section",
+          "content",
+          "artifactPath",
+          "status"
+        ],
+        "message": "报告及产物定位每项需要字段：section, content, artifactPath, status。"
+      },
+      {
+        "type": "required",
+        "field": "conclusions",
+        "message": "请提交三项主要结论；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "conclusions",
+        "min": 3,
+        "message": "三项主要结论至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "conclusions",
+        "keys": [
+          "observation",
+          "interpretation",
+          "furtherCheck",
+          "runId",
+          "artifactLocator"
+        ],
+        "message": "三项主要结论每项需要字段：observation, interpretation, furtherCheck, runId, artifactLocator。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "三项结论各自定位实际预测或日志，不只指向报告首页。",
+      "保存失败、全部候选和差异，不用最高分替代完整实验。",
+      "材料完整性通过以后，执行来源和数字一致性还需单独核对。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w21-d1",
+    "title": "问题、目标与假设的区别",
+    "prompt": "写一个含对象、改动、对照、指标、条件的假设，并列出两种明确不支持它的结果。",
+    "fields": [
+      {
+        "key": "hypothesis",
+        "label": "五要素假设",
+        "type": "list",
+        "requirement": "含 object、change、control、metric、condition。"
+      },
+      {
+        "key": "disproofs",
+        "label": "两种不支持结果",
+        "type": "list",
+        "requirement": "至少两项明确、不依赖事后解释的反对结果。"
+      },
+      {
+        "key": "thresholdBasis",
+        "label": "阈值依据",
+        "type": "text",
+        "requirement": "说明最小实际意义的来源；无依据时明确 exploratory。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "hypothesis",
+        "message": "请提交五要素假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "hypothesis",
+        "min": 1,
+        "message": "五要素假设至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "hypothesis",
+        "keys": [
+          "object",
+          "change",
+          "control",
+          "metric",
+          "condition"
+        ],
+        "message": "五要素假设每项需要字段：object, change, control, metric, condition。"
+      },
+      {
+        "type": "required",
+        "field": "disproofs",
+        "message": "请提交两种不支持结果；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "disproofs",
+        "min": 2,
+        "message": "两种不支持结果至少需要2项。"
+      },
+      {
+        "type": "required",
+        "field": "thresholdBasis",
+        "message": "请提交阈值依据；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "研究目标不是可检验假设；加入改动、对照和指标条件。",
+      "改善不足与成本过大可分别否定同一假设。",
+      "无效果阈值依据时做探索性比较，不伪装确认性研究。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w21-d4",
+    "title": "核对空白与新颖性",
+    "prompt": "围绕拟研究空白再检索3组同义词，至少查2篇可能已解决问题的真实论文，并更新假设或说明保留理由。",
+    "fields": [
+      {
+        "key": "searches",
+        "label": "三组反证检索",
+        "type": "list",
+        "requirement": "每项含 queryGroup、terms、searchedAt、sourceUrl、scope。"
+      },
+      {
+        "key": "counterPapers",
+        "label": "两篇可能已解决的论文",
+        "type": "list",
+        "requirement": "每项含 title、sourceUrl、locator、overlap、difference、implication。"
+      },
+      {
+        "key": "updatedHypothesis",
+        "label": "更新后的假设",
+        "type": "text",
+        "requirement": "说明收缩、修改或保留理由，避免无证据的新颖性结论。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "searches",
+        "message": "请提交三组反证检索；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "searches",
+        "min": 3,
+        "message": "三组反证检索至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "searches",
+        "keys": [
+          "queryGroup",
+          "terms",
+          "searchedAt",
+          "sourceUrl",
+          "scope"
+        ],
+        "message": "三组反证检索每项需要字段：queryGroup, terms, searchedAt, sourceUrl, scope。"
+      },
+      {
+        "type": "required",
+        "field": "counterPapers",
+        "message": "请提交两篇可能已解决的论文；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "counterPapers",
+        "min": 2,
+        "message": "两篇可能已解决的论文至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "counterPapers",
+        "keys": [
+          "title",
+          "sourceUrl",
+          "locator",
+          "overlap",
+          "difference",
+          "implication"
+        ],
+        "message": "两篇可能已解决的论文每项需要字段：title, sourceUrl, locator, overlap, difference, implication。"
+      },
+      {
+        "type": "required",
+        "field": "updatedHypothesis",
+        "message": "请提交更新后的假设；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "同义词检索应覆盖方法名称、任务别名和已有替代解法。",
+      "发现近似论文不是失败，缩小问题或复查边界。",
+      "AI建议的题名必须先核实真实全文，再进入文献矩阵。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w22-d5",
+    "title": "分析计划与协议冻结审查",
+    "prompt": "完成冻结协议，给每项标注确定、探索或待决定。准备一次审查，按本周rubric评分并写最重要的两个修订。",
+    "fields": [
+      {
+        "key": "protocol",
+        "label": "冻结协议逐项状态",
+        "type": "list",
+        "requirement": "每项含 item、value、role、order、status；status标fixed/exploratory/undecided。"
+      },
+      {
+        "key": "freezeId",
+        "label": "冻结版本标识",
+        "type": "text",
+        "requirement": "记录协议哈希或持久版本ID，和测试启封时间关联。"
+      },
+      {
+        "key": "revisions",
+        "label": "两个主要修订",
+        "type": "list",
+        "requirement": "每项含 problem、change、beforeTest、impact。"
+      },
+      {
+        "key": "randomness",
+        "label": "随机性与分析单位",
+        "type": "text",
+        "requirement": "随机训练/采样预定种子；确定性复跑加主体/时期敏感性，划分种子另列。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "protocol",
+        "message": "请提交冻结协议逐项状态；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "protocol",
+        "min": 8,
+        "message": "冻结协议逐项状态至少需要8项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "protocol",
+        "keys": [
+          "item",
+          "value",
+          "role",
+          "order",
+          "status"
+        ],
+        "message": "冻结协议逐项状态每项需要字段：item, value, role, order, status。"
+      },
+      {
+        "type": "required",
+        "field": "freezeId",
+        "message": "请提交冻结版本标识；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "revisions",
+        "message": "请提交两个主要修订；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "revisions",
+        "min": 2,
+        "message": "两个主要修订至少需要2项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "revisions",
+        "keys": [
+          "problem",
+          "change",
+          "beforeTest",
+          "impact"
+        ],
+        "message": "两个主要修订每项需要字段：problem, change, beforeTest, impact。"
+      },
+      {
+        "type": "required",
+        "field": "randomness",
+        "message": "请提交随机性与分析单位；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "配置冻结以后修改主指标或候选须记录新版本与旧测试使用史。",
+      "待决定不能被伪装为fixed。",
+      "重抽样次数不是独立训练次数，随机划分也不是训练种子。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w24-d1",
+    "title": "研究叙述与结论强度",
+    "prompt": "写结果与讨论各300字，逐句标观察、解释或推断，并为3句关键结论配真实运行或图表定位。",
+    "fields": [
+      {
+        "key": "results",
+        "label": "结果段",
+        "type": "text",
+        "requirement": "约300字，报告实际观察，不把解释当事实。"
+      },
+      {
+        "key": "discussion",
+        "label": "讨论段",
+        "type": "text",
+        "requirement": "约300字，分析替代解释与结论限制。"
+      },
+      {
+        "key": "claims",
+        "label": "至少三句证据定位",
+        "type": "list",
+        "requirement": "每项含 sentence、claimType、runOrFigureLocator、scope。"
+      },
+      {
+        "key": "titleScope",
+        "label": "标题与摘要边界",
+        "type": "text",
+        "requirement": "明确数据、预算和不确定性支持的范围。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "results",
+        "message": "请提交结果段；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "discussion",
+        "message": "请提交讨论段；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "claims",
+        "message": "请提交至少三句证据定位；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "claims",
+        "min": 3,
+        "message": "至少三句证据定位至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "claims",
+        "keys": [
+          "sentence",
+          "claimType",
+          "runOrFigureLocator",
+          "scope"
+        ],
+        "message": "至少三句证据定位每项需要字段：sentence, claimType, runOrFigureLocator, scope。"
+      },
+      {
+        "type": "required",
+        "field": "titleScope",
+        "message": "请提交标题与摘要边界；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "模型改善这个数据集，不等于改善所有设备或所有语言。",
+      "结果数字和图表必须能在产物中重算。",
+      "区分观察、解释、外推推断，不将三类句子混写。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w24-d4",
+    "title": "摘要、引用与可复查方法段",
+    "prompt": "写200字摘要和500字方法段，核对每个方法来源、自己改动和关键默认参数。摘要至少一处说明数据与样本边界。",
+    "fields": [
+      {
+        "key": "abstract",
+        "label": "有边界摘要",
+        "type": "text",
+        "requirement": "约200字，包含问题、方法、有限发现及至少一个数据或样本限制。"
+      },
+      {
+        "key": "methods",
+        "label": "可复查方法段",
+        "type": "text",
+        "requirement": "约500字，按数据、处理、划分、模型、预算、选择和评价的顺序。"
+      },
+      {
+        "key": "methodAudit",
+        "label": "方法引用和参数核对",
+        "type": "list",
+        "requirement": "每项含 methodItem、sourceUrl、locator、localChange、codeOrConfigLocator。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "abstract",
+        "message": "请提交有边界摘要；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "methods",
+        "message": "请提交可复查方法段；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "methodAudit",
+        "message": "请提交方法引用和参数核对；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "methodAudit",
+        "min": 3,
+        "message": "方法引用和参数核对至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "methodAudit",
+        "keys": [
+          "methodItem",
+          "sourceUrl",
+          "locator",
+          "localChange",
+          "codeOrConfigLocator"
+        ],
+        "message": "方法引用和参数核对每项需要字段：methodItem, sourceUrl, locator, localChange, codeOrConfigLocator。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "来源说什么和自己改什么分别列出。",
+      "关键默认参数回到实际环境/配置，不从文档stable页面猜旧运行。",
+      "原文引用真实存在并不代表支持方法段里的所有主张。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w25-d4",
+    "title": "跨模态迁移的是问题结构",
+    "prompt": "从自己的方向迁移到另一种模态，写新任务协议和最小基线计划。至少说明3项保留原则、3项需要改写的条件。",
+    "fields": [
+      {
+        "key": "targetModality",
+        "label": "新模态与任务",
+        "type": "text",
+        "requirement": "选择与原方向不同的模态，并定义输入/输出和独立单位。"
+      },
+      {
+        "key": "retainedPrinciples",
+        "label": "保留原则",
+        "type": "list",
+        "requirement": "至少三条，如训练内拟合、验证选择、来源隔离。"
+      },
+      {
+        "key": "changedConditions",
+        "label": "须重写的条件",
+        "type": "list",
+        "requirement": "至少三项，明确单位、标签、时间/来源、指标或预算变化。"
+      },
+      {
+        "key": "newProtocol",
+        "label": "新任务协议与最小基线",
+        "type": "list",
+        "requirement": "含 source、unit、split、baseline、metric、risk、budget。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "targetModality",
+        "message": "请提交新模态与任务；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "required",
+        "field": "retainedPrinciples",
+        "message": "请提交保留原则；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "retainedPrinciples",
+        "min": 3,
+        "message": "保留原则至少需要3项。"
+      },
+      {
+        "type": "required",
+        "field": "changedConditions",
+        "message": "请提交须重写的条件；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "changedConditions",
+        "min": 3,
+        "message": "须重写的条件至少需要3项。"
+      },
+      {
+        "type": "required",
+        "field": "newProtocol",
+        "message": "请提交新任务协议与最小基线；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "newProtocol",
+        "min": 1,
+        "message": "新任务协议与最小基线至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "newProtocol",
+        "keys": [
+          "source",
+          "unit",
+          "split",
+          "baseline",
+          "metric",
+          "risk",
+          "budget"
+        ],
+        "message": "新任务协议与最小基线每项需要字段：source, unit, split, baseline, metric, risk, budget。"
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "迁移问题结构，不代表直接复用另一模态的指标与特征。",
+      "新模态先做可执行小基线，再谈更复杂模型。",
+      "没有许可数据时是计划迁移，不能声称新模态实测通过。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w25-d5",
+    "title": "延迟复测与补弱闭环",
+    "prompt": "安排一周后的3道换题复测和一个项目应用。完成本周补弱档案，记录提示级别、结果与下一动作。",
+    "fields": [
+      {
+        "key": "retests",
+        "label": "三道换题复测计划",
+        "type": "list",
+        "requirement": "每项含 taskId、changedCondition、scheduledAt、expectedEvidence、assistance。"
+      },
+      {
+        "key": "projectApplication",
+        "label": "一个项目应用",
+        "type": "list",
+        "requirement": "含 weakness、lessonId、projectTask、resultOrPending、nextAction。"
+      },
+      {
+        "key": "delayDays",
+        "label": "计划间隔天数",
+        "type": "number",
+        "requirement": "7–14天；实际保持由服务器时间与新题ID核对。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "retests",
+        "message": "请提交三道换题复测计划；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "retests",
+        "min": 3,
+        "message": "三道换题复测计划至少需要3项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "retests",
+        "keys": [
+          "taskId",
+          "changedCondition",
+          "scheduledAt",
+          "expectedEvidence",
+          "assistance"
+        ],
+        "message": "三道换题复测计划每项需要字段：taskId, changedCondition, scheduledAt, expectedEvidence, assistance。"
+      },
+      {
+        "type": "required",
+        "field": "projectApplication",
+        "message": "请提交一个项目应用；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "projectApplication",
+        "min": 1,
+        "message": "一个项目应用至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "projectApplication",
+        "keys": [
+          "weakness",
+          "lessonId",
+          "projectTask",
+          "resultOrPending",
+          "nextAction"
+        ],
+        "message": "一个项目应用每项需要字段：weakness, lessonId, projectTask, resultOrPending, nextAction。"
+      },
+      {
+        "type": "required",
+        "field": "delayDays",
+        "message": "请提交计划间隔天数；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "numberRange",
+        "field": "delayDays",
+        "min": 7,
+        "message": "计划间隔天数须在事前规定范围内。",
+        "max": 14
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "重做同一道已看答案的题只能算复习，不能代替换题复测。",
+      "提示后与解析后成果保留，用另一题验证无站内提示表现。",
+      "计划排期不是复测已经通过，未来结果待执行。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  },
+  {
+    "lessonId": "w26-d4",
+    "title": "迁移质疑与独立答辩考核",
+    "prompt": "完成10分钟结构化答辩和5个系统提供的新情景质疑，记录站内提示级别。将一个随机窗口协议改为新主体协议，保存前后版本并说明结论变化；AI服务未配置时先提交答辩材料与规则核对。",
+    "fields": [
+      {
+        "key": "challenges",
+        "label": "五个新情景质疑",
+        "type": "list",
+        "requirement": "每项含 scenarioId、change、response、evidenceLocator、assistance。"
+      },
+      {
+        "key": "splitRevision",
+        "label": "随机窗口改为新主体协议",
+        "type": "list",
+        "requirement": "含 beforeGroups、afterGroups、newUnit、leakageCheck、changedConclusion。"
+      },
+      {
+        "key": "defenseMinutes",
+        "label": "计划答辩时长",
+        "type": "number",
+        "requirement": "10分钟；时长是流程记录，不作为能力得分。"
+      },
+      {
+        "key": "evidenceStatus",
+        "label": "材料状态",
+        "type": "text",
+        "requirement": "plan、measured 或 mixed；未运行的计划不填写虚构结果。"
+      },
+      {
+        "key": "runRefs",
+        "label": "实测运行定位",
+        "type": "list",
+        "requirement": "未运行时可留空；实测逐项给 runId、artifactPath、codeSha256，交由执行证据核对。"
+      },
+      {
+        "key": "limitations",
+        "label": "证据边界与未知项",
+        "type": "text",
+        "requirement": "列出至少一个具体未知、未测条件或不支持的结论；如缺真实数据，写明计划任务。"
+      }
+    ],
+    "rules": [
+      {
+        "type": "required",
+        "field": "challenges",
+        "message": "请提交五个新情景质疑；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "challenges",
+        "min": 5,
+        "message": "五个新情景质疑至少需要5项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "challenges",
+        "keys": [
+          "scenarioId",
+          "change",
+          "response",
+          "evidenceLocator",
+          "assistance"
+        ],
+        "message": "五个新情景质疑每项需要字段：scenarioId, change, response, evidenceLocator, assistance。"
+      },
+      {
+        "type": "required",
+        "field": "splitRevision",
+        "message": "请提交随机窗口改为新主体协议；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "minItems",
+        "field": "splitRevision",
+        "min": 1,
+        "message": "随机窗口改为新主体协议至少需要1项。"
+      },
+      {
+        "type": "itemKeys",
+        "field": "splitRevision",
+        "keys": [
+          "beforeGroups",
+          "afterGroups",
+          "newUnit",
+          "leakageCheck",
+          "changedConclusion"
+        ],
+        "message": "随机窗口改为新主体协议每项需要字段：beforeGroups, afterGroups, newUnit, leakageCheck, changedConclusion。"
+      },
+      {
+        "type": "required",
+        "field": "defenseMinutes",
+        "message": "请提交计划答辩时长；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "numberRange",
+        "field": "defenseMinutes",
+        "min": 10,
+        "message": "计划答辩时长须在事前规定范围内。",
+        "max": 10
+      },
+      {
+        "type": "required",
+        "field": "limitations",
+        "message": "请提交证据边界与未知项；材料存在只是结构完整性检查。"
+      },
+      {
+        "type": "enum",
+        "field": "evidenceStatus",
+        "values": [
+          "plan",
+          "measured",
+          "mixed"
+        ],
+        "message": "计划、实测及混合材料须如实区分。"
+      }
+    ],
+    "feedbackHints": [
+      "新主体、正类比例和资源限制变化须改协议及结论，不只换标题。",
+      "每个关键数字回到运行ID、划分和预测。",
+      "AI质疑与答复保留为证据；没有实际提问或模型调用时只记录计划。"
+    ],
+    "automaticBoundary": "规则仅核对字段、条数、合法取值和引用关系，不判定解释正确、实验真实执行或独立研究能力。实测必须关联运行证据；AI反馈只在模型已配置时启用，且不能覆盖失败硬指标。",
+    "sourceMode": "manual_review",
+    "targetMode": "structured_evidence_with_optional_ai_feedback"
+  }
+]

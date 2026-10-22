@@ -1,0 +1,228 @@
+[
+  {
+    "id": "vision",
+    "title": "真实 digits：官方方法复现与缩放消融",
+    "summary": "先按官方SVC示例复现，再以三种划分种子运行完整验证管道与缩放消融；真实1797张小图，不能充当新书写者或工业独立研究成绩。",
+    "concepts": [
+      {
+        "title": "数据与结论边界",
+        "body": "本模板使用scikit-learn内置的1797张8×8真实手写数字，是UCI Optical Recognition数据集的一个子集；64个像素为0–16，10类标签为0–9。UCI现列CC BY 4.0，使用时引用Alpaydin与Kaynak及数据DOI。子集没有可用书写者ID，本模板只能检查记录级数据，不证明新书写者独立。先执行官方SVC(gamma=0.001)、按顺序前半训练后半测试，保留混淆矩阵；这是公开官方示例的完整方法/划分复现，不是原论文数值或独立新研究复现。"
+      },
+      {
+        "title": "验证选择与最终测试",
+        "body": "后半段另演示研究管道：预定11、29、47三个划分种子，各约70%训练、15%验证、15%测试。三个C候选和相同搜索预算比较缩放与未缩放，按各自验证宏F1选C，平分保留较小C；StandardScaler仅拟合训练。冻结选择后依协议重拟合训练加验证，再一次评价测试，并列多数类对照。官方示例已经使用同一公开数据，所以这个第二管道属于教学审计；不能把它当从未使用的独立新测试。正式独立项目须先封存新的原始数据或迁移条件。"
+      },
+      {
+        "title": "错误检查与研究起点",
+        "body": "宏F1先计算每类F1再平均，让各类同权；另报告准确率、每类指标与全部预测。缩放消融的配对差值是同一划分下“缩放宏F1−未缩放宏F1”，三个划分重叠，因此均值和样本标准差仅描述敏感性，不是独立数据集置信区间。排查重复原始来源、增强跨集合和近重复，至少展示五个错例；若错例不足五个，报告全部并用预先定义的新条件补充。研究起点是对低分辨率扰动的鲁棒性提出可反驳假设，而不是看到公开高分就宣称创新。"
+      },
+      {
+        "title": "运行、证据与人工验收",
+        "body": "使用下载的Notebook在本地Jupyter或Colab运行，Python 3.12.14、NumPy 2.3.5、scikit-learn 1.9.1已在2026-10-08实测；环境不同先保存版本并对照差异。浏览器课程运行器适合短例，本模板会写结果目录，正式产物请在本地/Colab保留。每次运行新建目录，results.json记录配置、划分、所有候选、预测、环境和真实运行时间；脚本另保存source.py，Notebook运行须同时保留下载源Notebook，供评审重跑。下载目录中的产物，连同假设/文献矩阵/报告归档。未提升指标也可通过协议严谨、负结果完整和独立解释验收；核心泄漏、伪造或关键运行不可复现必须修复，不能被其他高分抵消。"
+      }
+    ],
+    "requirements": [
+      "numpy",
+      "scikit-learn"
+    ],
+    "code": "\"\"\"真实 digits：官方示例复现 + 预注册开发管道，CPU / 本地 / Colab。\"\"\"\nimport hashlib\nimport json\nimport platform\nimport tempfile\nimport time\nfrom pathlib import Path\nimport numpy as np\nimport sklearn\nfrom sklearn.datasets import load_digits\nfrom sklearn.dummy import DummyClassifier\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score, classification_report, confusion_matrix, f1_score\nfrom sklearn.model_selection import train_test_split\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.svm import SVC\n\nstarted = time.perf_counter()\nD = load_digits()\nX, y = D.data, D.target\nids = np.arange(len(y))\ndata_sha = hashlib.sha256(np.c_[X, y].astype('<f8').tobytes()).hexdigest()\n# 完整保留官方示例的划分与模型。这个已公开结果只能用于方法复现。\nofficial_train, official_test = train_test_split(ids, test_size=.5, shuffle=False)\nofficial = SVC(gamma=.001).fit(X[official_train], y[official_train])\nofficial_pred = official.predict(X[official_test])\nreproduction = {\n    'source': 'https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html',\n    'scope': '官方示例方法与划分复现；非独立研究测试，非原论文数值复现',\n    'train_ids': official_train.tolist(), 'test_ids': official_test.tolist(),\n    'accuracy': accuracy_score(y[official_test], official_pred),\n    'macro_f1': f1_score(y[official_test], official_pred, average='macro'),\n    'confusion_matrix': confusion_matrix(y[official_test], official_pred).tolist(),\n}\nprint('官方SVC示例复现', reproduction['accuracy'], reproduction['macro_f1'])\n# 第二个协议是研究管道练习。它与官方样例重用公开数据，不能声称新独立测试。\n# 研究项目必须在看结果之前由评审封存新的数据/迁移条件。\nSEEDS = [11, 29, 47]  # 划分种子，非三个独立数据集，也非训练随机性\nvalidation, runs, prediction_rows = [], [], []\nfor seed in SEEDS:\n    dev, test = train_test_split(ids, test_size=.15, stratify=y, random_state=seed)\n    train, val = train_test_split(dev, test_size=.15/.85, stratify=y[dev], random_state=seed)\n    assert set(train).isdisjoint(val) and set(dev).isdisjoint(test)\n    # 完全相同的划分、三个C候选与验证规则；缩放消融也只在验证阶段选择。\n    chosen = {}\n    for scaled in [False, True]:\n        best_score, best_C = -np.inf, None\n        for C in [.1, 1., 10.]:\n            lr = LogisticRegression(C=C, max_iter=800, random_state=seed)\n            model = make_pipeline(StandardScaler(), lr) if scaled else lr\n            model.fit(X[train], y[train])\n            score = f1_score(y[val], model.predict(X[val]), average='macro')\n            validation.append({'seed': seed, 'scaled': scaled, 'C': C, 'macro_f1': score})\n            if score > best_score:\n                best_score, best_C = score, C\n        chosen[scaled] = best_C\n    predictions, metrics = {}, {}\n    for scaled in [False, True]:\n        lr = LogisticRegression(C=chosen[scaled], max_iter=800, random_state=seed)\n        model = make_pipeline(StandardScaler(), lr) if scaled else lr\n        predictions[str(scaled)] = model.fit(X[dev], y[dev]).predict(X[test])\n        p = predictions[str(scaled)]\n        metrics[str(scaled)] = {'C': chosen[scaled], 'accuracy': accuracy_score(y[test], p),\n                               'macro_f1': f1_score(y[test], p, average='macro'),\n                               'per_class': classification_report(y[test], p, output_dict=True, zero_division=0)}\n    dummy = DummyClassifier(strategy='most_frequent').fit(X[dev], y[dev]).predict(X[test])\n    metrics['dummy'] = {'accuracy': accuracy_score(y[test], dummy), 'macro_f1': f1_score(y[test], dummy, average='macro')}\n    runs.append({'seed': seed, 'train_ids': train.tolist(), 'validation_ids': val.tolist(),\n                 'test_ids': test.tolist(), 'metrics': metrics})\n    for pos, i in enumerate(test):\n        prediction_rows.append({'seed': seed, 'id': int(i), 'truth': int(y[i]),\n                                'unscaled': int(predictions['False'][pos]), 'scaled': int(predictions['True'][pos])})\n    print('管道练习（非独立研究结论）', seed, metrics['False']['macro_f1'], metrics['True']['macro_f1'])\ndelta = np.array([r['metrics']['True']['macro_f1']-r['metrics']['False']['macro_f1'] for r in runs])\nsummary = {'paired_scaled_minus_unscaled': delta.tolist(), 'mean': float(delta.mean()),\n           'sample_std': float(delta.std(ddof=1)), 'scope': '三个重叠随机划分的描述性差值；非独立样本置信区间'}\nout = Path(tempfile.mkdtemp(prefix='vision-', dir='.'))\npayload = {'protocol_version': 'research-v2', 'track': 'vision', 'data_sha256': data_sha,\n           'data': '真实UCI digits子集1797图；CC BY 4.0；无书写者ID',\n           'environment': {'python': platform.python_version(), 'numpy': np.__version__, 'sklearn': sklearn.__version__},\n           'config': {'seeds': SEEDS, 'candidates': [.1, 1., 10.], 'primary_metric': 'macro_f1', 'tie': 'first'},\n           'reproduction': reproduction, 'validation': validation, 'runs': runs,\n           'predictions': prediction_rows, 'summary': summary, 'seconds': time.perf_counter()-started}\nsource_file = globals().get('__file__')\nsource = globals().get('_notebook_source', '').encode('utf-8')\nif source_file and Path(source_file).is_file():\n    source = Path(source_file).read_bytes()\nif not source:\n    raise RuntimeError('源码未保存。请使用站点下载的Notebook或将当前代码另存为.py后执行。')\n(out/'source.py').write_bytes(source)\npayload['code_sha256'] = hashlib.sha256(source).hexdigest()\n(out/'results.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')\nprint('ARTIFACT_DIR', out.resolve())\nprint('缩放消融差值', summary)\nprint('保留所有负结果；公开小图像结果不证明新书写者、真实部署或论文创新。')\n",
+    "references": [
+      {
+        "title": "scikit-learn官方digits分类示例（方法与划分，2026-10-08核验）",
+        "url": "https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html"
+      },
+      {
+        "title": "UCI Optical Recognition：来源、CC BY 4.0及数据DOI",
+        "url": "https://archive.ics.uci.edu/dataset/80/optical+recognition+of+handwritten+digits"
+      },
+      {
+        "title": "scikit-learn：防止数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html"
+      }
+    ],
+    "practice": {
+      "task": "先完整运行并记录官方协议与自建管道区别。随后在封存新条件之前提出“训练内轻微平移增强是否改善独立原始图像的扰动宏F1”假设，冻结强度/搜索/阈值，再完成等预算对照。",
+      "hints": [
+        "先列官方示例已使用的样本，禁止称重用样本为新独立测试",
+        "先按原始图像或书写者划分，再只在训练做增强",
+        "用验证选强度；三训练种子保持同一封存划分，不替代新来源证据"
+      ],
+      "solution": "先核对官方SVC的混淆矩阵与方法参数，再从results.json复核各C和缩放比较。独立项目把每张原始图的所有衍生版本留在同一集合；评审在选择前封存迁移扰动，控制训练步数、样本和搜索预算。报告干净/扰动宏F1、配对差值、全部种子和失败案例。指标不提升则据预定阈值否定或缩小假设，解释样本/扰动范围；当前公开数据无法证明新书写者独立。",
+      "checks": [
+        "官方例参数/划分可核对",
+        "公开数据重用明确标教学",
+        "预处理训练拟合、验证选参",
+        "等预算缩放消融与全部预测保留",
+        "新研究条件在选择前封存且原始来源隔离"
+      ]
+    },
+    "objectives": [
+      "保留官方参数和划分复现SVC方法",
+      "完成训练内预处理、验证选择和预算一致的缩放消融",
+      "交付全部划分/预测/负结果并界定公开数据结论"
+    ],
+    "quiz": [],
+    "day": 1,
+    "track": "vision",
+    "minutes": 90
+  },
+  {
+    "id": "timeseries",
+    "title": "真实 sunspots：滚动方法复现与基线",
+    "summary": "离线真实309年太阳黑子快照；复现滚动一步信息边界及最后值/漂移公式，验证选择滞后岭回归，保留逐年预测与块敏感性分析。",
+    "concepts": [
+      {
+        "title": "数据来源与快照",
+        "body": "309年数据来自statsmodels官方1700–2008太阳黑子CSV，2026-10-08重新下载核对SHA256与全部309个内嵌值一致。官方源代码声明数据为public domain；原历史来源是NGDC。本快照不是实时天文数据，也不属于工业传感器。复现目标是FPP第三版最后值、漂移公式与滚动评价的核心方法，改用此序列的Python实现；不复现书中Google股票或澳大利亚生产的数值，不宣称论文实验已对齐。"
+      },
+      {
+        "title": "信息边界与滚动验证",
+        "body": "所有方案从1712年开始共同目标起点；开发目标至1949年，三次扩展窗验证各20年。候选滞后3/12与alpha=0.1/10，共四组，每折只拟合过去的StandardScaler和Ridge，按三折平均MAE选参。1950–2008的59个最终目标在冻结后评价。每年预测仅使用此前已经到达的真实年度值，Ridge参数不重拟合；最后值取前一年，漂移法用当时全部已知历史的首尾均差。后者更新历史统计是已声明的在线基线，不是偷偷访问未来。"
+      },
+      {
+        "title": "最终测试与任务限制",
+        "body": "报告MAE与RMSE、各折候选、每年真实值/三基线预测和最大误差案例。MAE单位为年太阳黑子活动数的单位，RMSE平方后再开方。Ridge是确定性方法，换无关随机种子不会产生独立重复实验。为描述年间相关，代码对同年“最后值绝对误差−Ridge绝对误差”用11年移动块重抽样1000次，给经验区间；单序列约五个测试周期、块平稳性未经确认，不能把1000重抽样当1000次训练或保证未来泛化。随机深度模型扩展才另用至少3训练种子，并保留相同时间协议。"
+      },
+      {
+        "title": "运行、证据与人工验收",
+        "body": "使用下载的Notebook在本地Jupyter或Colab运行，Python 3.12.14、NumPy 2.3.5、scikit-learn 1.9.1已在2026-10-08实测；环境不同先保存版本并对照差异。浏览器课程运行器适合短例，本模板会写结果目录，正式产物请在本地/Colab保留。每次运行新建目录，results.json记录配置、划分、所有候选、预测、环境和真实运行时间；脚本另保存source.py，Notebook运行须同时保留下载源Notebook，供评审重跑。下载目录中的产物，连同假设/文献矩阵/报告归档。未提升指标也可通过协议严谨、负结果完整和独立解释验收；核心泄漏、伪造或关键运行不可复现必须修复，不能被其他高分抵消。"
+      }
+    ],
+    "requirements": [
+      "numpy",
+      "scikit-learn"
+    ],
+    "code": "import hashlib\nimport json\nimport platform\nimport tempfile\nimport time\nfrom pathlib import Path\nstarted=time.perf_counter()\nimport numpy as np\nimport sklearn\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.preprocessing import StandardScaler\nfrom sklearn.linear_model import Ridge\nfrom sklearn.model_selection import TimeSeriesSplit\nfrom sklearn.metrics import mean_absolute_error,mean_squared_error\n# 真实年太阳黑子活动数据，1700–2008，来自statsmodels官方CSV。\n# 快照核对日期：2026-10-07。原CSV SHA256: f67889b1d9002cd5227f0e0ef54e35b419cdd85a31279adef6f73fb41e5c0a9b\n# 数据来源：https://raw.githubusercontent.com/statsmodels/statsmodels/main/statsmodels/datasets/sunspots/sunspots.csv\nvalues=np.array([5.0, 11.0, 16.0, 23.0, 36.0, 58.0, 29.0, 20.0, 10.0, 8.0, 3.0, 0.0, 0.0, 2.0, 11.0, 27.0, 47.0, 63.0, 60.0, 39.0, 28.0, 26.0, 22.0, 11.0, 21.0, 40.0, 78.0, 122.0, 103.0, 73.0, 47.0, 35.0, 11.0, 5.0, 16.0, 34.0, 70.0, 81.0, 111.0, 101.0, 73.0, 40.0, 20.0, 16.0, 5.0, 11.0, 22.0, 40.0, 60.0, 80.9, 83.4, 47.7, 47.8, 30.7, 12.2, 9.6, 10.2, 32.4, 47.6, 54.0, 62.9, 85.9, 61.2, 45.1, 36.4, 20.9, 11.4, 37.8, 69.8, 106.1, 100.8, 81.6, 66.5, 34.8, 30.6, 7.0, 19.8, 92.5, 154.4, 125.9, 84.8, 68.1, 38.5, 22.8, 10.2, 24.1, 82.9, 132.0, 130.9, 118.1, 89.9, 66.6, 60.0, 46.9, 41.0, 21.3, 16.0, 6.4, 4.1, 6.8, 14.5, 34.0, 45.0, 43.1, 47.5, 42.2, 28.1, 10.1, 8.1, 2.5, 0.0, 1.4, 5.0, 12.2, 13.9, 35.4, 45.8, 41.1, 30.1, 23.9, 15.6, 6.6, 4.0, 1.8, 8.5, 16.6, 36.3, 49.6, 64.2, 67.0, 70.9, 47.8, 27.5, 8.5, 13.2, 56.9, 121.5, 138.3, 103.2, 85.7, 64.6, 36.7, 24.2, 10.7, 15.0, 40.1, 61.5, 98.5, 124.7, 96.3, 66.6, 64.5, 54.1, 39.0, 20.6, 6.7, 4.3, 22.7, 54.8, 93.8, 95.8, 77.2, 59.1, 44.0, 47.0, 30.5, 16.3, 7.3, 37.6, 74.0, 139.0, 111.2, 101.6, 66.2, 44.7, 17.0, 11.3, 12.4, 3.4, 6.0, 32.3, 54.3, 59.7, 63.7, 63.5, 52.2, 25.4, 13.1, 6.8, 6.3, 7.1, 35.6, 73.0, 85.1, 78.0, 64.0, 41.8, 26.2, 26.7, 12.1, 9.5, 2.7, 5.0, 24.4, 42.0, 63.5, 53.8, 62.0, 48.5, 43.9, 18.6, 5.7, 3.6, 1.4, 9.6, 47.4, 57.1, 103.9, 80.6, 63.6, 37.6, 26.1, 14.2, 5.8, 16.7, 44.3, 63.9, 69.0, 77.8, 64.9, 35.7, 21.2, 11.1, 5.7, 8.7, 36.1, 79.7, 114.4, 109.6, 88.8, 67.8, 47.5, 30.6, 16.3, 9.6, 33.2, 92.6, 151.6, 136.3, 134.7, 83.9, 69.4, 31.5, 13.9, 4.4, 38.0, 141.7, 190.2, 184.8, 159.0, 112.3, 53.9, 37.6, 27.9, 10.2, 15.1, 47.0, 93.8, 105.9, 105.5, 104.5, 66.6, 68.9, 38.0, 34.5, 15.5, 12.6, 27.5, 92.5, 155.4, 154.6, 140.4, 115.9, 66.6, 45.9, 17.9, 13.4, 29.4, 100.2, 157.6, 142.6, 145.7, 94.3, 54.6, 29.9, 17.5, 8.6, 21.5, 64.3, 93.3, 119.6, 111.0, 104.0, 63.7, 40.4, 29.8, 15.2, 7.5, 2.9],dtype=float)\nyears=np.arange(1700,2009)\nassert len(values)==len(years) and np.isfinite(values).all()\n# 公平比较不同lag：所有模型共用最大lag之后的目标起点。\nmax_lag=12;origins=np.arange(max_lag,len(values))\ny=values[origins];target_year=years[origins]\ndev=target_year<1950;test=~dev\nsplits=list(TimeSeriesSplit(n_splits=3,test_size=20).split(np.flatnonzero(dev)))\nprint('版本',np.__version__,sklearn.__version__)\nprint('真实历史序列；滚动一步预测，收到过去真值后更新输入；不保证工业预测')\nprint('开发目标年份',target_year[dev][[0,-1]],'最终测试年份',target_year[test][[0,-1]])\nvalidation=[]\nbest=None;best_mae=np.inf\nfor lag in [3,12]:\n    X=np.array([values[o-lag:o] for o in origins])\n    Xdev=X[dev];ydev=y[dev]\n    for alpha in [.1,10.]:\n        maes=[]\n        for fold,(tr,va) in enumerate(splits):\n            assert target_year[dev][tr[-1]]<target_year[dev][va[0]]\n            model=make_pipeline(StandardScaler(),Ridge(alpha=alpha))\n            model.fit(Xdev[tr],ydev[tr]);maes.append(mean_absolute_error(ydev[va],model.predict(Xdev[va])))\n        score=float(np.mean(maes));row={'lag':lag,'alpha':alpha,'fold_mae':maes,'mean':score};validation.append(row);print('rolling validation',row)\n        if score<best_mae:best_mae,best=score,(lag,alpha)\nlag,alpha=best;X=np.array([values[o-lag:o] for o in origins])\nfinal=make_pipeline(StandardScaler(),Ridge(alpha=alpha)).fit(X[dev],y[dev])\npred=final.predict(X[test]);naive=values[origins[test]-1]\n# 漂移法复现 FPP3 的一步公式：当前已知值 + 历史每年平均变化。\n# 在每个起点更新历史均值，属于已声明的在线基线；Ridge参数仍固定。\ndrift=np.array([values[o-1]+(values[o-1]-values[0])/(o-1) for o in origins[test]])\nmetrics={}\nprint('selected',{'lag':lag,'alpha':alpha})\nfor name,p in [('Ridge',pred),('最后值',naive),('漂移法',drift)]:\n    metrics[name]={'MAE':mean_absolute_error(y[test],p),'RMSE':float(np.sqrt(mean_squared_error(y[test],p)))}\n    print('最终测试',name,metrics[name])\nworst=np.argsort(np.abs(pred-y[test]))[-5:][::-1]\nfor i in worst:print('误差案例',{'year':int(target_year[test][i]),'truth':float(y[test][i]),'prediction':float(pred[i]),'naive':float(naive[i])})\nprint('固定模型一步滚动评估，不是固定起点多年预测；测试不得继续调参')\n\n# 只重抽已观测的配对损失，不伪造重复训练。年间相关，用11年移动块作敏感性描述。\ndifference=np.abs(naive-y[test])-np.abs(pred-y[test])\nblock_length=11;rng=np.random.default_rng(42);boot=[]\nfor _ in range(1000):\n    starts=rng.integers(0,len(difference)-block_length+1,size=int(np.ceil(len(difference)/block_length)))\n    sample=np.concatenate([difference[i:i+block_length] for i in starts])[:len(difference)]\n    boot.append(float(sample.mean()))\nsummary={'paired_mae_improvement':float(difference.mean()),'block_length':block_length,\n         'bootstrap_replicates':1000,'descriptive_95_interval':np.quantile(boot,[.025,.975]).tolist(),\n         'scope':'单序列59年，约5个周期，块平稳性未经证明；区间只作敏感性描述，不保证工业或未来泛化'}\nout=Path(tempfile.mkdtemp(prefix='timeseries-',dir='.'))\npayload={'protocol_version':'research-v2','track':'timeseries',\n         'data_sha256':hashlib.sha256(np.c_[years,values].astype('<f8').tobytes()).hexdigest(),\n         'source_csv_sha256':'f67889b1d9002cd5227f0e0ef54e35b419cdd85a31279adef6f73fb41e5c0a9b',\n         'data':'statsmodels年度太阳黑子309年；官方源声明public domain',\n         'environment':{'python':platform.python_version(),'numpy':np.__version__,'sklearn':sklearn.__version__},\n         'config':{'lags':[3,12],'alphas':[.1,10.],'primary_metric':'MAE','selected':{'lag':lag,'alpha':alpha},\n                   'forecast_horizon':1,'refit_test':False,'tie':'first'},\n         'folds':[{'train_years':target_year[dev][tr].tolist(),'validation_years':target_year[dev][va].tolist()} for tr,va in splits],\n         'development_years':target_year[dev].tolist(),'test_years':target_year[test].tolist(),\n         'validation':validation,'metrics':metrics,'summary':summary,\n         'predictions':[{'year':int(yr),'truth':float(t),'ridge':float(p),'naive':float(n),'drift':float(d)}\n                        for yr,t,p,n,d in zip(target_year[test],y[test],pred,naive,drift)],\n         'seconds':time.perf_counter()-started}\nsource_file = globals().get('__file__')\nsource = globals().get('_notebook_source', '').encode('utf-8')\nif source_file and Path(source_file).is_file():\n    source = Path(source_file).read_bytes()\nif not source:\n    raise RuntimeError('源码未保存。请使用站点下载的Notebook或将当前代码另存为.py后执行。')\n(out/'source.py').write_bytes(source)\npayload['code_sha256'] = hashlib.sha256(source).hexdigest()\n(out/'results.json').write_text(json.dumps(payload,ensure_ascii=False,indent=2),encoding='utf-8')\nprint('ARTIFACT_DIR',out.resolve())\nprint('配对块敏感性分析',summary)\nprint('确定性Ridge不重复伪造随机种子；随机训练扩展必须至少3训练种子，保持同一时间协议。')\n",
+    "references": [
+      {
+        "title": "statsmodels：年度太阳黑子数据说明",
+        "url": "https://www.statsmodels.org/stable/datasets/generated/sunspots.html"
+      },
+      {
+        "title": "statsmodels官方CSV",
+        "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/main/statsmodels/datasets/sunspots/sunspots.csv"
+      },
+      {
+        "title": "scikit-learn：TimeSeriesSplit",
+        "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html"
+      },
+      {
+        "title": "FPP3：滚动起点时间交叉验证（方法来源）",
+        "url": "https://otexts.com/fpp3/tscv.html"
+      },
+      {
+        "title": "FPP3：最后值与漂移方法及公式",
+        "url": "https://otexts.com/fpp3/simple-methods.html"
+      },
+      {
+        "title": "statsmodels：sunspots源元数据与public domain声明",
+        "url": "https://github.com/statsmodels/statsmodels/blob/main/statsmodels/datasets/sunspots/data.py"
+      }
+    ],
+    "practice": {
+      "task": "手算一个目标年的最后值/漂移预测与历史窗口，核对fold年份。先在开发范围检验固定12滞后与3滞后的消融，随后设计封存新时间段的持续性或滚动重拟合假设；不要反复用1950–2008选参。",
+      "hints": [
+        "一步滚动允许已观察测试历史",
+        "标准化每折重新拟合",
+        "真实太阳黑子不等于设备故障"
+      ],
+      "solution": "列一个目标年之前全部可得信息，按漂移公式手算并对照JSON；打印各fold末训练年与首验证年。比较同目标起点和相同四候选预算，报告峰值年的失败。新研究若已看此测试，只能标探索；确认需要导师封存新的后续真实年度段并先核对与历史快照的口径差异，或换未使用的真实序列。未改善并不扣掉方法能力，仍需证明协议、实现和解释。",
+      "checks": [
+        "数据309年且连续",
+        "各fold只拟合过去",
+        "不同lag共用起点",
+        "最后值对照公平",
+        "明确一步滚动与多步区别",
+        "最后值和漂移基线公式可手算",
+        "不把确定性方法换种子或bootstrap当新实验",
+        "全部预测/环境/负结果归档"
+      ]
+    },
+    "objectives": [
+      "核对真实快照并复现最后值/漂移和滚动信息协议",
+      "以共同起点与训练内预处理公平选择滞后模型",
+      "交付逐年预测、误差及相关性敏感性解释"
+    ],
+    "quiz": [],
+    "day": 1,
+    "track": "timeseries",
+    "minutes": 90,
+    "formula": "一步漂移预测：ŷ_(T+1)=y_T+(y_T−y_1)/(T−1)，T≥2；y_1…y_T为预测时已观察的年度活动数，ŷ是同单位标量。该公式将首尾平均年度变化外推一步，不假定太阳活动真实线性。滞后模型X形状(n,L)、w形状(L,)、截距b为标量，ŷ=Xw+b；所有目标发生在各自窗口之后。"
+  },
+  {
+    "id": "language",
+    "title": "真实英语 SMS：文本方法复现与重复审计",
+    "summary": "UCI真实SMS Spam，首次下载203KB官方zip或指定离线副本；按规范化文本组划分，训练内TF-IDF与逻辑回归，三划分种子及近重复审计。不是中文维修任务或原论文数值复现。",
+    "concepts": [
+      {
+        "title": "真实数据、许可与任务范围",
+        "body": "UCI SMS Spam Collection混合真实英语短信来源，标签ham为正常、spam为垃圾信息。官方网页列5574条；本模板按UTF-8每物理行首次制表符解析，真实文件也为5574行，记录解析协议避免与其他读取方式的5572行口径混淆。许可CC BY 4.0，引用Almeida与Hidalgo、数据DOI并保留README；不在成果中重发原文号码/个人内容，错例用行号和去标识摘要。首次在线下载203KB官方zip，校验zip与数据SHA256；断网可手动下载后通过SMS_ZIP环境变量指向同一zip。失败时明确停止，不降级为模拟数据。"
+      },
+      {
+        "title": "分组与信息隔离",
+        "body": "划分前采用已固定的无标签文本规范化：小写、URL和数字占位、空白合并；相同规范化文本先合并；再用独立无标签词1元/1–2元TF-IDF审计表示，将余弦≥0.80的文本通过连通分量保守归为一组。全量无标签统计仅定义重复簇，分类器随后重新只在训练拟合自己的词表/IDF；审计表示绝不输入分类模型。冲突标签组按预定规则剔除并记录数量和哈希。三个预定划分种子11/29/47，以GroupShuffleSplit分约70/15/15的组，确保两类存在。分组不是发送者或事件身份，语料不含完整发送者/时间标识，因此只能声明新规范化文本组，不保证未来时间、新发送者或中文域泛化。相似簇可能把短句保守合并，也不证明真实发送者/事件身份；近重复仍要复查。"
+      },
+      {
+        "title": "表示、验证与可复查结论",
+        "body": "TF-IDF（词频乘逆文档频率）把文本变稀疏数值向量，词表和IDF只用训练文本拟合。unigram/bigram表示连续1/2词片段，配三个C共六候选，按验证宏F1选择，平分保留先列简单候选，阈值固定0.5。冻结后依协议在训练加验证重拟合，测试一次评价；同时保留多数类对照、类别指标与全部预测。以冻结训练词表计算测试到开发文本的最高余弦相似度，≥0.95只标疑似近重复供人工核验，不按测试成绩删除样本或重调模型。相似可能来自短句，不能自动判定内容泄漏。"
+      },
+      {
+        "title": "方法复现与研究起步的边界",
+        "body": "本模板复现scikit-learn官方TF-IDF与线性文本分类方法，并在UCI真实SMS上适配，非UCI关联2011论文全部分词/划分/数值复现。该论文标题与DOI由UCI和Crossref核对，出版社全文访问受限，未据无法阅读的正文编造原协议。先交方法差异表和完整结果，再提出“在相同训练/验证协议下，字符表示是否改善数字/拼写扰动鲁棒性”可反驳问题；同一测试已被公开管道用过时，新确认需先封存新的扰动条件或真实来源，保持训练信息与搜索预算一致。三重叠划分分数的标准差仅是描述，不能代替独立数据集证据。"
+      },
+      {
+        "title": "运行、证据与人工验收",
+        "body": "使用下载的Notebook在本地Jupyter或Colab运行，Python 3.12.14、NumPy 2.3.5、scikit-learn 1.9.1已在2026-10-08实测；环境不同先保存版本并对照差异。浏览器课程运行器适合短例，本模板会写结果目录，正式产物请在本地/Colab保留。每次运行新建目录，results.json记录配置、划分、所有候选、预测、环境和真实运行时间；脚本另保存source.py，Notebook运行须同时保留下载源Notebook，供评审重跑。下载目录中的产物，连同假设/文献矩阵/报告归档。未提升指标也可通过协议严谨、负结果完整和独立解释验收；核心泄漏、伪造或关键运行不可复现必须修复，不能被其他高分抵消。"
+      }
+    ],
+    "requirements": [
+      "numpy",
+      "scikit-learn"
+    ],
+    "code": "\"\"\"真实英语 SMS：文本表示与分类方法复现；首次下载UCI，支持本地zip。\"\"\"\nimport hashlib\nimport io\nimport json\nimport os\nimport platform\nimport re\nimport tempfile\nimport time\nimport urllib.request\nimport zipfile\nfrom pathlib import Path\nimport numpy as np\nimport sklearn\nfrom sklearn.dummy import DummyClassifier\nfrom sklearn.feature_extraction.text import TfidfVectorizer\nfrom sklearn.linear_model import LogisticRegression\nfrom sklearn.metrics import accuracy_score, classification_report, f1_score\nfrom sklearn.model_selection import GroupShuffleSplit\nfrom sklearn.pipeline import make_pipeline\nfrom sklearn.metrics.pairwise import linear_kernel\n\nstarted = time.perf_counter()\nURL = 'https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip'\nEXPECTED_ZIP = '1587ea43e58e82b14ff1f5425c88e17f8496bfcdb67a583dbff9eefaf9963ce3'\nEXPECTED_DATA = '7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d'\nlocal = os.environ.get('SMS_ZIP')  # 离线：SMS_ZIP=/路径/sms+spam+collection.zip python 本脚本\nif local:\n    raw = Path(local).read_bytes()\nelse:\n    try:\n        with urllib.request.urlopen(URL, timeout=45) as response:\n            raw = response.read(3000000)\n    except Exception as error:\n        raise RuntimeError('UCI下载失败。手动下载官方zip，设置SMS_ZIP路径后重试；不替换为模拟数据。') from error\nassert hashlib.sha256(raw).hexdigest() == EXPECTED_ZIP, '数据zip改变：停止，核验来源后才能更新SHA256'\narchive = zipfile.ZipFile(io.BytesIO(raw))\nblob = archive.read('SMSSpamCollection')  # 不extractall，不执行压缩包内容\nassert hashlib.sha256(blob).hexdigest() == EXPECTED_DATA\nrecords = []\nfor line_id, line in enumerate(blob.decode('utf-8-sig').splitlines()):\n    label, text = line.split('\\t', 1)\n    assert label in {'ham', 'spam'} and text.strip()\n    records.append((line_id, text, int(label == 'spam')))\nassert len(records) == 5574  # UCI文本口径；pandas另一解析方式可能报5572，应保留解析规则\n\ndef normalize(text):\n    text = re.sub(r'https?://\\S+|www\\.\\S+', '<url>', text.lower())\n    text = re.sub(r'\\d+', '<number>', text)\n    return re.sub(r'\\s+', ' ', text).strip()\n\n# 在划分前按无标签规范化文本分组；冲突标签组按预先规则剔除并记录。\nbuckets = {}\nfor record in records:\n    buckets.setdefault(normalize(record[1]), []).append(record)\n# 保守近重复归组先于划分：独立的无标签审计表示，绝不复用作分类器表示。\n# 全语料统计只定义来源簇；真正分类TF-IDF稍后重新只在训练fit。\nkeys = list(buckets)\nparent = list(range(len(keys)))\ndef find(i):\n    while parent[i] != i:\n        parent[i] = parent[parent[i]]\n        i = parent[i]\n    return i\ndef union(i, j):\n    a, b = find(i), find(j)\n    if a != b:\n        parent[max(a, b)] = min(a, b)\nnear_edges = 0\nfor ngrams in [(1, 1), (1, 2)]:\n    audit_vectors = TfidfVectorizer(ngram_range=ngrams, min_df=2, max_features=12000, sublinear_tf=True).fit_transform(keys)\n    for lo in range(0, len(keys), 128):\n        similarities = (audit_vectors[lo:lo+128] @ audit_vectors.T).tocoo()\n        for i0, j, value in zip(similarities.row, similarities.col, similarities.data):\n            i = lo + int(i0)\n            if i < j and value >= .80:  # 阈值事先固定，不根据测试分数调节\n                union(i, int(j)); near_edges += 1\nclusters = {}\nfor i, key in enumerate(keys):\n    clusters.setdefault(find(i), []).extend(buckets[key])\nconflicts = [root for root, group in clusters.items() if len({r[2] for r in group}) > 1]\nclean, group_ids = [], []\nfor root, group in clusters.items():\n    if root not in conflicts:\n        clean.extend(group)\n        group_ids.extend([hashlib.sha256(keys[root].encode()).hexdigest()] * len(group))\nids = np.array([r[0] for r in clean])\ntexts = np.array([r[1] for r in clean])\ny = np.array([r[2] for r in clean])\ngroups = np.array(group_ids)\nSEEDS = [11, 29, 47]\nvalidation, runs, predictions = [], [], []\nprint('真实SMS，CC BY 4.0；英语历史混合来源；无发送者/时间ID，不证明新发送者或未来中文泛化')\nprint('原始行/规范化组/冲突剔除行', len(records), len(set(groups)), len(records)-len(clean))\nfor seed in SEEDS:\n    dev, test = next(GroupShuffleSplit(n_splits=1, test_size=.15, random_state=seed).split(texts, y, groups))\n    tr0, va0 = next(GroupShuffleSplit(n_splits=1, test_size=.15/.85, random_state=seed).split(texts[dev], y[dev], groups[dev]))\n    train, val = dev[tr0], dev[va0]\n    assert set(groups[train]).isdisjoint(groups[val]) and set(groups[dev]).isdisjoint(groups[test])\n    assert all(len(set(y[idx])) == 2 for idx in [train, val, test])\n    def make(ngrams, C):\n        return make_pipeline(TfidfVectorizer(ngram_range=ngrams, min_df=2, max_features=12000, sublinear_tf=True),\n                             LogisticRegression(C=C, max_iter=500, random_state=seed))\n    best, chosen = -np.inf, None\n    for ngrams in [(1, 1), (1, 2)]:\n        for C in [.1, 1., 10.]:\n            model = make(ngrams, C).fit(texts[train].tolist(), y[train])\n            score = f1_score(y[val], model.predict(texts[val].tolist()), average='macro')\n            validation.append({'seed': seed, 'ngrams': list(ngrams), 'C': C, 'macro_f1': score})\n            if score > best:\n                best, chosen = score, (ngrams, C)\n    # 候选已冻结后才打开测试；固定0.5阈值，不用测试调阈值。\n    final = make(*chosen).fit(texts[dev].tolist(), y[dev])\n    pred = final.predict(texts[test].tolist())\n    dummy = DummyClassifier(strategy='most_frequent').fit(np.zeros((len(dev), 1)), y[dev]).predict(np.zeros((len(test), 1)))\n    # 使用冻结训练词表审计近重复；不凭审计/测试成绩重新选参或悄悄删测试。\n    vectorizer = final[0]\n    sims = linear_kernel(vectorizer.transform(texts[test].tolist()), vectorizer.transform(texts[dev].tolist()))\n    nearest = sims.argmax(axis=1)\n    suspicious = [{'test_id': int(ids[test[j]]), 'dev_id': int(ids[dev[nearest[j]]]), 'cosine': float(sims[j, nearest[j]])}\n                  for j in range(len(test)) if sims[j, nearest[j]] >= .95]\n    metrics = {'accuracy': accuracy_score(y[test], pred), 'macro_f1': f1_score(y[test], pred, average='macro'),\n               'per_class': classification_report(y[test], pred, output_dict=True, zero_division=0),\n               'dummy_macro_f1': f1_score(y[test], dummy, average='macro')}\n    runs.append({'seed': seed, 'train_ids': ids[train].tolist(), 'validation_ids': ids[val].tolist(),\n                 'test_ids': ids[test].tolist(), 'train_groups': groups[train].tolist(),\n                 'validation_groups': groups[val].tolist(), 'test_groups': groups[test].tolist(),\n                 'selected': {'ngrams': list(chosen[0]), 'C': chosen[1]}, 'metrics': metrics,\n                 'near_duplicate_audit': suspicious, 'scope': '新规范化文本组；未证明发送者、事件或未来时间独立'})\n    predictions.extend({'seed': seed, 'id': int(ids[test[j]]), 'truth': int(y[test[j]]), 'prediction': int(pred[j])}\n                       for j in range(len(test)))\n    print('方法复现', seed, metrics['macro_f1'], '疑似近重复', len(suspicious))\nscores = np.array([r['metrics']['macro_f1'] for r in runs])\nout = Path(tempfile.mkdtemp(prefix='language-', dir='.'))\n(out/'dataset-readme.txt').write_bytes(archive.read('readme'))\npayload = {'protocol_version': 'research-v2', 'track': 'language', 'data_sha256': EXPECTED_DATA,\n           'data_url': URL, 'zip_sha256': EXPECTED_ZIP, 'raw_rows': len(records),\n           'normalized_groups': len(set(groups)), 'excluded_conflict_rows': len(records)-len(clean),\n           'conflict_group_hashes': [hashlib.sha256(keys[k].encode()).hexdigest() for k in conflicts],\n           'group_audit': {'method': 'unlabelled normalized word TF-IDF connected components; fresh classifier fit on train', 'cosine_threshold': .80, 'near_edges': near_edges},\n           'environment': {'python': platform.python_version(), 'numpy': np.__version__, 'sklearn': sklearn.__version__},\n           'config': {'seeds': SEEDS, 'primary_metric': 'macro_f1', 'candidates': 6, 'threshold': .5},\n           'validation': validation, 'runs': runs, 'predictions': predictions,\n           'summary': {'mean_macro_f1': float(scores.mean()), 'sample_std': float(scores.std(ddof=1)),\n                       'scope': '重叠数据划分的描述性散布，非独立样本置信区间；近重复需人工核查'},\n           'seconds': time.perf_counter()-started}\nsource_file = globals().get('__file__')\nsource = globals().get('_notebook_source', '').encode('utf-8')\nif source_file and Path(source_file).is_file():\n    source = Path(source_file).read_bytes()\nif not source:\n    raise RuntimeError('源码未保存。请使用站点下载的Notebook或将当前代码另存为.py后执行。')\n(out/'source.py').write_bytes(source)\npayload['code_sha256'] = hashlib.sha256(source).hexdigest()\n(out/'results.json').write_text(json.dumps(payload, ensure_ascii=False, indent=2), encoding='utf-8')\nprint('ARTIFACT_DIR', out.resolve())\nprint('这是官方文本方法的真实数据适配；未复现原论文全部预处理/数值，也不声称新颖。')\n",
+    "references": [
+      {
+        "title": "UCI SMS Spam：数据、许可CC BY 4.0与论文元信息（2026-10-08核验）",
+        "url": "https://archive.ics.uci.edu/dataset/228/sms+spam+collection"
+      },
+      {
+        "title": "UCI SMS官方zip（校验固定快照）",
+        "url": "https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip"
+      },
+      {
+        "title": "scikit-learn 1.9.1：TF-IDF文本特征方法",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html"
+      },
+      {
+        "title": "Contributions to the study of SMS spam filtering（2011；元数据核验，全文未访问）",
+        "url": "https://doi.org/10.1145/2034691.2034742"
+      }
+    ],
+    "practice": {
+      "task": "完成真实方法复现；从结果JSON找至少五个分类错误与疑似近重复对，使用行号和去标识摘要解释。先写等预算词/字符表示的鲁棒性假设，再由评审封存未用于选择的扰动条件。",
+      "hints": [
+        "下载失败时手动下载UCI官方zip并设置SMS_ZIP，禁止偷偷换成教学样本",
+        "相同归一化组先划分；无发送者ID不能称新发送者独立",
+        "近重复相似度只是审计信号；保留完整数据和旧测试历史"
+      ],
+      "solution": "核对5574物理行及两个SHA256，解释归一化冲突剔除规则；从每个run抽查训练/验证/测试组互斥并检查TF-IDF训练拟合。用全部候选表证明验证选模，解释macroF1和多数类对照。人工核查高相似对并保留日志：若核心泄漏影响独立声明，应修正协议并重新安排封存评价，不能仅删不利例。字符模型与词模型保持相同原始来源、调参次数和预算；按预设最小改善与完整负结果判断，英语SMS效果不推出中文维修性能或论文创新。",
+      "checks": [
+        "真实官方zip/文件SHA校验通过",
+        "行数/解析/许可与冲突剔除可查",
+        "精确与近重复来源簇互斥，分类表示只在训练拟合",
+        "完整候选/预测/负结果与疑似近重复保留",
+        "来源/发送者/时间局限和非论文数值复现明确"
+      ]
+    },
+    "objectives": [
+      "下载并核验真实SMS来源/许可/行数和SHA256",
+      "按规范化组隔离并在训练拟合表示、验证选参",
+      "报告完整真实预测及近重复/来源外推的局限"
+    ],
+    "quiz": [],
+    "day": 1,
+    "track": "language",
+    "minutes": 90,
+    "formula": "默认平滑IDF(t)=ln[(1+n)/(1+df(t))]+1；n为训练文档数，df(t)为含词t的训练文档数。sublinear_tf=True时非零词频改为1+ln(count)，再乘IDF并按文档做L2归一化；X为(n,V)稀疏矩阵，V为训练词表大小。未见词不产生新列。验证与测试只transform，数据/分词变化须另立协议。"
+  }
+]

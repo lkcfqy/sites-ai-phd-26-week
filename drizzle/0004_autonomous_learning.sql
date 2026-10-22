@@ -1,0 +1,7 @@
+CREATE TABLE IF NOT EXISTS code_artifacts (user_id TEXT NOT NULL,lesson_id TEXT NOT NULL,purpose TEXT NOT NULL,code TEXT NOT NULL,code_sha TEXT NOT NULL,updated_at INTEGER NOT NULL,PRIMARY KEY(user_id,lesson_id,purpose));
+CREATE TABLE IF NOT EXISTS task_instances (user_id TEXT NOT NULL,id TEXT NOT NULL,lesson_id TEXT NOT NULL,task_version TEXT NOT NULL,mode TEXT NOT NULL,case_indexes TEXT NOT NULL,created_at INTEGER NOT NULL,expires_at INTEGER NOT NULL,PRIMARY KEY(user_id,id));
+CREATE TABLE IF NOT EXISTS practice_runs (user_id TEXT NOT NULL,id TEXT NOT NULL,instance_id TEXT NOT NULL,lesson_id TEXT NOT NULL,task_version TEXT NOT NULL,code_sha TEXT NOT NULL,code TEXT NOT NULL,status TEXT NOT NULL,provenance TEXT NOT NULL,score INTEGER NOT NULL,feedback_json TEXT NOT NULL,result_json TEXT NOT NULL,created_at INTEGER NOT NULL,next_retest INTEGER NOT NULL,PRIMARY KEY(user_id,id));
+CREATE INDEX IF NOT EXISTS practice_runs_user_lesson ON practice_runs(user_id,lesson_id,created_at);
+CREATE TABLE IF NOT EXISTS learning_sessions (user_id TEXT NOT NULL,id TEXT NOT NULL,lesson_id TEXT NOT NULL,activity TEXT NOT NULL,minutes INTEGER NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(user_id,id));
+CREATE TABLE IF NOT EXISTS tutor_reviews (user_id TEXT NOT NULL,id TEXT NOT NULL,lesson_id TEXT NOT NULL,code_sha TEXT NOT NULL,request_json TEXT NOT NULL,response_json TEXT NOT NULL,status TEXT NOT NULL,created_at INTEGER NOT NULL,PRIMARY KEY(user_id,id));
+CREATE UNIQUE INDEX IF NOT EXISTS practice_runs_user_instance ON practice_runs(user_id,instance_id);

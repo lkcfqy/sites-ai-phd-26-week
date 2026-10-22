@@ -1,0 +1,710 @@
+{
+  "schemaVersion": 1,
+  "version": "research-evidence-v3-draft",
+  "verifiedOn": "2026-10-09",
+  "status": "verified_sources_and_data_protocols; learner_experiments_not_run",
+  "ownerWorkflow": "无需导师/人工验收；系统规则核对、执行证据和已配置AI反馈分别记状态。",
+  "automaticBoundary": {
+    "structure": "evidence-checked只代表材料结构和部分程序约束通过。",
+    "execution": "execution-verified只来自独立受控重跑；客户端日志/哈希不是执行证明。",
+    "ai": "本资产未假定模型API已经开通；无模型时显示未启用而非生成评分。",
+    "research": "不能由程序或AI单次评分客观认证原创性、自然部署泛化或完全无外部帮助。"
+  },
+  "requiredEvidence": [
+    {
+      "key": "protocol",
+      "required": [
+        "protocolId",
+        "protocolVersion",
+        "frozenAt",
+        "task",
+        "independentUnit",
+        "primaryMetric",
+        "selectionRule",
+        "budget",
+        "testOpenPolicy",
+        "scope"
+      ]
+    },
+    {
+      "key": "sources",
+      "required": [
+        "sourceId",
+        "url",
+        "accessedAt",
+        "versionOrSha256",
+        "locator",
+        "supportedClaim",
+        "verificationStatus"
+      ]
+    },
+    {
+      "key": "deviations",
+      "required": [
+        "item",
+        "original",
+        "local",
+        "reason",
+        "effectOnClaim",
+        "status"
+      ]
+    },
+    {
+      "key": "data",
+      "required": [
+        "sourceUrl",
+        "downloadSha256",
+        "fileSha256",
+        "parseRule",
+        "sampleIds",
+        "groupIdsOrMissing",
+        "splitIds",
+        "targetDefinition"
+      ]
+    },
+    {
+      "key": "runs",
+      "required": [
+        "runId",
+        "codeSha256",
+        "protocolSha256",
+        "dataSha256",
+        "splitSha256",
+        "runtimeVersions",
+        "config",
+        "startedAt",
+        "endedAt",
+        "exitCode",
+        "stdoutArtifact",
+        "stderrArtifact",
+        "provenance"
+      ]
+    },
+    {
+      "key": "candidates",
+      "required": [
+        "candidateId",
+        "config",
+        "budget",
+        "validationScore",
+        "selectionStatus",
+        "failureOrSuccess"
+      ]
+    },
+    {
+      "key": "predictions",
+      "required": [
+        "runId",
+        "sampleId",
+        "split",
+        "truth",
+        "prediction",
+        "methodId",
+        "seedRoleOrDeterministic"
+      ]
+    },
+    {
+      "key": "results",
+      "required": [
+        "primaryMetric",
+        "aggregationUnit",
+        "allCandidates",
+        "negativeResults",
+        "errorCases",
+        "sensitivityAnalysis",
+        "scopeLimit"
+      ]
+    },
+    {
+      "key": "claims",
+      "required": [
+        "claim",
+        "claimType",
+        "runIdOrSourceId",
+        "artifactOrPageLocator",
+        "supportedScope",
+        "unresolvedAlternative"
+      ]
+    },
+    {
+      "key": "transfer",
+      "required": [
+        "challengeId",
+        "unknownCondition",
+        "protocolBefore",
+        "protocolAfter",
+        "resultOrPending",
+        "assistanceLog",
+        "retestScheduledAt",
+        "retestResultOrPending"
+      ]
+    }
+  ],
+  "sharedHardGates": [
+    {
+      "id": "source-bound",
+      "kind": "source_lookup",
+      "check": "源URL、来源ID和定位必须能匹配已核验来源；来源不可读、元信息代替全文或定位缺失时主张状态为unverified。",
+      "limit": "仅匹配字符串或URL不能证明原文支持；需读取已核验片段或全文。"
+    },
+    {
+      "id": "data-identity",
+      "kind": "checksum_and_parser",
+      "check": "下载文件/内部数据SHA256、记录数、标签集合与固定协议一致；改变快照需新版本，不自动接受。"
+    },
+    {
+      "id": "split-identity",
+      "kind": "set_and_time_checks",
+      "check": "样本/来源组集合及时间边界符合该路线；记录全部划分ID；公开测试历史保留。"
+    },
+    {
+      "id": "freeze-before-test",
+      "kind": "server_event_order",
+      "check": "由服务端记录协议版本、冻结与启封事件，frozenAt早于测试输出；测试后修改者必须标探索并安排新评价。",
+      "limit": "客户端填写时间或哈希不证明事件顺序。"
+    },
+    {
+      "id": "execution-bound",
+      "kind": "run_receipt_and_artifact_match",
+      "check": "只在独立执行器复跑后授予execution-verified；浏览器或上传日志保留client-reported标签；代码/协议/数据/预测摘要必须一致。",
+      "limit": "浏览器可改写回执；D1存储和哈希不能单独证明真实执行。"
+    },
+    {
+      "id": "recomputed-metrics",
+      "kind": "numeric_recompute",
+      "check": "由逐样本预测与固定真值重新计算主指标及混淆矩阵，容差在测试前规定；不接受用户填分。"
+    },
+    {
+      "id": "complete-comparison",
+      "kind": "manifest_accounting",
+      "check": "全部预定候选/条件/失败都有记录，选择ID与验证规则一致；随机训练/采样使用全部预定种子，划分种子单列。"
+    },
+    {
+      "id": "honest-scope",
+      "kind": "declared_scope_enum",
+      "check": "声明只能为formula-reproduction、method-adaptation、protocol-partial或numeric-aligned；有未对齐项时不能自动授予numeric-aligned。",
+      "limit": "这些枚举只限定声明，不能自动判断创新性或原创能力。"
+    }
+  ],
+  "weeks17To26": [
+    {
+      "week": 17,
+      "action": "读本轨已核验原文，定位一个公式/图表主张；补至少5篇真实文献矩阵，缺失参数明确标未知。",
+      "artifact": "paper-claims.json; literature-matrix.json"
+    },
+    {
+      "week": 18,
+      "action": "核对下载哈希、许可、解析和样本/来源单位；冻结原文差异表、有限目标、主指标、预算和测试启封规则。",
+      "artifact": "data-manifest.json; deviations.json; protocol-v1.json"
+    },
+    {
+      "week": 19,
+      "action": "先实现小基线与原方法核心，手算一项指标/预测，保存代码及运行产物；故障和失败同样归档。",
+      "artifact": "run-manifest.json; predictions.csv; errors.log"
+    },
+    {
+      "week": 20,
+      "action": "冻结后完成指定范围复现和一项同预算消融；全部结果由预测重新计算；修正方法适配与数值对齐声明。",
+      "artifact": "reproduction-report.json; all-candidates.csv; ablation.csv"
+    },
+    {
+      "week": 21,
+      "action": "只提出一个有限改动，写可反驳假设、最小有意义效应、成本及两个否定条件，检索可能已经解决问题的论文。",
+      "artifact": "hypothesis.json; counter-literature.json"
+    },
+    {
+      "week": 22,
+      "action": "用开发/验证选择，锁定配置；新未知条件由系统登记封存；不把已公开小测试重新称为未见测试。",
+      "artifact": "selection.json; protocol-frozen.json; challenge-registration.json"
+    },
+    {
+      "week": 23,
+      "action": "冻结后启封新条件，完成同预算比较；随机流程保留全部预定种子，确定性流程固定重跑并报告来源/时期敏感性。",
+      "artifact": "transfer-predictions.csv; full-results.json; negative-results.json"
+    },
+    {
+      "week": 24,
+      "action": "写有边界报告与10分钟结构化问答；逐陈述关联来源或运行，AI未配置时仅做证据规则核对。",
+      "artifact": "report.json; claim-evidence.json; defense.json"
+    },
+    {
+      "week": 25,
+      "action": "在另一模态或变化资源限制下重写协议，返回最薄弱知识点修复；登记7–14天换题复测。",
+      "artifact": "transfer-protocol.json; weakness-record.json; retest-plan.json"
+    },
+    {
+      "week": 26,
+      "action": "完成系统发的新条件闭环及5个新情景回应；到期执行新题复测，分开记录证据完整、受控执行、迁移表现和待验证项。",
+      "artifact": "final-evidence-manifest.json; retest-results.json"
+    }
+  ],
+  "routes": [
+    {
+      "id": "vision",
+      "title": "公开原文级联分类：线性softmax与3-NN",
+      "claimScope": "protocol-partial / method-adaptation；数据原始划分可恢复，原图曲线和作者优化器未对齐，不承诺原图数值。",
+      "paper": {
+        "title": "Cascading classifiers",
+        "authors": [
+          "Ethem Alpaydin",
+          "Cenk Kaynak"
+        ],
+        "year": 1998,
+        "venue": "Kybernetika 34(4), 369–374",
+        "sourceUrl": "https://www.kybernetika.cz/content/1998/4/369",
+        "fullTextUrl": "https://www.kybernetika.cz/content/1998/4/369/paper.pdf",
+        "sourceVerification": {
+          "url": "https://www.kybernetika.cz/content/1998/4/369/paper.pdf",
+          "kind": "journal_full_text",
+          "verifiedOn": "2026-10-09",
+          "access": "downloaded_and_read",
+          "sha256": "e64724c32820b1747d44c4c9c0b6917334ad40f3c10379e835333f058c6b971d",
+          "bytes": 671241,
+          "verificationFile": "/workspace/scratch/ai26-upgrade/sources/cascading.pdf",
+          "publishPolicy": "站点只发布来源链接、协议和有限结果；不复制原文全文。"
+        },
+        "locators": [
+          {
+            "locator": "印刷p.370/PDF p.2，§2，式(2-1)/(2-2)",
+            "supports": "线性softmax后验与交叉熵；使用不同集合学习规则与例外。"
+          },
+          {
+            "locator": "印刷p.371/PDF p.3，Fig.1与§3",
+            "supports": "六个置信阈值、3-NN以及1934/946/943/1797的原始分区。"
+          }
+        ]
+      },
+      "originalExperiment": {
+        "target": "Fig.1的速度/存储/准确率权衡；先复现分级决策规则，不从图像估读数字冒充原结果。",
+        "method": "线性softmax为首级；规则不确定或在验证上错误的例子存入例外表，测试仅按预测置信度决定是否调用3-NN。",
+        "thresholds": [
+          0.7,
+          0.8,
+          0.9,
+          0.95,
+          0.99,
+          1.0
+        ],
+        "k": 3,
+        "originalSplit": {
+          "train": 1934,
+          "validation": 946,
+          "writerDependent": 943,
+          "writerIndependent": 1797
+        },
+        "undocumented": [
+          "优化器具体实现、初始化、停止/训练预算",
+          "Fig.1每个点的逐样本预测",
+          "可独立核验的逐样本书写者ID"
+        ],
+        "numericTargets": []
+      },
+      "dataProtocol": {
+        "url": "https://archive.ics.uci.edu/static/public/80/optical+recognition+of+handwritten+digits.zip",
+        "zipSha256": "0d7b054fea010270e9b3f06411c654c5e59547732ad626381980baffe0a23fb0",
+        "license": "UCI页面列CC BY 4.0；数据引用DOI 10.24432/C50P49",
+        "files": [
+          {
+            "file": "optdigits-orig.tra.Z",
+            "records": 1934,
+            "compressedSha256": "8e0688376b62133bf1db0e93e83570d5a81131a29674accd5e9975220bdebbc6",
+            "downsample": "4x4 nonoverlapping block on-pixel count; 64 features 0..16"
+          },
+          {
+            "file": "optdigits-orig.cv.Z",
+            "records": 946,
+            "compressedSha256": "54cd619b6a18333416b6e02c21732882e88ea48e3e6d73b6a3f9f4a7564cbff6",
+            "downsample": "4x4 nonoverlapping block on-pixel count; 64 features 0..16"
+          },
+          {
+            "file": "optdigits-orig.wdep.Z",
+            "records": 943,
+            "compressedSha256": "a00344425906c79e59b9903a738249863805da67cfeeb27b3a2f4125e7c4926f",
+            "downsample": "4x4 nonoverlapping block on-pixel count; 64 features 0..16"
+          },
+          {
+            "file": "optdigits-orig.windep.Z",
+            "records": 1797,
+            "compressedSha256": "2f247a4358d6af91988699a23cd452c8d688d94e6cd0b9d993eb34bba898a8ed",
+            "downsample": "4x4 nonoverlapping block on-pixel count; 64 features 0..16"
+          }
+        ],
+        "parser": "每个.Z头后，连续32行32位二值像素及一行0–9标签；每4×4不重叠块数on像素，得到64个0–16整数。",
+        "stableIds": "原始文件角色 + 从0开始样本行号；不以内容哈希代替来源单位。",
+        "alignmentVerified": {
+          "originalTrainThenCvThenWdepEqualsUciTrain": true,
+          "originalWindepEqualsUciTest": true,
+          "method": "逐行逐值比较，不仅比较行数。"
+        },
+        "reuseExistingTemplate": "当前sklearn digits的1797图对应UCI测试子集；它可做教学管道，不能单独恢复1934训练+946验证。原始归档提供更近论文的数据路线。"
+      },
+      "localMethod": {
+        "baseline": [
+          "原方法首级linear softmax",
+          "3-NN全信息基线，明确可用训练+例外来源总数",
+          "现有SVC仅作额外方法参考，不称原论文基线"
+        ],
+        "implementation": "CPU scikit-learn LogisticRegression求softmax，明确自己的C、solver、max_iter；与作者优化器差异保留。3-NN仅对固定例外表检索，空表或少于3条的处理事前定义。",
+        "selection": "本地确认性项目使用wdep作为验证选择而非声称原writer-dependent测试；六个预定theta只在其上比较，冻结一次后在windep评价。",
+        "informationBudget": "级联可访问train1934+cv946；公平单模型对照也可访问同一开发样本集合。训练仅1934的论文式首级另标纸面协议比较，不伪称信息量一致。",
+        "metrics": [
+          "accuracy",
+          "macro-F1",
+          "例外表条数",
+          "3-NN调用率",
+          "距离计算数",
+          "实测CPU时间"
+        ],
+        "ablation": "同一首级模型下有/无例外阶段；另列用相同开发信息训练的全3-NN成本。",
+        "cpuBudget": "容量计划：首轮≤30分钟、独立项目≤18 CPU小时；不是本次实测性能。"
+      },
+      "allowedDeviations": [
+        {
+          "item": "训练实现",
+          "original": "文中softmax最大似然未完整规定优化器",
+          "local": "显式固定scikit-learn优化器/正则/停止",
+          "impact": "只声明方法适配，不宣称Fig.1逐点数值复现。"
+        },
+        {
+          "item": "阈值选择",
+          "original": "Fig.1展示WI测试上的六个阈值",
+          "local": "在wdep验证选一次；windep冻结后启封",
+          "impact": "新测试边界更明确，不能把本地一分数直接对比原图多点。"
+        },
+        {
+          "item": "书写者人数",
+          "original": "§3称44人，30/14",
+          "local": "UCI.names称43人，30/13；文件分区条数吻合",
+          "impact": "保留原文/档案元信息冲突，不能声称人数完全对齐或逐写者可审计。"
+        }
+      ],
+      "hardGates": [
+        {
+          "id": "original-partitions",
+          "check": "四个原始分区SHA及记录数固定；块计数结果逐值等于官方tra/tess。"
+        },
+        {
+          "id": "confidence-no-test-label",
+          "check": "测试分支选择只使用max posterior与冻结theta，不使用测试真值；保存每样本posterior、branch、exceptionId。"
+        },
+        {
+          "id": "exception-source",
+          "check": "例外表全部来源于允许的cv；不得包含wdep选择集或windep测试；cv标签参与训练信息量明确记入预算。"
+        },
+        {
+          "id": "counts-and-cost",
+          "check": "从逐样本branch和例外表重算调用率、距离计算数；准确率/F1由真值与预测重算。"
+        }
+      ]
+    },
+    {
+      "id": "timeseries",
+      "title": "MASE原公式和作者原始示例：再适配sunspots",
+      "claimScope": "formula-reproduction / 作者补充表数值核对；sunspots属于method-adaptation，不称论文M3总体实验复现。",
+      "paper": {
+        "title": "Another look at measures of forecast accuracy",
+        "authors": [
+          "Rob J Hyndman",
+          "Anne B Koehler"
+        ],
+        "year": 2006,
+        "doi": "10.1016/j.ijforecast.2006.03.001",
+        "venue": "International Journal of Forecasting 22(4), 679–688",
+        "sourceUrl": "https://robjhyndman.com/publications/another-look-at-measures-of-forecast-accuracy/",
+        "fullTextUrl": "https://robjhyndman.com/papers/mase.pdf",
+        "sourceVerification": {
+          "url": "https://robjhyndman.com/papers/mase.pdf",
+          "kind": "author_manuscript",
+          "verifiedOn": "2026-10-09",
+          "access": "downloaded_and_read",
+          "sha256": "b86b2d78457b62195faa87e2071beb3cacea2d6cb413c296dab746b00bb90a80",
+          "bytes": 210516,
+          "verificationFile": "/workspace/scratch/ai26-upgrade/sources/mase.pdf",
+          "publishPolicy": "站点只发布来源链接、协议和有限结果；不复制原文全文。"
+        },
+        "versionNote": "实际下载的是2005-11-02作者稿（18页），不是假定与2006排版版页码相同。",
+        "locators": [
+          {
+            "locator": "作者稿PDF p.12，§3 Scaled errors",
+            "supports": "MASE分母为训练内一步naive绝对误差均值，分子为被评价预测绝对误差。"
+          },
+          {
+            "locator": "作者稿PDF p.5，Table 3；作者页面Sample calculations链接",
+            "supports": "间歇Product C是原指标例子；作者另提供MASE.xls工作示例。"
+          }
+        ]
+      },
+      "originalExperiment": {
+        "target": "原MASE公式与作者Product C工作表中的naive样例重算，检查零值时百分比误差与常数序列分母边界。",
+        "method": "保留训练内naive尺度；对固定预测路径计算MAE/训练尺度。",
+        "notClaimed": [
+          "重跑全部M3竞赛方法/序列",
+          "本地预测器与原SES/Holt完全一致",
+          "作者稿Table 3各模型原数值全部对齐"
+        ],
+        "numericTargets": [
+          {
+            "source": "MASE.xls sheet Hyndman，E2训练尺度",
+            "value": 2.5217391304347827,
+            "exactFraction": "58/23"
+          },
+          {
+            "source": "MASE.xls sheet Hyndman，I39测试naive MASE",
+            "value": 0.19827586206896552,
+            "exactFraction": "23/116",
+            "note": "这是实际读取的作者补充表缓存结果；不冒称与作者稿Table 3某格已经一致。"
+          }
+        ]
+      },
+      "dataProtocol": {
+        "primaryExample": {
+          "files": [
+            {
+              "url": "https://robjhyndman.com/files/HKdata.xls",
+              "kind": "author_example_data",
+              "verifiedOn": "2026-10-09",
+              "access": "downloaded_and_read",
+              "sha256": "1235b116b104f05febf04262f7c9270e2bdc0e6d895ce87f95bb1c17f979131a",
+              "bytes": 18944,
+              "verificationFile": "/workspace/scratch/ai26-upgrade/sources/hkdata-xls.xls",
+              "publishPolicy": "站点只发布来源链接、协议和有限结果；不复制原文全文。"
+            },
+            {
+              "url": "https://robjhyndman.com/files/MASE.xls",
+              "kind": "author_worked_example",
+              "verifiedOn": "2026-10-09",
+              "access": "downloaded_and_read",
+              "sha256": "fa781cd98fbd8793fb588061079d70666b778a408d433548c3fec930dc049229",
+              "bytes": 58368,
+              "verificationFile": "/workspace/scratch/ai26-upgrade/sources/mase-xls.xls",
+              "publishPolicy": "站点只发布来源链接、协议和有限结果；不复制原文全文。"
+            }
+          ],
+          "licenseStatus": "作者公开提供下载，未推断额外的再分发许可。",
+          "parser": "HKdata.xls Sheet1第三列productC，去除标题和空单元后36个数；前24个训练，后12个测试；MASE.xls Hyndman中Period25–36的Naive列为12个0。",
+          "stableIds": "productC-001…036，顺序固定",
+          "actualVerification": {
+            "observations": 36,
+            "trainObservations": 24,
+            "testObservations": 12,
+            "trainingScale": 2.5217391304347827,
+            "naiveTestMAE": 0.5,
+            "recomputedMASE": 0.1982758620689655,
+            "matchesAuthorCachedWithin1e-12": true
+          }
+        },
+        "sunspotsAdaptation": {
+          "url": "https://raw.githubusercontent.com/statsmodels/statsmodels/main/statsmodels/datasets/sunspots/sunspots.csv",
+          "csvSha256": "f67889b1d9002cd5227f0e0ef54e35b419cdd85a31279adef6f73fb41e5c0a9b",
+          "observations": 309,
+          "years": [
+            1700,
+            2008
+          ],
+          "split": "沿用现管道：1712–1949开发、1950–2008共59年最终滚动一步；训练内尺度冻结，不用测试更新MASE分母。",
+          "fitScope": "训练内拟合StandardScaler/Ridge，验证三扩展窗；滚动输入只能用此前已到达观测。",
+          "limits": "确定性单历史序列，不是309独立样本、工业设备或未来天文泛化证据。"
+        }
+      },
+      "localMethod": {
+        "baseline": [
+          "作者Product C固定naive预测与训练尺度",
+          "sunspots最后值",
+          "sunspots漂移"
+        ],
+        "adaptedCandidate": "沿用lag∈{3,12}、alpha∈{.1,10}的Ridge，用共同可评估年份和训练内预处理。",
+        "metrics": [
+          "MAE",
+          "MASE",
+          "RMSE",
+          "逐年绝对误差"
+        ],
+        "ablation": "一项固定滞后长度改变；更新策略研究另立新时间协议，不反复按1950–2008选配置。",
+        "cpuBudget": "Product C公式核对仅36数；sunspots小Ridge计划≤3分钟。独立项目≤12 CPU小时；不是本次训练测速。"
+      },
+      "allowedDeviations": [
+        {
+          "item": "稿件版本",
+          "original": "2006排版版/作者2005手稿",
+          "local": "核验并固定实际18页作者稿及补充表哈希",
+          "impact": "定位用作者稿PDF页，原表与补充表如有差异保留差异，不能换一个来源数字追认一致。"
+        },
+        {
+          "item": "预测实现",
+          "original": "原例含mean/random walk/SES/Holt及M3比较",
+          "local": "第一轮只核对作者已有naive预测与MASE公式",
+          "impact": "仅确认有限工作例子，不宣称全部方法或竞赛复现。"
+        },
+        {
+          "item": "数据",
+          "original": "Product C/M3/Disney",
+          "local": "后续真实sunspots+Ridge",
+          "impact": "改数据和预测模型属于方法适配；不可与论文表数字直接排名。"
+        }
+      ],
+      "hardGates": [
+        {
+          "id": "training-scale",
+          "check": "由冻结训练数据重算分母；测试值不得进入训练尺度；尺度0时返回undefined并解释，不能用epsilon掩盖。"
+        },
+        {
+          "id": "author-example-numeric",
+          "check": "36个原值顺序、24/12切分、12个naive预测固定；训练尺度与MASE匹配作者表至1e-12。"
+        },
+        {
+          "id": "time-boundary",
+          "check": "逐个预测时刻featureAvailableAt≤predictionAt，训练标签availableAt≤fitAt，最终59年年份与源CSV一致。"
+        },
+        {
+          "id": "deterministic-repeat",
+          "check": "确定性Ridge固定配置复跑；配对同年损失/块敏感性单列，不把重抽样1000次当1000个独立实验。"
+        }
+      ]
+    },
+    {
+      "id": "language",
+      "title": "作者公开SMS原文：线性分类与重复审计",
+      "claimScope": "method-adaptation / protocol-partial；原Table 7具体协议已读取，但WEKA、tokenizer和原划分与分组TF-IDF路线不同，原97.64%不作为本地通过线。",
+      "paper": {
+        "title": "Contributions to the study of SMS spam filtering: new collection and results",
+        "authors": [
+          "Tiago A. Almeida",
+          "José María Gómez Hidalgo",
+          "Akebo Yamakami"
+        ],
+        "year": 2011,
+        "doi": "10.1145/2034691.2034742",
+        "venue": "Proceedings of DocEng 2011, 259–262",
+        "sourceUrl": "https://doi.org/10.1145/2034691.2034742",
+        "fullTextUrl": "https://www.researchgate.net/publication/258050187_Contributions_to_the_Study_of_SMS_Spam_Filtering_New_Collection_and_Results_preprint",
+        "sourceVerification": {
+          "verifiedOn": "2026-10-09",
+          "access": "author_uploaded_public_full_text_html_read",
+          "authorUpload": "网页明确Content uploaded by Tiago A. Almeida；全文已读§2、§2.1、§3.1、§3.2.2、§3.4、Table 7。",
+          "fullTextSha256": null,
+          "reasonNoSha": "全文来自公开作者上传的可读HTML，未成功下载原始PDF字节，不伪造PDF快照哈希。",
+          "originalPdfUrl": "https://www.dt.fee.unicamp.br/~tiago/smsspamcollection/doceng11.pdf",
+          "originalPdfAccess": "2026-10-09本环境下载403；原ACM DOI不作可读全文保证。",
+          "publishPolicy": "链接作者全文并存有限协议事实；不发布整篇全文。"
+        },
+        "locators": [
+          {
+            "locator": "§2，Table 1；§2.1",
+            "supports": "5574条、4827 ham/747 spam及近重复审计。"
+          },
+          {
+            "locator": "§3.1与§3.2.2",
+            "supports": "tok1/tok2两种分词规则，线性SVM；未使用词干化或停用词去除。"
+          },
+          {
+            "locator": "§3.4 Protocol；Table 7",
+            "supports": "前1674训练、后3900测试；SC/BH/accuracy/MCC；Table 7的SVM+tok1行。"
+          }
+        ]
+      },
+      "originalExperiment": {
+        "target": "Table 7的线性SVM+tok1与trivial ham基线，及§2.1近重复检查；先做原协议差异分析，再实测新分组协议。",
+        "method": "线性SVM与两tokenizer，原文§3.4是顺序前30%训练、后70%测试，无词项选择；原框架WEKA/各算法实现的完整设置未被当前代码保留。",
+        "originalSplit": {
+          "trainFirstRows": 1674,
+          "testRemainingRows": 3900
+        },
+        "originalMetrics": [
+          "spam caught %",
+          "blocked hams %",
+          "accuracy %",
+          "MCC"
+        ],
+        "paperReportedReference": [
+          {
+            "locator": "Table 7 SVM+tok1",
+            "SCPercent": 83.1,
+            "BHPercent": 0.18,
+            "accuracyPercent": 97.64,
+            "MCC": 0.893,
+            "role": "原文参考值；不是本项目运行结果，不用其作为合格阈值。"
+          }
+        ],
+        "undocumentedOrNotAligned": [
+          "WEKA具体版本和原全部分类器参数",
+          "原tok1/tok2与sklearn默认token_pattern的差异",
+          "当前分组协议与顺序30/70不同",
+          "当前TF-IDF/LogisticRegression不是原SVM+tok1实现"
+        ]
+      },
+      "dataProtocol": {
+        "url": "https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip",
+        "zipSha256": "1587ea43e58e82b14ff1f5425c88e17f8496bfcdb67a583dbff9eefaf9963ce3",
+        "dataSha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+        "physicalRows": 5574,
+        "labelCounts": {
+          "ham": 4827,
+          "spam": 747
+        },
+        "license": "UCI页面列CC BY 4.0，引用数据DOI 10.24432/C5CC84；数据可得不意味所有短信可公开展示。",
+        "parseRule": "UTF-8物理行首次制表符分标签与原文本；不替换为Kaggle 5572行版本，不静默删行。",
+        "grouping": "复用当前无标签固定规范化+TF-IDF余弦≥.80连通簇；冲突标签簇按预定规则记录。分类词表/IDF另行在训练内fit。",
+        "split": "固定划分种子11；约70/15/15来源簇，保存全部groupIds和rowIds；29/47仅作预定划分敏感性，不能择最好种子。",
+        "privacy": "错误例用原行号与去标识摘要，不复印个人原短信；无可靠发送者/时间ID，不称未来时间/新发送者泛化。"
+      },
+      "localMethod": {
+        "baseline": [
+          "固定ham预测，与原TR概念对应",
+          "现有word TF-IDF + LogisticRegression方法参考"
+        ],
+        "paperInspiredCandidate": "word TF-IDF + LinearSVC；C∈{.1,1,10}，validation macro-F1一次选；fit训练+验证后冻结一次测试，明确该选择/TF-IDF与原文差异。",
+        "metrics": [
+          "macro-F1",
+          "spam precision/recall",
+          "accuracy",
+          "MCC",
+          "blocked hams %"
+        ],
+        "ablation": "同数据/划分/候选数下word/char表示比较；未用于选择的数字/拼写扰动另登记封存。",
+        "cpuBudget": "首轮小线性模型计划≤5分钟，词表≤12000；项目≤18 CPU小时。预算为容量计划，非本次训练实测。"
+      },
+      "allowedDeviations": [
+        {
+          "item": "原文可读性",
+          "original": "此前仅DOI与书目已核验",
+          "local": "2026-10-09已读作者上传的全文页面",
+          "impact": "可提取真实协议，但不伪称原ACM PDF下载成功；未来不可读时保留unknown来源状态。"
+        },
+        {
+          "item": "划分与重复",
+          "original": "1674/3900顺序划分",
+          "local": "固定来源簇70/15/15，重新训练内拟合表示",
+          "impact": "更保守来源边界，不能直接对比Table 7原成绩或称数值一致。"
+        },
+        {
+          "item": "模型与tokenizer",
+          "original": "WEKA线性SVM+tok1/tok2",
+          "local": "sklearn TF-IDF+LinearSVC；显式token_pattern/C",
+          "impact": "方法适配；保留旧LogisticRegression模板为教学/额外基线，不归给原论文。"
+        }
+      ],
+      "hardGates": [
+        {
+          "id": "sms-byte-and-count",
+          "check": "官方zip和SMS内部SHA、5574行及4827/747标签数一致；版本改变先停止，不补造或偷偷用模拟短信。"
+        },
+        {
+          "id": "source-cluster-disjoint",
+          "check": "train/val/test的group集合两两无交集，原始行ID唯一；衍生扰动留同组。"
+        },
+        {
+          "id": "tfidf-fit-scope",
+          "check": "受控执行器记录词表/IDF仅fit允许训练范围；客户端配置自报不能当执行确认。"
+        },
+        {
+          "id": "confusion-metrics",
+          "check": "从逐样本预测重算TP/FP/FN/TN、SC/BH/MCC和macro-F1；固定ham基线标签全部为ham。"
+        },
+        {
+          "id": "paper-number-boundary",
+          "check": "本地显示分数必须关联runId；Table7参考数字标paper-reference；有tokenizer/划分差异不得自动显示numeric-aligned。"
+        }
+      ]
+    }
+  ]
+}

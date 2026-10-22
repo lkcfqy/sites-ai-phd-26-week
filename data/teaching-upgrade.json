@@ -1,0 +1,4174 @@
+{
+  "w01-d1": {
+    "hook": "四天学了1.5、2、3、3.5小时：怎样让电脑算出总量，而且知道它没有算错？",
+    "steps": [
+      "在纸上写四个输入的单位，算总和、除以几天以及距24小时的差额。",
+      "把纸上的三步分别写成print表达式，先写下预期输出再运行。",
+      "对比print(\"2 + 3\")和print(2 + 3)，指出引号如何改变执行结果。",
+      "只改一天时长，重新手算并执行；故意删去右括号，按报错行号修复。"
+    ],
+    "pitfalls": [
+      "把加法放进引号，输出算式却误以为已计算。",
+      "修改代码后仍读旧输出，或者平均值没有为分子加括号。"
+    ],
+    "quickCheck": "运行print(2 + 3 * 4)和print((2 + 3) * 4)前，分别预测结果并说出第一步运算。",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程中查找计算器、数字、字符串和注释的例子；本次只读运算优先级与引号的区别，不展开完整教程。"
+      }
+    ],
+    "coreDeliverable": "一个三行计算程序、原输入与改输入的两组手算对照，以及一条括号报错和修复记录。"
+  },
+  "w01-d2": {
+    "hook": "每天目标从4小时改为5小时，为什么剩余量和完成比例应该一起变化？",
+    "steps": [
+      "把每日时长、天数、已完成时长分别命名，注明小时和天不能直接相减。",
+      "先求weekly_target，再求remaining_hours和finished_hours/weekly_target，画出依赖箭头。",
+      "逐行记录变量当前值，模拟hours = hours + 1的右侧先取旧值。",
+      "只改daily_hours，重新执行全部语句，比较4小时与5小时两组结果。"
+    ],
+    "pitfalls": [
+      "把赋值当永久数学等式，认为x = x + 1无解。",
+      "把计划写死为24，改每日时长后其他输出没有跟着变化。"
+    ],
+    "quickCheck": "x先为3，执行x = x + 2再执行x = x * 2，最终是多少？指出两次赋值前右侧读到的值。",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在Python教程中检索变量赋值、整数与浮点数、/和//；用示例验证类型，不把round的显示效果理解成精度提高。"
+      }
+    ],
+    "coreDeliverable": "使用有单位变量的计划计算器，以及仅改每日目标后自动更新的两行结果表。"
+  },
+  "w01-d3": {
+    "hook": "表格里的\"007\"和\" 2.75 \"都像数字，为什么一个应保留文本，一个应转换？",
+    "steps": [
+      "给编号、时长和天数字段分别写用途，先决定字段规则，再选择str、float或int。",
+      "打印转换前的文本和type，使用strip去掉时长首尾空格，再转换并计算总小时。",
+      "将小时换算成分钟，用f-string写标题、编号、数值和单位。",
+      "试读\"4小时\"和\"4.5\"，解释strip与int为什么不能替代字段解析规则。"
+    ],
+    "pitfalls": [
+      "将编号007转成整数7，丢失原始标识。",
+      "把字符串拼接当加法，或用int直接转换带小数点的文本。"
+    ],
+    "quickCheck": "\"3\" + \"4\"、float(\" 3 \") + 4分别是什么值和类型？哪个适合累计时长？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程中检索字符串、strip、int/float和格式化字符串；重点看转换失败的条件以及百分比格式，不要求阅读其他文本操作。"
+      }
+    ],
+    "coreDeliverable": "保留007编号的格式化报告，含总小时、分钟、原始文本和转换后的类型。"
+  },
+  "w01-d4": {
+    "hook": "学习正好3小时、测验正好80分，应算通过吗？一处比较符就会改变结果。",
+    "steps": [
+      "用type区分数值、布尔值和字符串\"False\"，写出每种值表示什么。",
+      "将“时长至少3且分数至少80”拆成两个比较，再用and连接。",
+      "手动测试低于、等于和高于阈值，先预测布尔结果再运行。",
+      "比较0.1 + 0.2 == 0.3与容差判断，说明容差只处理表示误差。"
+    ],
+    "pitfalls": [
+      "用>排除恰好达到阈值的记录，或者用or放过只达成一项的记录。",
+      "把=与==混用，或认为所有浮点结果都能精确比较。"
+    ],
+    "quickCheck": "对(3,80)和(4,79)，hours >= 3 and score >= 80各得到什么？若and改成or，哪条记录会改变？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程中查找比较运算、and/or/not和布尔值；浮点部分只核对表示误差示例，不将非空文本等同于布尔False。"
+      }
+    ],
+    "coreDeliverable": "三个边界输入的预测/实际结果表，以及一条浮点相等与容差比较记录。"
+  },
+  "w01-d5": {
+    "hook": "六天记录放入一个列表后，怎样改第一天而不会改错位置？",
+    "steps": [
+      "给六项列表写上日历天数与0起始索引的对应，预测hours[0]和hours[-1]。",
+      "修改第一项并追加一项，比较修改前后列表和len；观察append的返回值。",
+      "用sum、len、min和max汇总，写明每项都是小时。",
+      "截取前三项，核对终点不包含；为无记录时的平均值写出不能直接除零的原因。"
+    ],
+    "pitfalls": [
+      "把第一天索引写成1，实际改到第二天。",
+      "写hours = hours.append(5)，把列表变量覆盖成None。"
+    ],
+    "quickCheck": "列表[2,3,4]的a[:2]与a[2]各是什么？追加5后len与最后一个索引分别是多少？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程列表部分查索引、切片、append和len；对照本课的sum/min/max汇总，注意原列表是否发生变化。"
+      }
+    ],
+    "coreDeliverable": "六天列表的修改前后记录和总量、均值、最小、最大四项汇总。"
+  },
+  "w02-d1": {
+    "hook": "同样是5小时，分支顺序不同会被判成“达标”还是“高投入”？",
+    "steps": [
+      "画出负数、至少5、至少4、其余四条互斥路径，先处理非法输入。",
+      "按阈值从高到低写if/elif/else，每块保持同一缩进。",
+      "为-1、3.9、4、5逐行标注首个成立的条件，再运行对照。",
+      "故意把至少4放到至少5前，记录5小时被哪个分支截住并修复。"
+    ],
+    "pitfalls": [
+      "低阈值先匹配，使高阈值分支永远到不了。",
+      "用多个独立if造成一次输入出现两个分类，或漏查负值。"
+    ],
+    "quickCheck": "先if hours >= 4，再elif hours >= 5时，hours=5进入哪一支？如何改成唯一正确类别？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程控制流部分查if、elif、else与缩进；重点逐行跟踪首个成立分支，不增加尚未学过的复杂表达式。"
+      }
+    ],
+    "coreDeliverable": "一个时长分类器、四个边界输入的结果，以及一次分支顺序错误的修复前后对照。"
+  },
+  "w02-d2": {
+    "hook": "累计器每轮都清零时，为什么程序能运行却只留下最后一天？",
+    "steps": [
+      "给[2,4,6,3,5]做逐轮表：当前值、累计总量、达标数量、额外小时。",
+      "在循环外初始化三项累计器，再按条件更新；用打印值核对每轮表。",
+      "将初始化移入循环，观察第一次开始偏离的位置后还原。",
+      "测试空列表和恰好4小时，确认没有达标额外量但计入达标次数。"
+    ],
+    "pitfalls": [
+      "把total=0写在循环体里，覆盖以前的累计。",
+      "把每个达标时长全部加进extra，而不是只加超过4小时的部分。"
+    ],
+    "quickCheck": "列表[4,6]的达标次数和超出4小时的总量分别是多少？说出每轮extra的值。",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程中查for、range及循环块；只核对range不包含终点和累计器的位置，先不学习while与嵌套循环。"
+      }
+    ],
+    "coreDeliverable": "不用sum的三项统计函数式程序，以及五轮累计值和空输入结果。"
+  },
+  "w02-d3": {
+    "hook": "能打印通过人数的函数，为什么接到后续计算时可能返回None？",
+    "steps": [
+      "写count_passed的输入、阈值包含边界和整数返回值契约。",
+      "用循环累计scores >= threshold的数量，将return放在循环结束后。",
+      "调用阈值80和90，把返回值再用于比较，区分函数内print与返回。",
+      "检查空列表和输入未被修改；将return移入循环制造提前结束，再用测试找出错误。"
+    ],
+    "pitfalls": [
+      "只print不return，调用方收到None。",
+      "return缩进在循环内，第一条记录后就结束计数。"
+    ],
+    "quickCheck": "count_passed([79,80,90,100],90)应是多少？若函数只print(count)，result保存什么？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程定义函数部分检索def、参数、return与局部变量；重点观察定义与调用何时执行及无return的返回值。"
+      }
+    ],
+    "coreDeliverable": "可重复调用且不改原列表的count_passed函数，含两个阈值、空列表和提前return故障的测试。"
+  },
+  "w02-d4": {
+    "hook": "一天有两条学习记录时，“每条平均”还能叫“每日平均”吗？",
+    "steps": [
+      "把一条记录写成day、hours、score字典，说明键名比位置更能表达字段。",
+      "用列表保存多天字典，逐行读取hours与score，检查必需字段和单位。",
+      "写双条件达标计数和平均分函数，新增第四天后重新核对分母。",
+      "复制同一天一条记录，比较记录数与天数，提出保持一天一行的规则。"
+    ],
+    "pitfalls": [
+      "把hours与hour当同一键，或用默认0掩盖必需时长缺失。",
+      "重复日记录不处理，称记录平均为每日平均。"
+    ],
+    "quickCheck": "两条day=1与一条day=2的记录共有几条、几天？按记录求平均估计的是什么？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程数据结构部分查字典取值、get、键缺失和列表组合；用本课字段练习，不把默认值当缺失测量的修复。"
+      }
+    ],
+    "coreDeliverable": "四天记录表、达标天数与平均分，以及重复day/缺字段两种检查说明。"
+  },
+  "w02-d5": {
+    "hook": "累计时长变成最后一项：它没有报错，应该从哪里开始找？",
+    "steps": [
+      "先选[2,3]手算期望5，重现错误输出并保留原函数。",
+      "打印每轮total，在第二轮找到被重新初始化的位置，再只改该原因。",
+      "为负时长主动抛ValueError；保留零值，调用方只捕获预期的输入异常。",
+      "重跑正常、零值和负值三组输入，把逻辑错误与运行时异常分别记录。"
+    ],
+    "pitfalls": [
+      "一次改多个位置，没有证据确认哪个修改修复问题。",
+      "用except捕获一切错误并返回0，把拼写与类型问题隐藏成合法结果。"
+    ],
+    "quickCheck": "空输入、[0,2]与[-1,2]分别应返回什么或抛什么？为什么零与负数不能共用删除规则？",
+    "readingGuide": [
+      {
+        "title": "Python 官方教程：对应主题扩展阅读",
+        "url": "https://docs.python.org/zh-cn/3/tutorial/",
+        "focus": "在教程错误和异常部分查traceback、raise和特定except；断言只用于开发核对，实际输入规则使用明确异常。"
+      }
+    ],
+    "coreDeliverable": "错误最小复现、修复函数、三种输入检查，以及“原因—改动—验证”的短故障记录。"
+  },
+  "w03-d1": {
+    "hook": "CSV中的001与空温度都读成字符串，怎样计算平均又不丢掉来源？",
+    "steps": [
+      "读表头与前两行，确认一行表示一次观测，列名与字段顺序一致。",
+      "用csv.DictReader解析并保留原编号和原始行号；将有效温度另存为float。",
+      "为空字段保留缺失标记，统计原始、缺失和有效数量，再只对有效值求平均。",
+      "加入004,21.5重新核对数量与分母；用带引号逗号的字段比较DictReader与简单split。"
+    ],
+    "pitfalls": [
+      "float(\"\")失败后把缺失直接填0，改变温度平均含义。",
+      "用split逗号切开带引号字段，或者把001转换为1。"
+    ],
+    "quickCheck": "温度文本[\"20\",\"\",\"22\"]的有效数量和均值是多少？原始行数为什么仍是3？",
+    "readingGuide": [
+      {
+        "title": "Python csv 官方文档",
+        "url": "https://docs.python.org/zh-cn/3/library/csv.html",
+        "focus": "阅读csv文档中的DictReader及带引号字段示例；本课关注字符串输出、表头和空字段，不需要写文件或研究所有dialect选项。"
+      }
+    ],
+    "coreDeliverable": "保留编号的CSV读取结果、缺失/有效数量核对和有效温度均值。"
+  },
+  "w03-d2": {
+    "hook": "同样乘2，列表为什么变长而NumPy数组的数值翻倍？",
+    "steps": [
+      "对列表和数组[1,3,5,7]分别预测乘2结果，核对长度与dtype。",
+      "执行平方、均值、布尔比较，逐元素核对mask如何对应原数据。",
+      "用mask筛选大于均值的值，同时记录原数组和筛选后形状。",
+      "给2×3小表画行列，分别求axis=0和axis=1均值；比较整数与浮点数组写入1.5。"
+    ],
+    "pitfalls": [
+      "把列表重复与数组数乘当同一种操作。",
+      "把axis=0解释为每行均值，或在整数数组里写小数而忽略截断。"
+    ],
+    "quickCheck": "数组[1,3,5,7]大于均值的mask与筛选结果是什么？2×3表的axis=0均值有几个数？",
+    "readingGuide": [
+      {
+        "title": "NumPy 官方初学者指南",
+        "url": "https://numpy.org/doc/stable/user/absolute_beginners.html",
+        "focus": "在NumPy初学者指南检索array、dtype、shape、布尔索引与axis；重点画两行三列理解汇总方向。"
+      }
+    ],
+    "coreDeliverable": "列表/数组运算对照、mask筛选结果和一个两轴均值的形状核对表。"
+  },
+  "w03-d3": {
+    "hook": "Python学得更久是因为每次会话更长，还是记录次数更多？",
+    "steps": [
+      "从记录字典创建DataFrame，查看head、shape和dtypes，确认一行是一次会话。",
+      "按科目同时输出count、sum、mean，说明三个量的分母和单位。",
+      "加入1小时与4小时Python会话，重新统计并手算核对。",
+      "用两组带括号条件与&筛选2到3小时，再建立minutes派生列核对单位。"
+    ],
+    "pitfalls": [
+      "对整列条件使用Python的and，产生布尔歧义错误。",
+      "只给均值不报次数，把每次平均误称每天或每周投入。"
+    ],
+    "quickCheck": "会话时长[1,4]的count、sum和mean各是多少？范围2≤hours≤3是否应包含端点？",
+    "readingGuide": [
+      {
+        "title": "pandas 官方入门教程",
+        "url": "https://pandas.pydata.org/docs/getting_started/intro_tutorials/index.html",
+        "focus": "在pandas入门教程中找选取子集、创建派生列、汇总统计与分组示例；关注Series与DataFrame及多条件括号。"
+      }
+    ],
+    "coreDeliverable": "包含科目次数/总时长/均值的统计表和含端点的会话筛选结果。"
+  },
+  "w03-d4": {
+    "hook": "两个设备都测到0度是重复吗？为什么删零可能删掉真实低温？",
+    "steps": [
+      "写温度缺失、主键重复、越界三个规则及执行顺序，保留原始行号。",
+      "按规则依次处理，每步记录删除ID、原因与剩余数量，避免重复计数。",
+      "添加id=5、temp=0，核对0是有效测量并保留。",
+      "制造同温度不同ID和同ID不同温度两种记录，分别区分普通相同值与需要核查的冲突。"
+    ],
+    "pitfalls": [
+      "将NaN与0共用规则删除，丢掉有效零测量。",
+      "按温度值去重，或把一行的多个问题分别相加当多个删除。"
+    ],
+    "quickCheck": "设备A与B同时测得20度，能按temp去重吗？同一主键两次值不同，应直接保留第一条吗？",
+    "readingGuide": [
+      {
+        "title": "pandas 缺失数据指南",
+        "url": "https://pandas.pydata.org/docs/user_guide/missing_data.html",
+        "focus": "在pandas缺失数据指南中阅读isna、dropna和填补的含义；该链接不覆盖全部去重规则，去重主键先以本课代码和数据定义为准。"
+      }
+    ],
+    "coreDeliverable": "可重复的清洗流程、逐步数量账本及每条移除记录的原因；有效零值保留。"
+  },
+  "w03-d5": {
+    "hook": "多学一小时但分数反而低的点加进来，图和文字是否都跟着更新？",
+    "steps": [
+      "明确横轴学习小时、纵轴分数，一行对应一个点；预测用散点而非随编号连线。",
+      "检查两个数组同长度，绘图时设置对象标题和轴单位。",
+      "加入5小时70分后重画并重算样本数量，核对新增点位置。",
+      "写样本量、形态和因果限制三句话，比较极端值加入前后的均值与中位数。"
+    ],
+    "pitfalls": [
+      "图用更新数据、文字仍报旧样本量或旧统计。",
+      "把时长与分数的共同变化直接解释为学习时长造成提分。"
+    ],
+    "quickCheck": "新增一点会改变n吗？散点向上能否排除基础程度同时影响时长和分数？",
+    "readingGuide": [
+      {
+        "title": "Matplotlib 官方快速入门",
+        "url": "https://matplotlib.org/stable/users/explain/quick_start.html",
+        "focus": "在Matplotlib快速入门中看Figure/Axes、scatter、标题和坐标轴标签；只绘一种能回答本课问题的图，不追求装饰。"
+      }
+    ],
+    "coreDeliverable": "带单位和n的更新散点图，以及三句可追溯到模拟数据的描述与限制。"
+  },
+  "w04-d1": {
+    "hook": "两个分数预测规则一开始不同，学到多少小时会给出相同预测？",
+    "steps": [
+      "把x、预测y、斜率w和截距b分别对应时长、分数和单位。",
+      "手算两条规则在0、2、4小时的输出，说明斜率与截距改变哪个部分。",
+      "令8x+50等于4x+60解交点，用函数与图核对。",
+      "试入很大或负时长，区分公式能计算与现实定义域是否允许。"
+    ],
+    "pitfalls": [
+      "把斜率当输入数据，或把截距理解为每小时增加量。",
+      "线性规则给出超过100分，仍将输出当作真实分数事实。"
+    ],
+    "quickCheck": "y=4x+60里x增加0.5小时，预测增加多少分？y=0时的输入是否必然是合法时长？",
+    "readingGuide": [
+      {
+        "title": "Google ML：线性回归",
+        "url": "https://developers.google.com/machine-learning/crash-course/linear-regression",
+        "focus": "在Google线性回归页面查权重、偏置与预测直线；重点对应单位和参数作用，损失与训练留到后续课程。"
+      }
+    ],
+    "coreDeliverable": "两条直线的代入表、交点核对与输入定义域说明。"
+  },
+  "w04-d2": {
+    "hook": "时长与练习次数顺序交换了，数字维度仍然正确，预测为什么会错？",
+    "steps": [
+      "把x的两个坐标命名，并给对应权重写单位，固定特征排列。",
+      "逐项手算[3,2]与[5,-1]的贡献，再加截距10，用@核对。",
+      "手算[1,2]到[4,6]的差向量与距离，用norm验证。",
+      "把其中一个坐标单位放大1000倍，观察距离受谁主导，区分长度与维数。"
+    ],
+    "pitfalls": [
+      "特征重排却不重排权重，形状通过但语义错误。",
+      "把向量元素个数当欧氏长度，混合单位后直接解释距离。"
+    ],
+    "quickCheck": "[3,4]有几个坐标，欧氏长度是多少？[3,2]·[5,-1]的两项贡献分别是什么？",
+    "readingGuide": [
+      {
+        "title": "NumPy 线性代数文档",
+        "url": "https://numpy.org/doc/stable/reference/routines.linalg.html",
+        "focus": "在NumPy线性代数文档定位norm并查看向量范数的输入输出；点积先按本课逐项乘加核对，不要求阅读所有矩阵分解。"
+      }
+    ],
+    "coreDeliverable": "标注特征次序和单位的贡献表、标量预测及一组距离手算与代码核对。"
+  },
+  "w04-d3": {
+    "hook": "为什么X*w每行保留两个数，而X@w每行只给一个预测？",
+    "steps": [
+      "把X画成样本行、特征列，给w和y写预计形状及列次序。",
+      "手算第一行逐项贡献及和，分别预测*与@的输出形状后执行。",
+      "追加[5,0]，同时维护样本与标签配对，核对预测数量。",
+      "制造(n,)减(n,1)的残差，观察(n,n)结果并通过统一形状修复。"
+    ],
+    "pitfalls": [
+      "用逐元素乘法替代矩阵乘法，未把特征贡献求和。",
+      "仅筛选或排序X而未同步y，或混合一维与列向量制造广播方阵。"
+    ],
+    "quickCheck": "X为4×2、w为长度2，X*w与X@w各是什么形状？四个标签减4×1预测为何危险？",
+    "readingGuide": [
+      {
+        "title": "NumPy 官方初学者指南：形状与运算",
+        "url": "https://numpy.org/doc/stable/user/absolute_beginners.html",
+        "focus": "在NumPy初学者指南查shape、reshape、转置和广播示例；针对(n,d)到(n,)的预测链画图核对，不跳到高维张量。"
+      }
+    ],
+    "coreDeliverable": "矩阵、权重、预测的形状表，一行手算，以及一次广播错误的发现与修复。"
+  },
+  "w04-d4": {
+    "hook": "两条方程只是彼此翻倍，为什么多写一条约束仍不能决定两个未知数？",
+    "steps": [
+      "把a+b=4和2a-b=2按未知量列顺序写成A@u=c，手算消元。",
+      "用solve求解，核对A@u-c接近零而不是只打印参数。",
+      "把第二式换成2a+2b=8，列出两个不同合法解并检查rank。",
+      "再把右侧改成9，区分无穷多解、无解与满秩唯一解。"
+    ],
+    "pitfalls": [
+      "给不可逆系统随意加小数使程序能运行，却改变原问题。",
+      "认为残差近零就证明解对输入扰动稳定。"
+    ],
+    "quickCheck": "a+b=4和2a+2b=8新增了几个独立约束？将8改成9后属于无解还是多解？",
+    "readingGuide": [
+      {
+        "title": "NumPy solve 官方文档",
+        "url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.solve.html",
+        "focus": "阅读solve文档的方形满秩要求、返回值和LinAlgError；用本课重复约束理解前提，不先显式求逆。"
+      }
+    ],
+    "coreDeliverable": "唯一解与残差核对，以及重复约束和矛盾约束的分类小表。"
+  },
+  "w04-d5": {
+    "hook": "一次高估1分、一次低估1分，残差相加为0，预测真的没有误差吗？",
+    "steps": [
+      "固定残差定义为预测减真值，对三条样本逐条写符号和高估/低估含义。",
+      "平方后求平均得到MSE，再开方得到RMSE，分别标注平方单位与原单位。",
+      "比较同数据上的手工权重组合，不能用不同样本集挑最低误差。",
+      "用lstsq作为求解对照，指出低训练误差仍需新数据验证。"
+    ],
+    "pitfalls": [
+      "残差相加正负抵消，误认为模型准确。",
+      "报告MSE时用原分数单位，或以最低训练误差宣称新数据表现最佳。"
+    ],
+    "quickCheck": "预测[2,4,6]与真值[1,5,6]的残差和、MSE各是多少？哪一个不会被符号抵消？",
+    "readingGuide": [
+      {
+        "title": "NumPy lstsq 官方文档",
+        "url": "https://numpy.org/doc/stable/reference/generated/numpy.linalg.lstsq.html",
+        "focus": "在lstsq文档中读输入矩阵与右侧、最小化平方残差及返回项；只核对优化目标，不将求解器输出等同泛化结论。"
+      }
+    ],
+    "coreDeliverable": "逐样本残差表、MSE/RMSE手算核对和同数据的参数误差比较。"
+  },
+  "w05-d1": {
+    "hook": "平方函数在x=-2的值是4，变化率为什么却是负数？",
+    "steps": [
+      "算两点的输出差除输入差，给割线斜率写单位。",
+      "在-2左右各取一个h，用中心差分算局部变化率。",
+      "比较h=0.1和0.001与解析值2x，区分函数值、导数值和数值误差。"
+    ],
+    "pitfalls": [
+      "把f(x)的高度当作f′(x)的斜率。",
+      "认为h越小一定越准确，忽略浮点舍入与不可导点。"
+    ],
+    "quickCheck": "x=-2略增到-1.99，x²增加还是减少？这个方向与导数符号怎样对应？",
+    "readingGuide": [
+      {
+        "title": "MIT OpenCourseWare 单变量微积分",
+        "url": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+        "focus": "在MIT课程目录搜索导数、割线/切线和差分主题；先选平方函数变化率内容，未核验的讲次编号不作为要求。"
+      }
+    ],
+    "coreDeliverable": "两种h的中心差分表、解析对照及负变化率解释。"
+  },
+  "w05-d2": {
+    "hook": "平方损失的梯度为什么对w多乘一个x，对b却不用？",
+    "steps": [
+      "画w→预测→残差→平方损失的链，给每条箭头标局部导数。",
+      "代入x=3、y=10、w=2、b=1，依次手算预测、损失、dw和db。",
+      "只扰动w，用中心差分核对；再把x改成0，检查哪个梯度消失。"
+    ],
+    "pitfalls": [
+      "链式法则漏乘预测对w的导数x。",
+      "求参数导数时把固定标签y也当可更新量。"
+    ],
+    "quickCheck": "当x=0而残差非零，dw与db谁必为0？这说明该样本能直接调整哪个参数？",
+    "readingGuide": [
+      {
+        "title": "MIT 单变量微积分：导数与应用",
+        "url": "https://ocw.mit.edu/courses/18-01sc-single-variable-calculus-fall-2010/",
+        "focus": "在MIT单变量微积分课程目录检索链式法则和平方函数求导；用中间量拆分本课损失，不要求背全部特殊函数公式。"
+      }
+    ],
+    "coreDeliverable": "单样本损失的计算链、两项解析梯度和w中心差分核对。"
+  },
+  "w05-d3": {
+    "hook": "斜率要增大、截距要减小时，一个梯度向量怎样表达两个方向？",
+    "steps": [
+      "对L=(w-2)²+(b+1)²分别只改变一个变量，计算两个偏导。",
+      "按[w,b]顺序组成梯度，对[3,-2]进行一步负梯度更新。",
+      "逐坐标中心差分，每次恢复原值，比较更新前后损失。"
+    ],
+    "pitfalls": [
+      "交换参数与梯度坐标顺序，更新了错误的量。",
+      "扰动一个参数后不恢复，导致后面的数值梯度在不同状态计算。"
+    ],
+    "quickCheck": "[3,-2]处的梯度是哪两个数？沿负梯度0.1步后参数各向哪边移动？",
+    "readingGuide": [
+      {
+        "title": "MIT 多变量微积分",
+        "url": "https://ocw.mit.edu/courses/18-02sc-multivariable-calculus-fall-2010/",
+        "focus": "在MIT多变量课程中查偏导数、梯度及局部方向；先读两变量直觉，不把驻点自动称为全局最优。"
+      }
+    ],
+    "coreDeliverable": "二维梯度手算、逐坐标差分和一步更新的参数/损失表。"
+  },
+  "w05-d4": {
+    "hook": "同一个损失函数，为什么学习率1会来回跳而不是收敛？",
+    "steps": [
+      "为L=(w-3)²手算前两次更新，写清梯度在更新前计算。",
+      "固定起点与10步预算，对比η=0.1、0.8、1.0全部轨迹。",
+      "用w新-3=(1-2η)(w旧-3)解释缩小、换向和等幅振荡。"
+    ],
+    "pitfalls": [
+      "拿不同起点或不同轮数比较学习率。",
+      "只报告最后一步值，掩盖整条振荡或发散轨迹。"
+    ],
+    "quickCheck": "η=1时误差乘上几？误差绝对值会不会减小？这个稳定条件能直接套所有网络吗？",
+    "readingGuide": [
+      {
+        "title": "Google ML：梯度下降",
+        "url": "https://developers.google.com/machine-learning/crash-course/linear-regression/gradient-descent",
+        "focus": "阅读Google梯度下降页面的更新方向与学习率示意；将图对应本课二次函数，不把该函数的稳定区间推广所有损失。"
+      }
+    ],
+    "coreDeliverable": "三种学习率的十步轨迹与稳定/振荡判断。"
+  },
+  "w05-d5": {
+    "hook": "数据从小时换成分钟后，原来的训练为什么可能突然发散？",
+    "steps": [
+      "给一维批输入、标签和残差标相同形状，写出MSE平均分母。",
+      "从同一份当前残差计算dw=2mean(r*x)和db=2mean(r)，然后同时更新。",
+      "固定数据对比三种学习率50步损失，并用lstsq核对稳定解。",
+      "放大输入尺度，观察梯度与步长的配合，记录标准化只能使用训练统计。"
+    ],
+    "pitfalls": [
+      "漏除样本数，复制数据后梯度成倍变大。",
+      "先更新w再重新算db，混合两种参数状态。"
+    ],
+    "quickCheck": "把每条样本重复一次后，正确MSE平均梯度应改变吗？若用了求和梯度会发生什么？",
+    "readingGuide": [
+      {
+        "title": "Google ML：线性回归",
+        "url": "https://developers.google.com/machine-learning/crash-course/linear-regression",
+        "focus": "在Google线性回归材料中查损失和梯度下降；重点连接平均平方误差与参数更新，系数尺度问题按本课实验核对。"
+      }
+    ],
+    "coreDeliverable": "向量化训练程序、三学习率曲线及稳定解与lstsq参数对照。"
+  },
+  "w06-d1": {
+    "hook": "通过学生中练习者的比例，等于练习者中通过学生的比例吗？",
+    "steps": [
+      "把60名练习者与40名未练习者的通过/未通过人数填进四格表。",
+      "分别圈全体、练习群体和通过群体，为三个比例选对分母。",
+      "计算55/100、45/60与45/55，再说明计数关联没有证明练习因果效应。"
+    ],
+    "pitfalls": [
+      "交换条件，两个概率都用同一分母。",
+      "条件群体为空仍除零，或把随机种子当数据真实的证据。"
+    ],
+    "quickCheck": "45名同时练习且通过的人，在P(练习|通过)的分母里对应多少人？为什么不是60？",
+    "readingGuide": [
+      {
+        "title": "MIT 概率与统计公开课程",
+        "url": "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/",
+        "focus": "在MIT概率统计课程目录搜索条件概率、独立与基本发生率；先画计数表再读符号，章节编号尚未核验。"
+      }
+    ],
+    "coreDeliverable": "四格计数表、三个明确分母的概率及一条非因果限制。"
+  },
+  "w06-d2": {
+    "hook": "平均都为4的两组数，为什么一组没有波动，另一组有？",
+    "steps": [
+      "对[2,4,6]逐项计算与均值的偏差和平方偏差。",
+      "分别除n与n-1，核对NumPy的ddof=0/1，再与[4,4,4]比较。",
+      "检查奖励概率和为1，计算1、3、7的加权期望并对比等权均值。"
+    ],
+    "pitfalls": [
+      "把总体方差与样本方差的分母混用。",
+      "把期望当一定能发生的取值，或概率权重不归一仍计算。"
+    ],
+    "quickCheck": "[2,4,6]的平方偏差和是多少？为什么样本方差与总体方差不同，标准差单位又是什么？",
+    "readingGuide": [
+      {
+        "title": "NumPy 方差官方文档",
+        "url": "https://numpy.org/doc/stable/reference/generated/numpy.var.html",
+        "focus": "阅读numpy.var的axis与ddof说明；用三个数手算分母，概率加权期望仍以本课定义为准。"
+      }
+    ],
+    "coreDeliverable": "总体/样本方差对照表及合法概率下的奖励期望计算。"
+  },
+  "w06-d3": {
+    "hook": "bootstrap做5000次，为什么仍只拥有8个真实学生？",
+    "steps": [
+      "写总体目标与8条现有样本，判断独立观测假设在哪里使用。",
+      "手工做一次有放回抽样，允许重复和遗漏，计算该次均值。",
+      "重置同一seed比较200与5000次的百分位区间，区分近似稳定性与新增数据。"
+    ],
+    "pitfalls": [
+      "把重采样次数当真实样本数量。",
+      "把一个已算95%区间解释成真均值在其中的95%概率，忽略方法的覆盖含义。"
+    ],
+    "quickCheck": "抽样[60,60,75,85,...]重复出现60合法吗？再做一万次能修复原样本只来自高分群体吗？",
+    "readingGuide": [
+      {
+        "title": "MIT 概率与统计课程：抽样与推断",
+        "url": "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/",
+        "focus": "在MIT概率统计课程查抽样分布与置信区间；bootstrap流程按本课代码练，不把课程首页视为指定完整阅读。"
+      }
+    ],
+    "coreDeliverable": "一次手工重采样与两种次数的区间，明确原始n和独立假设。"
+  },
+  "w06-d4": {
+    "hook": "x和y一起随z上升，是否一定存在x直接影响y的路径？",
+    "steps": [
+      "画模拟生成图z→x与z→y，区分共同原因和直接路径。",
+      "看散点后算Pearson相关，检查变量是否有非零波动。",
+      "绘制去掉z影响后的残差，比较原关联与残差关联，提出真实数据还缺哪项证据。"
+    ],
+    "pitfalls": [
+      "高相关直接写成x导致y。",
+      "相关接近0就称所有关系都不存在，或忽略常量变量无法正常计算相关。"
+    ],
+    "quickCheck": "模拟代码只生成z→x和z→y，相关很高能证明x→y吗？若x恒为4，相关分母出了什么问题？",
+    "readingGuide": [
+      {
+        "title": "NumPy corrcoef 官方文档",
+        "url": "https://numpy.org/doc/stable/reference/generated/numpy.corrcoef.html",
+        "focus": "阅读numpy.corrcoef的行列约定与返回矩阵；因果解释回到模拟机制，库函数不执行因果识别。"
+      }
+    ],
+    "coreDeliverable": "生成关系图、原始/残差散点及相关值和替代解释。"
+  },
+  "w06-d5": {
+    "hook": "把B组全部加10后p值变小，能因此证明真实教学方法有效吗？",
+    "steps": [
+      "先定义B均值减A均值的统计量和双侧零假设。",
+      "合并后打乱标签，按原组大小重分，记录一次差值并重复构造参照。",
+      "按加一规则计算p值，比较原B与加10的B，同时保留原单位差值及交换性前提。"
+    ],
+    "pitfalls": [
+      "把p值写成方法有效或零假设为真的概率。",
+      "对配对或相关时间数据直接任意打乱标签，破坏设计前提。"
+    ],
+    "quickCheck": "差值从6变成16说明什么量增大？p值再小为何仍不能把人工数据变成真实因果证据？",
+    "readingGuide": [
+      {
+        "title": "MIT 概率与统计：假设检验",
+        "url": "https://ocw.mit.edu/courses/18-05-introduction-to-probability-and-statistics-spring-2022/",
+        "focus": "在MIT概率统计课程中检索假设检验、p值与双侧检验；置换方法的可交换性先按本课设计检查。"
+      }
+    ],
+    "coreDeliverable": "原B/平移B的差值与双侧p值表，附模拟范围和可交换假设。"
+  },
+  "w07-d1": {
+    "hook": "训练一个模型前，为什么先做只预测训练均值的笨基线？",
+    "steps": [
+      "明确特征X、目标y与样本单位，先固定训练/测试划分。",
+      "仅用训练y求均值基线，在相同测试样本上与线性模型比较。",
+      "提高生成噪声后保持seed和划分规则，重算两种测试误差并解释任务难度。"
+    ],
+    "pitfalls": [
+      "用测试y的均值建基线，提前利用验收答案。",
+      "模型和基线在不同样本集合上比较，差异无法归到模型。"
+    ],
+    "quickCheck": "训练y平均为8、测试y平均为12，均值基线预测应是几？为什么不能按测试调整？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 监督学习入门",
+        "url": "https://scikit-learn.org/stable/getting_started.html",
+        "focus": "阅读scikit-learn入门页面的fit/predict与训练测试区分；本课先掌握端到端小回归，复杂估计器暂不展开。"
+      }
+    ],
+    "coreDeliverable": "同测试集的均值基线/回归MSE表及噪声改变实验。"
+  },
+  "w07-d2": {
+    "hook": "一个特征换单位后权重变小，为什么不能直接称模型更简单？",
+    "steps": [
+      "将StandardScaler与Ridge组成流水线，标注每项fit只用训练数据。",
+      "固定划分拟合α=0.1、1、10，记录训练MSE与权重长度。",
+      "区分惩罚尺度、欠拟合与新数据效果，不用测试分数选α。"
+    ],
+    "pitfalls": [
+      "全数据标准化再拆分，混入测试统计。",
+      "仅看权重变小认定泛化提高，忽略单位和平方和/均值约定。"
+    ],
+    "quickCheck": "将小时改成分钟时实现同样预测需要的系数会怎样变？L2罚项会因此保持相同吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 线性模型：Ridge",
+        "url": "https://scikit-learn.org/stable/modules/linear_model.html#ridge-regression-and-classification",
+        "focus": "阅读Ridge链接中的L2目标、alpha与系数；关注该库平方和约定与尺度，不跨实现直接比较同一个alpha。"
+      }
+    ],
+    "coreDeliverable": "三α的训练误差/权重表及训练内标准化的可追溯代码。"
+  },
+  "w07-d3": {
+    "hook": "概率不变只降低报警阈值，为什么报警数量会增加？",
+    "steps": [
+      "计算线性分数经sigmoid的变化，定位z=0对应p=0.5。",
+      "对同标签1比较p=0.9与0.1的对数损失，说明错得自信罚得重。",
+      "确认classes_顺序，对四概率用0.5/0.3阈值分别分类并数正类。"
+    ],
+    "pitfalls": [
+      "默认predict_proba第二列永远对应关注的正类。",
+      "把降低阈值当模型重新训练，或直接对p=0取log而不处理数值边界。"
+    ],
+    "quickCheck": "p=[0.2,0.4,0.7,0.9]时两个阈值产生几个正类？哪一步只改变行动不改变概率？",
+    "readingGuide": [
+      {
+        "title": "Google ML：逻辑回归",
+        "url": "https://developers.google.com/machine-learning/crash-course/logistic-regression",
+        "focus": "阅读Google逻辑回归页面的sigmoid、对数损失与分类阈值；把概率估计、校准和行动决策分别记录。"
+      }
+    ],
+    "coreDeliverable": "阈值对照表、两项损失手算及正类概率列的核对。"
+  },
+  "w07-d4": {
+    "hook": "训练准确率满分的深树，为什么在新样本上可能更差？",
+    "steps": [
+      "用一个根节点条件跟踪样本到叶子，解释叶子预测与类别混合。",
+      "固定无限深度，分别设置叶子最小样本1、5、15并记录实际深度与叶数。",
+      "对照训练/验证分数，识别记住单点与过浅规则，不从最好一次作普遍结论。"
+    ],
+    "pitfalls": [
+      "认为叶子纯就代表新数据可靠。",
+      "改变数据划分与树设置同时发生，无法判断结构的影响。"
+    ],
+    "quickCheck": "提高min_samples_leaf通常减少还是增加小叶子？训练分数降低能否直接说明方法变差？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 决策树官方指南",
+        "url": "https://scikit-learn.org/stable/modules/tree.html",
+        "focus": "阅读决策树指南中的树表示、max_depth、min_samples_leaf与过拟合；先追踪一条路径，不将重要性当因果。"
+      }
+    ],
+    "coreDeliverable": "三叶子限制的复杂度和训练/验证对照表。"
+  },
+  "w07-d5": {
+    "hook": "异常只有1%，全预测正常竟有99%准确率，哪个指标会揭露失败？",
+    "steps": [
+      "给每条真值/预测归入TN、FP、FN或TP，固定正类是异常。",
+      "从四格计数分别算准确率、精确率与召回率，标清三个分母。",
+      "将全部预测改0，用声明的零分母规则重算，对比漏报代价。"
+    ],
+    "pitfalls": [
+      "把混淆矩阵的真值轴与预测轴交换。",
+      "只报告高准确率，或者无正类预测时给精确率虚构高值。"
+    ],
+    "quickCheck": "TP=0且所有真实异常都漏掉时，召回率是多少？准确率很高还能说明异常检测有效吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 分类指标指南",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html#classification-metrics",
+        "focus": "在分类指标指南中定位confusion_matrix、precision、recall和zero_division；逐个将分母对应实际人群。"
+      }
+    ],
+    "coreDeliverable": "逐条四格归类及原预测/全零预测的三指标表。"
+  },
+  "w08-d1": {
+    "hook": "用了Pipeline的高分模型，仍可能偷看故障后的人工结论吗？",
+    "steps": [
+      "为每个特征写产生时间与预测时是否已知，标出事后结论和未来温度。",
+      "将拟合预处理和模型放同一Pipeline，每折从折内训练数据拟合。",
+      "在同一折划分加入多数类基线，检查fit调用与来源重复，区分工具隔离与语义泄漏。"
+    ],
+    "pitfalls": [
+      "先全体标准化再交叉验证，即使后面用了Pipeline仍泄漏。",
+      "把Pipeline当能识别未来字段和主体重复的自动保证。"
+    ],
+    "quickCheck": "预测今天故障时，“明天最大温度”能输入吗？将它放进Pipeline会改变可用时间吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 常见陷阱与防泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱中的数据泄漏、训练内预处理与Pipeline示例；再用特征时间表补上工具无法识别的语义部分。"
+      }
+    ],
+    "coreDeliverable": "特征可用时间表、折内流水线与同划分基线结果。"
+  },
+  "w08-d2": {
+    "hook": "同一受试者的十条记录散到训练和测试，测到的是新人的能力吗？",
+    "steps": [
+      "把目标写成新受试者或未来时段，选择对应分组或时间策略。",
+      "给每折保存行索引和group集合，断言训练/验证组交集为空。",
+      "将时间gap改2，核对索引顺序与实际时间戳，区分两条记录和两小时。"
+    ],
+    "pitfalls": [
+      "认为不同行ID就表示样本独立，忽略同主体关联。",
+      "把gap记录数直接当真实时间间隔，或用未来数据拟合预处理。"
+    ],
+    "quickCheck": "六人各十条数据要预测第七人，应按哪种单位划分？不规则采样时gap=2能保证两小时吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 交叉验证与分组/时间策略",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南中找GroupKFold和TimeSeriesSplit；只核对组隔离、时间顺序与gap参数，并检查每折类别分布。"
+      }
+    ],
+    "coreDeliverable": "分组交集检查和带gap的时间索引表，明确部署目标。"
+  },
+  "w08-d3": {
+    "hook": "测试成绩不理想后新增候选，为什么原测试就失去独立性？",
+    "steps": [
+      "先封存测试索引，预先列小α网格与验证评分。",
+      "用GridSearchCV搜索完整Pipeline，导出所有候选均值与标准差。",
+      "将负MSE转回正误差，冻结最佳候选后测试一次，记录后续开发是否用过测试。"
+    ],
+    "pitfalls": [
+      "将负MSE绝对值更大误认为评分更好。",
+      "看测试差便新增候选或重抽测试，最终只报最好一次。"
+    ],
+    "quickCheck": "两个验证分数-2和-5按越大越好规则选哪个？对应MSE分别是多少？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 超参数搜索官方指南",
+        "url": "https://scikit-learn.org/stable/modules/grid_search.html",
+        "focus": "阅读搜索指南中的GridSearchCV、参数网格、scoring和cv_results_；重点核对流水线参数双下划线及评分方向。"
+      }
+    ],
+    "coreDeliverable": "完整α候选表、冻结选择与一次测试记录。"
+  },
+  "w08-d4": {
+    "hook": "平均分不错但某设备失败，如何提出下一实验而不编造原因？",
+    "steps": [
+      "在固定第五次验证结果中逐条定位前三个误判，核对真值、单位与来源。",
+      "按事先有意义的群体报告数量和错误率，保留全部预定种子的结果。",
+      "把观察、可能原因和检验该原因的新协议分栏，标记已指导修改的数据。"
+    ],
+    "pitfalls": [
+      "只保留最好随机种子或反复切片后讲一个偶然故事。",
+      "把重叠随机划分的标准差当独立总体置信区间。"
+    ],
+    "quickCheck": "发现设备B误差高是观察还是机制证明？若据测试错例改模型，旧测试应怎样标记？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn 交叉验证官方指南",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南查重复/随机划分的说明；读本课全结果表，区分划分敏感性、训练随机性和独立观测。"
+      }
+    ],
+    "coreDeliverable": "三条验证错例、分组数量/性能表和可检验改进假设。"
+  },
+  "w08-d5": {
+    "hook": "热门方向没有合法数据，另一路有可用小数据，该怎样选可完成的项目？",
+    "steps": [
+      "为三方向分别写对象、输入、目标、使用时点和失败成本。",
+      "给数据许可、标签、算力和资源关联附可确认依据，未知项保留未知。",
+      "选主线与备选，落实一个廉价基线及一页任务卡，不用假想打分替代证据。"
+    ],
+    "pitfalls": [
+      "把“做大模型”当具体研究问题，没有目标与评估单位。",
+      "给未核实数据或算力填高分，制造可行性确定感。"
+    ],
+    "quickCheck": "“工业AI”与“用过去24小时预测下一小时设备温度”哪个能直接规定输入和目标？还缺什么数据证据？",
+    "readingGuide": [
+      {
+        "title": "Google ML 课程：核心基础与练习",
+        "url": "https://developers.google.com/machine-learning/crash-course",
+        "focus": "在Google课程目录选与已选任务有关的回归/分类与评估内容，不重复通读全部基础。"
+      },
+      {
+        "title": "PyTorch 官方基础教程：下一阶段入口",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch基础入口定位张量、数据、模型、优化与保存的工作流，作为第9周路线图。"
+      }
+    ],
+    "coreDeliverable": "有资源依据和未知清单的主线/备选选择表及一页任务卡。"
+  },
+  "w09-d1": {
+    "hook": "把一个线性层改成两个输出，哪些维度必须一起改？",
+    "steps": [
+      "给样本、特征和输出轴命名，先写X为n×d、数学W为d×k。",
+      "加入第三条样本与第二个输出，手算第一行两个加权和及偏置。",
+      "用张量运行并断言输出3×2，核对Linear存储权重是k×d及浮点/设备一致。"
+    ],
+    "pitfalls": [
+      "数学W的方向与PyTorch权重存储方向混用。",
+      "样本数恰好等于特征数时，错误转置也能运行而未被发现。"
+    ],
+    "quickCheck": "X为3×4、Linear有2个输出，其存储weight和预测各是什么形状？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：张量入门",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html",
+        "focus": "阅读张量教程的创建、shape、dtype、device与矩阵运算；把每个轴对应本课接口，不只记张量维数。"
+      }
+    ],
+    "coreDeliverable": "3样本2输出的前向代码、轴含义表和第一行手算对照。"
+  },
+  "w09-d2": {
+    "hook": "四条预测减四个标签为什么竟产生16个误差？",
+    "steps": [
+      "从末轴开始对照(n,1)与(n,)广播规则，预测两两相减的形状。",
+      "写只接受完全同形状输入的MSE函数，再测试批次1与4。",
+      "比较整数索引、切片及指定轴squeeze，保证最后一小批仍保留样本轴。"
+    ],
+    "pitfalls": [
+      "批次1偶然算对就认为广播没有问题。",
+      "无参数squeeze删除批次轴，破坏统一损失接口。"
+    ],
+    "quickCheck": "预测4×1减标签4得到几乘几？将标签reshape为4×1解决了什么配对问题？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：张量入门",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html",
+        "focus": "在张量入门中查索引、切片、reshape与维度运算；本课额外用不同批次数量验证广播配对。"
+      }
+    ],
+    "coreDeliverable": "同形状MSE入口和批次1/4及末批的成功/拒绝检查。"
+  },
+  "w09-d3": {
+    "hook": "自动微分给出的数为什么必须与手推的链式法则一致？",
+    "steps": [
+      "画x→2x+1→平方→求和的图，逐箭头写局部导数。",
+      "对三个输入手算4(2x+1)，再创建新叶子张量执行backward。",
+      "区分grad为空、为0和数值偏离，改变sum为mean观察平均系数。"
+    ],
+    "pitfalls": [
+      "漏乘内层2或把sum与mean梯度混淆。",
+      "复用旧grad造成累加，误认为本次导数计算错误。"
+    ],
+    "quickCheck": "x=0时(2x+1)²的梯度是多少？三元素求和改求平均后每项梯度变几分之一？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：自动微分",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+        "focus": "阅读自动微分教程的计算图、requires_grad、叶子梯度与backward；先核对一条小图，暂不保留历史计算图。"
+      }
+    ],
+    "coreDeliverable": "计算图、三输入解析/框架梯度表和求和/平均对照。"
+  },
+  "w09-d4": {
+    "hook": "为什么连续两次backward后的grad可能翻倍，而参数还没有改变？",
+    "steps": [
+      "用两个独立参数对象和同一起点，分别运行清零与不清零五轮。",
+      "记录每轮新损失、累积grad和参数更新，标出backward与更新的不同职责。",
+      "将训练预测detach重现断图，再用no_grad记录指标并区分eval模式。"
+    ],
+    "pitfalls": [
+      "两组实验共用参数对象，第二组起点已被第一组改动。",
+      "用detach切断训练预测，或认为no_grad自动关闭Dropout。"
+    ],
+    "quickCheck": "backward写了grad后若没有step，参数会变吗？detach与eval各改变哪一件事？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：自动微分",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+        "focus": "在自动微分材料中查梯度累积、detach与no_grad的计算边界。"
+      },
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "在优化教程中跟踪zero_grad、backward、step的顺序，区分有计划累积与漏清零。"
+      }
+    ],
+    "coreDeliverable": "五轮两种grad/参数轨迹和一条detach故障修复记录。"
+  },
+  "w09-d5": {
+    "hook": "同样训练30个epoch，批次5与20为什么不是相同更新预算？",
+    "steps": [
+      "给loader、model和opt分别标样本组织、参数保存和更新职责，留出最后十条验证。",
+      "从空白写清零、前向、损失、反向、更新，按样本数加权批损失。",
+      "两批次保持初始化和学习率，记录epoch、step与验证误差；验证用eval及no_grad。",
+      "说明末段留出带外推条件，噪声训练不要求精确恢复生成参数。"
+    ],
+    "pitfalls": [
+      "验证样本也进训练loader，或简单平均大小不同的批损失。",
+      "只控制epoch却把批次差异都归因于噪声。"
+    ],
+    "quickCheck": "40条训练数据每轮batch=5和20各更新几次？最后批仅2条时为何不能与大批等权？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "阅读优化教程的DataLoader训练/验证循环，标注每条API作用于数据、梯度还是参数，重点检查样本加权。"
+      }
+    ],
+    "coreDeliverable": "两种批次的完整训练/验证程序、损失轨迹与实际更新次数。"
+  },
+  "w10-d1": {
+    "hook": "两层网络不加激活，比一层线性模型多出表达能力了吗？",
+    "steps": [
+      "展开(XW1+b1)W2+b2，算等效权重和包含b1W2的偏置。",
+      "给同一组输入比较两层与合并层输出，用容差核对一致。",
+      "插入ReLU并找负隐藏值反例，说明不能再普遍合并的原因。"
+    ],
+    "pitfalls": [
+      "合并层时忘记第一层偏置还经过第二层变换。",
+      "把层数增加直接当非线性增加，或将异或四点成功当真实泛化。"
+    ],
+    "quickCheck": "两层仅Linear是否仍是仿射映射？加入ReLU时哪类输入会改变原合并等式？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "阅读构建网络教程的Linear、Sequential与激活层；将每层输出形状对应手推式，区别结构表达与训练成绩。"
+      }
+    ],
+    "coreDeliverable": "两层/合并层权重偏置计算及有无ReLU的输出对照。"
+  },
+  "w10-d2": {
+    "hook": "只检查一个权重正确，为什么偏置梯度仍可能藏着错误？",
+    "steps": [
+      "缓存两隐藏单元的前向激活和残差，标注所有参数形状。",
+      "从批平均损失倒推W2、b2再经tanh求W1、b1，偏置沿样本轴求和。",
+      "逐元素双精度中心差分且恢复参数，报告每组最大绝对/相对误差。"
+    ],
+    "pitfalls": [
+      "漏掉批平均系数或把偏置求和轴写错。",
+      "只验证一个元素，或极小梯度直接除零导致相对误差失真。"
+    ],
+    "quickCheck": "隐藏层回传为什么既乘输出权重又乘1-h²？b1梯度为什么要沿样本而不是特征轴求和？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：自动微分",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+        "focus": "阅读自动微分中的链式组合与梯度形状，用框架作为额外对照；本课手写推导和逐元素差分不能跳过。"
+      }
+    ],
+    "coreDeliverable": "完整两层反传实现和四组参数的绝对/相对误差表。"
+  },
+  "w10-d3": {
+    "hook": "两个分类器猜错同样多，错误时更自信的那个为什么损失更大？",
+    "steps": [
+      "给logits、整数类别和Softmax概率区分角色，确认n×C分数与n标签。",
+      "在每行减最大值后的分数上算交叉熵，给全类别加同一常数核对不变性。",
+      "构造相同argmax但不同错误置信度的两组分数，比较准确率与损失。"
+    ],
+    "pitfalls": [
+      "先Softmax或argmax再送入默认CrossEntropyLoss。",
+      "大分数直接exp溢出，或只平移真实类别而误测平移不变性。"
+    ],
+    "quickCheck": "真实类概率0.1与0.01谁的交叉熵更高？把所有logits加1000应改变概率吗？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "在优化教程中找分类损失的logits和整数标签接口，不添加重复Softmax。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南定位log_loss，理解概率质量与准确率不是同一指标。"
+      }
+    ],
+    "coreDeliverable": "稳定交叉熵计算、平移检验及同准确率不同损失对照。"
+  },
+  "w10-d4": {
+    "hook": "Adam学习率0.1与SGD学习率0.1，真的意味着同样大小的更新吗？",
+    "steps": [
+      "写SGD、动量和Adam分别保留哪些状态，先手算SGD一次更新。",
+      "每个优化器和学习率候选都重建参数及状态，用同起点和预算运行。",
+      "比较首十步与最终参数处损失，保留发散和慢收敛，不凭名字选赢家。"
+    ],
+    "pitfalls": [
+      "复用优化器状态，导致候选携带上一实验历史。",
+      "相同学习率数值当相同有效步长，只给最快方案更大调参预算。"
+    ],
+    "quickCheck": "修改学习率但复用动量状态，是否仍是同起点对照？确定性二次函数上的SGD是否一定有随机采样？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "在优化教程中读优化器创建、学习率与step；高级状态公式只围绕当前三方法展开，性能结论限定本课函数。"
+      }
+    ],
+    "coreDeliverable": "三优化器各三学习率的完整轨迹和重置状态记录。"
+  },
+  "w10-d5": {
+    "hook": "保存了“最佳模型”变量后继续训练，为什么最佳权重可能也变了？",
+    "steps": [
+      "固定分类划分与预算，训练有/无Dropout并保存训练验证曲线。",
+      "验证切eval并no_grad，解释模式开关与求导开关分别作用。",
+      "深复制验证最佳state_dict，训练结束加载快照，核对恢复后验证值与保存值。"
+    ],
+    "pitfalls": [
+      "最佳参数仅保存引用，后续step继续修改同一张量。",
+      "用测试挑早停轮次，或只用no_grad未切eval。"
+    ],
+    "quickCheck": "no_grad会关闭Dropout吗？最佳轮次后又训练十轮时，深复制快照与模型引用谁能保留旧参数？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "阅读优化教程的训练/验证模式与参数保存，重点验证最佳快照确实恢复。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的验证/测试职责，测试不能参与早停与Dropout选择。"
+      }
+    ],
+    "coreDeliverable": "有无Dropout曲线、最佳轮次与独立快照恢复核对。"
+  },
+  "w11-d1": {
+    "hook": "一个边缘核扫过图片时，输出通道增加了还是图片数量增加了？",
+    "steps": [
+      "画一个有效窗口，逐像素乘核求和，区分库互相关与翻核数学卷积。",
+      "设计水平/垂直边缘核，分别作用于横/竖条纹。",
+      "标注批次、输入通道、输出核和位置，比较响应方向及绝对强度。"
+    ],
+    "pitfalls": [
+      "手算翻了核但库没有翻，造成符号或位置不一致。",
+      "负响应当没有边缘，或把多核输出误认为更多样本。"
+    ],
+    "quickCheck": "2张灰度图用3个核后，样本数与输出通道数各是多少？反向亮暗边缘为何可得负响应？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "阅读Conv2d的输入/权重/输出形状及互相关定义；先核对单窗口，不将手设核称训练好的检测器。"
+      }
+    ],
+    "coreDeliverable": "两个核在两类条纹上的响应图和单窗口乘加手算。"
+  },
+  "w11-d2": {
+    "hook": "输出尺寸缩小了，感受野就一定缩小吗？",
+    "steps": [
+      "先在一轴列有效核、填充、步长并向下取整算输出长度。",
+      "把两层3×3卷积的输入/输出尺寸、累计步距和感受野列成表。",
+      "只改第二层步长1为2，用Conv2d核对尺寸并讨论小目标可能丢失。"
+    ],
+    "pitfalls": [
+      "输出格子数量与每个格子的感受野混为一谈。",
+      "漏掉向下取整、扩张或前层累计步距。"
+    ],
+    "quickCheck": "两层核3步长1时感受野是3还是5？第二层步长增大主要改变输出中心的什么关系？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "阅读Conv2d中kernel_size、stride、padding、dilation和输出形状公式；高宽分别核对，不能套转置卷积。"
+      }
+    ],
+    "coreDeliverable": "两种第二层步长的逐层尺寸/累计步距/感受野表。"
+  },
+  "w11-d3": {
+    "hook": "条纹换了位置后分类失败，是方向没学会还是记住了坐标？",
+    "steps": [
+      "逐层打印卷积、池化、展平和分类输出，计算两种分类头参数量。",
+      "预先封存新条纹位置，保持两类亮度和噪声分布一致。",
+      "从相同主体初始化、预算比较展平头与全局平均池化，按位置报告验证表现。"
+    ],
+    "pitfalls": [
+      "只因全局池化参数少就宣称泛化更好。",
+      "两类生成亮度不同，模型靠均值捷径而不是条纹方向。"
+    ],
+    "quickCheck": "展平头保留位置但全局平均丢失什么？新条纹位置测试能否代表新设备泛化？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "阅读网络构建教程中Flatten与分类头，重点核对in_features和参数数量。"
+      },
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "在Conv2d API核对池化前的通道和空间输出，先画每层形状。"
+      }
+    ],
+    "coreDeliverable": "两分类头参数/预算表及封存新位置的分层验证结果。"
+  },
+  "w11-d4": {
+    "hook": "横条纹旋转90度，为什么“增强”却让原标签失效？",
+    "steps": [
+      "写横/竖方向的标签语义，对三个安全与两个危险变换给幅度限制。",
+      "在小数组上展示原图、变体和应有标签，检查旋转与极端亮度。",
+      "先划分原对象再增强训练部分；若是检测/分割，同步处理框和掩码。"
+    ],
+    "pitfalls": [
+      "所有旋转都称标签不变，忽略方向或文字语义。",
+      "原图的多个变体先生成再随机划分，造成近重复跨集合。"
+    ],
+    "quickCheck": "横条纹90度旋转后应是什么类别？先增强再划分为什么不能当独立验证？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：视觉迁移学习",
+        "url": "https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html",
+        "focus": "在迁移教程查看训练增强与验证预处理的分别配置；本课判断是否保持标签。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的信息隔离，重点追踪原对象与衍生变体的来源。"
+      }
+    ],
+    "coreDeliverable": "五种变换的原/变图与标签判定表，以及先划分后增强流程。"
+  },
+  "w11-d5": {
+    "hook": "随机网络冻结成功了，是否已经证明预训练迁移有效？",
+    "steps": [
+      "运行冻结演示，区分随机主体无梯度与真实源任务权重。",
+      "为目标真实数据列随机初始化、冻结预训练、全模型微调三组对照。",
+      "核对权重来源、输入归一化、类别头与主体eval状态，给各方案相同评估和合理验证预算。"
+    ],
+    "pitfalls": [
+      "随机初始化后冻结，仍称加载了预训练表示。",
+      "requires_grad关闭后认为BatchNorm运行统计也自动冻结。"
+    ],
+    "quickCheck": "冻结梯度但主体仍train时，哪些层状态可能变化？迁移计划中哪份文件能证明权重来源？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：视觉迁移学习",
+        "url": "https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html",
+        "focus": "阅读视觉迁移教程的加载权重、替换分类头、冻结参数及数据变换；区分真实预训练实验与本课接口演示。"
+      }
+    ],
+    "coreDeliverable": "冻结梯度核对和有权重/输入来源的三方案迁移协议。"
+  },
+  "w12-d1": {
+    "hook": "查询更靠近某个键，为什么输出会向对应值移动而非直接复制键？",
+    "steps": [
+      "分别给查询、键和值命名，手算QK转置的相似度及sqrt(dk)缩放。",
+      "沿键轴Softmax并检查每行权重和为1，再加权V得输出。",
+      "只改三个查询方向，保持K和V不变，核对输出随权重移动。"
+    ],
+    "pitfalls": [
+      "Softmax沿查询轴，破坏每次查询的权重分配。",
+      "用键数量代替键维度缩放，或把注意力权重当现实因果解释。"
+    ],
+    "quickCheck": "Q为3×2、K为4×2、V为4×5时，权重和输出分别是什么形状？",
+    "readingGuide": [
+      {
+        "title": "Attention Is All You Need 原论文",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "focus": "在Attention原论文定位scaled dot-product attention公式；只核对Q/K/V、缩放和Softmax轴，不要求当日读整篇。"
+      }
+    ],
+    "coreDeliverable": "三个查询的相似度、归一化权重与五维值汇总对照。"
+  },
+  "w12-d2": {
+    "hook": "改了明天的值却改变今天的输出，哪条信息边界被破坏？",
+    "steps": [
+      "画真实位置和补齐位置，分别标可读键与因果未来三角。",
+      "在相似度分数上合并因果和填充掩码，再算Softmax。",
+      "改变未来及补齐值，断言过去真实位置输出不变，另检查全屏蔽行。"
+    ],
+    "pitfalls": [
+      "先汇总未来信息再把输出改零，信息已混入。",
+      "因果掩码忽略补齐键，或全行负无穷产生NaN未处理。"
+    ],
+    "quickCheck": "第2位置预测下一步时能读第3位置吗？填充掩码屏蔽的是键列还是只改最后输出？",
+    "readingGuide": [
+      {
+        "title": "Attention Is All You Need 原论文",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "focus": "在Attention原论文中查decoder masked attention与位置编码；将论文描述对应本课掩码矩阵，填充处理另按代码核对。"
+      }
+    ],
+    "coreDeliverable": "组合掩码矩阵和未来/补齐反事实不变性检查。"
+  },
+  "w12-d3": {
+    "hook": "五层小权重连乘使梯度变小，恒等残差路径多提供了什么？",
+    "steps": [
+      "手推一层x+F(x)的输入导数，找到恒等路径的1。",
+      "串联五层同一小线性分支，对比有无残差输入梯度。",
+      "画LayerNorm的单样本特征统计轴，区别BatchNorm的批统计并检查相加形状。"
+    ],
+    "pitfalls": [
+      "靠广播让不同轴形状相加，掩盖残差接口错误。",
+      "认为LayerNorm一定精确单位方差或残差必定防止任何梯度消失。"
+    ],
+    "quickCheck": "F(x)=0.1x时，一层普通和残差输入导数各是多少？LayerNorm通常跨哪个轴算均值？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "阅读网络构建材料的模块组合与形状，自己追踪相加路径，不把API使用当残差证明。"
+      },
+      {
+        "title": "Attention Is All You Need 原论文",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "focus": "在Attention原论文找残差与归一化的结构位置，核对先后顺序与特征轴。"
+      }
+    ],
+    "coreDeliverable": "五层输入梯度对照与归一化统计轴示意。"
+  },
+  "w12-d4": {
+    "hook": "损失不下降，为什么不能先把网络变大或一律裁剪梯度？",
+    "steps": [
+      "用极小干净批次从数据、形状、损失、梯度到参数变化逐项检查。",
+      "从同初值分别注入过大学习率、detach和标签形状错误。",
+      "每次只修一项并保留前后证据，说明裁剪不能修复断图或目标错误。"
+    ],
+    "pitfalls": [
+      "同时改学习率、数据和结构，无法识别真正故障。",
+      "只删掉失败批次或裁剪梯度，隐藏输入/标签问题。"
+    ],
+    "quickCheck": "参数grad为空时增大epoch能恢复被detach的路径吗？哪一步能证明step实际改变参数？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "阅读优化教程的完整顺序，逐条检查梯度和step。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "在常见陷阱中查数据与预处理错误，先确认高分是否由泄漏造成。"
+      }
+    ],
+    "coreDeliverable": "三项故障的最小复现、单因素修复及参数/损失证据。"
+  },
+  "w12-d5": {
+    "hook": "换模型又换数据划分后分数升高，消融还能归因到组件吗？",
+    "steps": [
+      "为所选轨固定目标、独立单位、主指标及训练验证测试职责。",
+      "列一个廉价基线与一项组件移除，控制输入信息、初始化与预算。",
+      "建立配置→运行ID→验证选择→冻结→测试→错误的证据链，标记虚构示例尚未实测。"
+    ],
+    "pitfalls": [
+      "完整漂亮表格来自人工数值却当真实训练成果。",
+      "消融同时增加训练量或改划分，组件收益与预算效应混在一起。"
+    ],
+    "quickCheck": "同数据但新方法多搜索十倍候选，分数差能直接归到模块吗？怎样记录公平比较条件？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南定位所选任务的主指标，写分母和聚合单位。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的训练内变换和验证边界，逐项审查拟定协议。"
+      }
+    ],
+    "coreDeliverable": "一页专项实验协议、单项消融和完整运行记录字段。"
+  },
+  "w13-vision-d1": {
+    "hook": "“发现缺陷”究竟需要整图类别、一个框还是逐像素边界？",
+    "steps": [
+      "对同一缺陷分别画类别、连续边界框和掩码，列三种输出能回答的问题。",
+      "从手绘掩码取非空位置，最大索引加一转换连续边界框。",
+      "测试空掩码、边界目标与非正面积，确定图像/标签契约。"
+    ],
+    "pitfalls": [
+      "像素闭区间与连续边界混用导致面积差一行。",
+      "仅有分类标签却用分类准确率声称定位完成。"
+    ],
+    "quickCheck": "图中一个不规则缺陷，框面积能等同缺陷像素面积吗？空掩码应返回什么标记？",
+    "readingGuide": [
+      {
+        "title": "Faster R-CNN 原论文",
+        "url": "https://arxiv.org/abs/1506.01497",
+        "focus": "在Faster R-CNN论文查检测输出的类别与框角色，不要求复现全网络。"
+      },
+      {
+        "title": "U-Net 原论文",
+        "url": "https://arxiv.org/abs/1505.04597",
+        "focus": "在U-Net论文查像素预测和标注形式，对比分割比整图类别多保留的信息。"
+      }
+    ],
+    "coreDeliverable": "同问题三种标注示例及坐标/空目标规则。"
+  },
+  "w13-vision-d2": {
+    "hook": "整体变暗就是异常时，逐图标准化会不会洗掉异常？",
+    "steps": [
+      "查看训练图各通道范围与亮度分布，写输入处理来源。",
+      "用训练通道统计变换验证，再与逐图标准化比较原图/变图。",
+      "在恒亮图和变暗图上检查零方差保护与关键亮度线索。"
+    ],
+    "pitfalls": [
+      "用验证/测试重新拟合统计，让新域均值人为归零。",
+      "逐图归一化删去绝对亮度后仍声称能检测该亮度异常。"
+    ],
+    "quickCheck": "每图都减自己的均值后，正常亮图和异常暗图的平均亮度还能区分吗？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：视觉迁移学习",
+        "url": "https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html",
+        "focus": "在迁移教程查预训练输入处理约定，与目标训练统计分开记录。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的训练内预处理，确认验证只使用既定统计。"
+      }
+    ],
+    "coreDeliverable": "训练统计/逐图标准化的图和通道统计对照。"
+  },
+  "w13-vision-d3": {
+    "hook": "十张照片来自同一零件，能当十个独立测试对象吗？",
+    "steps": [
+      "建立图片ID、零件ID、设备、批次和标签元数据。",
+      "分别设计对象分组与新设备留出，检查层级集合交集。",
+      "列各集合类别和来源数，报告只在某设备出现的类别混淆。"
+    ],
+    "pitfalls": [
+      "只检查文件ID不重叠，漏掉同零件或连拍来源。",
+      "为凑比例打散对象，或测试没有某类仍宣称该类可靠。"
+    ],
+    "quickCheck": "测试图文件全新但零件见过，测的是新零件泛化吗？设备与类别完全绑定时有什么解释困难？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的数据泄漏，追踪原对象与采集批次。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料定位分组验证相关入口；以本课元数据明确评估对象，不能只看随机比例。"
+      }
+    ],
+    "coreDeliverable": "视觉元数据清单、两种来源划分及交集/类别覆盖检查。"
+  },
+  "w13-vision-d4": {
+    "hook": "分类器能靠平均亮度猜条纹方向，是学到方向了吗？",
+    "steps": [
+      "为每图算均值、标准差及横/竖相邻差，写特征可能表达的结构。",
+      "两类保持亮度分布相同，用方向差与亮度基线对照。",
+      "按预定幅度改光照和噪声，逐样本记录脆弱规则。"
+    ],
+    "pitfalls": [
+      "生成器把类别和亮度绑定，产生容易但无效的捷径。",
+      "在全部图片上学特征阈值，再称独立验证成绩。"
+    ],
+    "quickCheck": "把所有像素同时加常数，均值与相邻差哪一个先改变？为什么能用于找捷径？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：线性模型",
+        "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+        "focus": "在线性模型指南查特征向量到分类器的fit/predict接口，先保留小特征基线。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "阅读分类指标定义，在同一来源集合比较两个规则。"
+      }
+    ],
+    "coreDeliverable": "亮度/方向特征与扰动条件的逐样本性能对照。"
+  },
+  "w13-vision-d5": {
+    "hook": "少数缺陷类全漏掉，宏平均为何比总体准确率更能暴露问题？",
+    "steps": [
+      "逐类还原真值/预测计数，指定缺陷正类与零分母规则。",
+      "算每类指标再同权平均，与按总样本汇总比较。",
+      "建立对象、光照、大小、标注、背景五类失败审核表并附各类n。"
+    ],
+    "pitfalls": [
+      "用宏平均掩盖某类没有真实样本的证据缺口。",
+      "不断删难例或改标签以让总体指标好看。"
+    ],
+    "quickCheck": "正常100张缺陷2张，缺陷全错时总体高分还能证明缺陷召回吗？宏平均如何赋类权重？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南查macro/micro平均及classification_report，始终一起报告每类support和未定义分母。"
+      }
+    ],
+    "coreDeliverable": "逐类/宏指标表与五类潜在失败的来源审核单。"
+  },
+  "w13-timeseries-d1": {
+    "hook": "传感器停机两小时，缺口可以直接填0或连成连续序列吗？",
+    "steps": [
+      "核对设备、时区、采样单位、重复时间戳和真实间隔。",
+      "给重采样均值/总和/最后值选择物理含义，保留缺测标记。",
+      "仅用已到达历史填补，给长停机划段，禁止跨段构窗。"
+    ],
+    "pitfalls": [
+      "双向插值读取未来，离线处理假装在线可用。",
+      "缺测当零，或长缺口前向填充后称真实连续观测。"
+    ],
+    "quickCheck": "测量时间已到但数据晚十分钟才收到，预测时能直接使用它吗？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP目录搜索时间序列图、采样与缺失相关主题；先确认频率和时间含义，不编造未核验章节。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的信息泄漏，检验填补在预测起点是否读取未来。"
+      }
+    ],
+    "coreDeliverable": "时间检查表、缺测/停机处理规则与每变量到达时间。"
+  },
+  "w13-timeseries-d2": {
+    "hook": "模型预测的是差分，为什么不能直接拿它与原温度比较？",
+    "steps": [
+      "生成趋势、12步季节项和噪声，分别标时间单位。",
+      "算普通与季节差分，记录首项丢失与变换后尺度。",
+      "用预测起点已知历史恢复后三个原尺度预测，不调用真实未来值。"
+    ],
+    "pitfalls": [
+      "差分预测未还原就计算原尺度误差。",
+      "多步还原偷偷加未来真值，或全序列拟合趋势。"
+    ],
+    "quickCheck": "预测下一步差分为2，起点最后温度20，原尺度预测是多少？后续步只能用哪些值恢复？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查趋势/季节性、差分与原尺度恢复主题；限定训练段证据选周期，目录讲次尚未核验。"
+      }
+    ],
+    "coreDeliverable": "两差分序列与三步原尺度还原的索引核对。"
+  },
+  "w13-timeseries-d3": {
+    "hook": "每8步重复的峰，采样从1秒变2秒后还是0.125Hz吗？",
+    "steps": [
+      "检查等间隔、观测覆盖周期数与趋势，分别画带/去趋势序列。",
+      "计算多个延迟自相关，注明大延迟可用配对数更少。",
+      "用真实采样间隔生成频率轴，核对峰周期=8×间隔并在训练分段复查。"
+    ],
+    "pitfalls": [
+      "趋势造成高相关，却把所有峰称真实周期。",
+      "步频直接写Hz，忽略秒/小时采样单位。"
+    ],
+    "quickCheck": "8步周期每步2秒对应多少秒、多少Hz？去均值能消除线性趋势吗？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查自相关、季节性与分段诊断，区分趋势和周期来源。"
+      },
+      {
+        "title": "NumPy：离散傅里叶变换",
+        "url": "https://numpy.org/doc/stable/reference/routines.fft.html",
+        "focus": "阅读NumPy FFT中的频率轴和rfftfreq参数，明确采样间隔单位。"
+      }
+    ],
+    "coreDeliverable": "趋势前后自相关图、两采样间隔的频谱轴说明。"
+  },
+  "w13-timeseries-d4": {
+    "hook": "过去12步预测未来3步，训练窗口最后一个标签越界会怎样？",
+    "steps": [
+      "画历史起止、预测起点及三个目标时刻，注明end索引语义。",
+      "按目标末端划训练/验证，边界画三条窗逐项检查。",
+      "检查设备段、到达延迟和目标不跨集合，统计相关窗口而非独立主体。"
+    ],
+    "pitfalls": [
+      "只看第一目标在训练内，后两目标已进入验证。",
+      "随机拆高度重叠窗口，或把窗口数当独立设备数。"
+    ],
+    "quickCheck": "第一目标在第99步、预测三步、训练截止100，该窗口能算完全训练样本吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：时间序列交叉验证",
+        "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+        "focus": "阅读时间序列交叉验证材料的时间先后与gap，目标跨度另由本课构窗核对。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的未来信息边界，检查标签末端而非只看输入。"
+      }
+    ],
+    "coreDeliverable": "12→3窗口构造程序及所有目标边界检查。"
+  },
+  "w13-timeseries-d5": {
+    "hook": "预测未来6步时，季节朴素能偷取第4步真实值来预测第6步吗？",
+    "steps": [
+      "固定起点和预测步长，最后值基线复制起点末值。",
+      "季节朴素从已知最后周期取对应位置，超过一周期循环历史。",
+      "按每个步长算同起点MAE/RMSE，记录周期选择依据与漂移期失败。"
+    ],
+    "pitfalls": [
+      "多步中用新的真实未来值更新，实际变成滚动一步。",
+      "复杂模型只与很弱常数比，或近零值用百分比误差失稳。"
+    ],
+    "quickCheck": "最后已知值10，固定起点预测三步的最后值基线是什么？三步中看到新真值属于哪个协议？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP定位naïve与seasonal naïve方法，核对固定起点多步规则。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南查MAE/RMSE并写目标单位，按步长分别报告。"
+      }
+    ],
+    "coreDeliverable": "最后值/季节朴素的同起点逐步误差表。"
+  },
+  "w13-language-d1": {
+    "hook": "手册检索与垃圾短信分类都输入文本，为什么输出和评价完全不同？",
+    "steps": [
+      "先写整段标签、相关文档或新答案的输出契约。",
+      "对同一句中文分别按字符和预分词空格切分，核对术语、数字、否定。",
+      "保留原文与来源ID，记录长度和未知项，切片不作为独立来源。"
+    ],
+    "pitfalls": [
+      "空格切分示例直接当通用中文分词。",
+      "清洗删除否定/单位，或将同文片段随机跨训练测试。"
+    ],
+    "quickCheck": "“不正常”删掉“不”后标签可能怎样变？检索Recall能直接代表分类准确率吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本特征提取指南读分析器、tokenization和词表，先明确单位。"
+      },
+      {
+        "title": "SentencePiece 原论文",
+        "url": "https://arxiv.org/abs/1808.06226",
+        "focus": "在SentencePiece论文查子词单位与原文本关系，完整训练算法后课再学。"
+      }
+    ],
+    "coreDeliverable": "文本任务契约及字符/词单位的信息保留对照。"
+  },
+  "w13-language-d2": {
+    "hook": "测试出现新词，为什么不能临时给TF-IDF增加一列？",
+    "steps": [
+      "手算三训练文档的词频与平滑IDF，标n与df来源。",
+      "冻结词表及IDF，再变换长重复文档与未知词测试句。",
+      "比较计数与L2归一化向量，检查零向量和忽略词序边界。"
+    ],
+    "pitfalls": [
+      "训练/测试一起fit词表或IDF。",
+      "高IDF当语义重要性，或零向量仍正常算余弦。"
+    ],
+    "quickCheck": "交换一句中两个词但计数不变，词袋向量会变吗？测试全未知词应如何记录？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本特征提取指南定位CountVectorizer、TfidfVectorizer、平滑IDF和归一化，核对fit与transform区别。"
+      }
+    ],
+    "coreDeliverable": "冻结词表的计数/TF-IDF长文与未知词对照。"
+  },
+  "w13-language-d3": {
+    "hook": "一个词从未在某类出现，为什么不应让整句概率变成0？",
+    "steps": [
+      "写固定词表下类总词数、单词计数与类别先验。",
+      "按总词数+α×词表大小计算平滑概率并用对数累加。",
+      "改变α与先验对比短句预测，保留多数类对照。"
+    ],
+    "pitfalls": [
+      "平滑分母漏乘词表大小。",
+      "测试扩词表改变训练概率，或把类分数当已校准置信。"
+    ],
+    "quickCheck": "词表4、类总词10、α=1时未见词概率分母是多少？为何用对数相加比直接连乘稳定？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：朴素贝叶斯",
+        "url": "https://scikit-learn.org/stable/modules/naive_bayes.html",
+        "focus": "在朴素贝叶斯指南查MultinomialNB、alpha与先验，明确条件独立近似。"
+      },
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本提取指南核对非负词计数与固定词表，避免测试扩维。"
+      }
+    ],
+    "coreDeliverable": "平滑概率手算及先验/α改变的预测对照。"
+  },
+  "w13-language-d4": {
+    "hook": "最高权重词是某机构名称，模型可能学了主题还是来源捷径？",
+    "steps": [
+      "规划多数类、朴素贝叶斯与TF-IDF逻辑回归的同来源划分对照。",
+      "核对正类和训练词表，给最高正负权重词关联原句。",
+      "识别模板、日期和机构线索，提出来源留出检验而非凭词表直觉结论。"
+    ],
+    "pitfalls": [
+      "忽略类别顺序，权重正负解释反了。",
+      "只展示符合直觉的词，遗漏高权重格式捷径。"
+    ],
+    "quickCheck": "正类从spam换ham，权重符号解释会怎样？高权重机构名为什么需要新来源验证？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：线性模型",
+        "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+        "focus": "在线性模型指南查看逻辑回归系数、正则与类别映射。"
+      },
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本提取指南跟踪词列与词表对应，IDF仅在训练拟合。"
+      }
+    ],
+    "coreDeliverable": "三基线协议及最高正负词的来源/原句审核表。"
+  },
+  "w13-language-d5": {
+    "hook": "模板只换了数字，是否能作为独立测试短信？",
+    "steps": [
+      "保留原文、版本和来源，先绑定同文片段与精确规范化重复。",
+      "用词集合Jaccard生成近重复候选，核查词序、数字与短句误合并。",
+      "十条样例分清标签错误、歧义与模板重复，固定规则后再划分。"
+    ],
+    "pitfalls": [
+      "Jaccard相似自动等于同来源，忽略短句和改写。",
+      "按模型错分来改测试标签或删难句提分。"
+    ],
+    "quickCheck": "词集合相同但“正常/不正常”词序不同，Jaccard能发现语义区别吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的重复来源与独立测试边界。"
+      },
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本特征提取指南查看规范化/分词会保留哪些线索，近重复不由单个表示保证。"
+      }
+    ],
+    "coreDeliverable": "来源分组、近重复候选与十条标签歧义记录。"
+  },
+  "w14-vision-d1": {
+    "hook": "CNN训练满分后，怎样确认验证图片从未用于更新？",
+    "steps": [
+      "核对一个批次的NCHW、标签范围和n×C logits，先过极小批检查。",
+      "写train更新与eval/no_grad验证两条路径，按样本数记录损失。",
+      "在同来源划分上对照方向特征与小CNN，保留配置、候选和实际预算。"
+    ],
+    "pitfalls": [
+      "验证阶段误调用backward/step，或者标签与图片错位。",
+      "只给最后权重，缺读取脚本、划分和选择日志。"
+    ],
+    "quickCheck": "输入8×1×16×16、三类任务的logits应是什么形状？哪个环节能证明验证没更新参数？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "在优化教程对照训练/验证循环和状态切换，保留更新次数。"
+      },
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "在Conv2d API核对每层通道和空间形状，再计算分类头输入。"
+      }
+    ],
+    "coreDeliverable": "可调试CNN训练协议、同划分基线对照及完整配置日志。"
+  },
+  "w14-vision-d2": {
+    "hook": "BatchNorm权重冻结了，运行均值为什么仍可能变？",
+    "steps": [
+      "列可训练weight/bias和running_mean/var两种状态。",
+      "用同初始层、相同偏移批次分别train与eval，记录统计和输出。",
+      "冻结参数后重做对照，检查保存状态是否含运行缓冲。"
+    ],
+    "pitfalls": [
+      "requires_grad=False当所有模型状态都冻结。",
+      "在测试集更新运行统计后仍称固定模型测试。"
+    ],
+    "quickCheck": "冻结weight/bias但保持train，running_mean可能变吗？为什么完整state_dict必须保存缓冲？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：优化模型参数",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/optimization_tutorial.html",
+        "focus": "在优化教程查train/eval在验证中的职责，不将no_grad等同固定状态。"
+      },
+      {
+        "title": "PyTorch：视觉迁移学习",
+        "url": "https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html",
+        "focus": "在迁移教程看冻结特征网络并留意归一化状态，核对源/目标域输入。"
+      }
+    ],
+    "coreDeliverable": "冻结前后的train/eval运行统计变化对照。"
+  },
+  "w14-vision-d3": {
+    "hook": "主路从3通道8×8变成6通道4×4，跳连怎样才能相加？",
+    "steps": [
+      "画主路每层形状，确认最终6×4×4。",
+      "设计1×1投影及匹配步长，断言两支所有轴一致。",
+      "统计投影新增参数，给普通/残差对照注明容量与更新预算。"
+    ],
+    "pitfalls": [
+      "依赖广播补齐通道，造成语义错误。",
+      "结构与容量都变了却把收益全部归于跳连。"
+    ],
+    "quickCheck": "空间减半且通道翻倍时，恒等支路够用吗？投影解决形状问题同时增加了什么成本？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "在构建网络教程查模块属性与forward组合，明确主路与跳连。"
+      },
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "阅读Conv2d的1×1核、stride与输出尺寸，用实际张量验证投影。"
+      }
+    ],
+    "coreDeliverable": "变通道/尺寸残差块的形状图和参数/预算表。"
+  },
+  "w14-vision-d4": {
+    "hook": "解冻最后一层后它仍不更新，是学习率太小还是没进优化器？",
+    "steps": [
+      "列冻结、末层解冻、全微调三阶段的可训练参数。",
+      "按ID核对优化器参数组唯一且覆盖所有应更新参数，给主体和头各写学习率。",
+      "规定验证继续/停止规则，记录真实权重来源与输入契约。"
+    ],
+    "pitfalls": [
+      "解冻后优化器仍只持有分类头，或同参数进两个组。",
+      "随机主体的接口演示被报成真实迁移排名。"
+    ],
+    "quickCheck": "requires_grad变True但参数不在optimizer里，step会更新它吗？微调比较还应控制哪些数据条件？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：视觉迁移学习",
+        "url": "https://docs.pytorch.org/tutorials/beginner/transfer_learning_tutorial.html",
+        "focus": "阅读迁移教程冻结与微调路径，重点核对参数组、公开权重和分类头；学习率比例应验证而非背固定数字。"
+      }
+    ],
+    "coreDeliverable": "三阶段微调协议与参数组覆盖/唯一性检查。"
+  },
+  "w14-vision-d5": {
+    "hook": "热图落在缺陷上，能直接说明缺陷像素是预测原因吗？",
+    "steps": [
+      "固定目标分数和归一化求输入梯度，区分局部敏感性与因果。",
+      "设计背景替换、目标遮挡、亮度变化，分别写标签保持条件。",
+      "对同对象比较预测差和变化图，保留会损坏目标或引入伪影的失败。"
+    ],
+    "pitfalls": [
+      "挑最好看热图就宣布模型关注了正确原因。",
+      "遮住目标或极端变暗后仍称干预保持原标签。"
+    ],
+    "quickCheck": "背景替换造成新边缘伪影，预测改变一定是背景捷径吗？还要排除什么替代解释？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：自动微分",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+        "focus": "在自动微分教程看输入requires_grad和目标标量回传；梯度只验证敏感性接口。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的评价边界，干预后若据结果改模型需标开发使用。"
+      }
+    ],
+    "coreDeliverable": "三项干预条件表、原/变图和预测差，而非单张热图结论。"
+  },
+  "w14-timeseries-d1": {
+    "hook": "修改明天温度后今天的滚动均值也变了，特征哪里偷看未来？",
+    "steps": [
+      "为三个滞后和两个滚动统计写包含的索引。",
+      "先移位再汇总或显式切历史窗，手算一行。",
+      "修改未来值做不变性测试，检查段边界、历史不足和训练内缩放。"
+    ],
+    "pitfalls": [
+      "rolling包含当前目标或使用居中窗口。",
+      "因果窗口正确但标准化拟合全序列，仍泄漏未来。"
+    ],
+    "quickCheck": "预测t时刻值，滞后1应取t还是t-1？过去三点均值能包含目标t吗？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查滞后/回归预测的历史输入关系，先限定可用时点。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的预处理fit范围，为窗口与缩放各做一项隔离检查。"
+      }
+    ],
+    "coreDeliverable": "五因果特征索引表和未来修改不变性检查。"
+  },
+  "w14-timeseries-d2": {
+    "hook": "同一模型在稳定末段表现好，为什么还要检验多个过去起点？",
+    "steps": [
+      "选择扩展窗或固定窗，写旧数据价值与重训预算假设。",
+      "设计三折过去训练/未来验证及gap，每折重新拟合处理。",
+      "核对实际时间和目标末端，保留独立最后测试段。"
+    ],
+    "pitfalls": [
+      "先全序列拟合变换再滚动切折。",
+      "共享历史的折数当独立设备数，或gap行数等同小时。"
+    ],
+    "quickCheck": "第二折训练能读取第三折未来吗？扩展窗和固定窗各舍弃什么历史信息？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：时间序列交叉验证",
+        "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+        "focus": "阅读TimeSeriesSplit的扩展训练和gap索引示例。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP定位rolling forecasting origin概念，明确各起点是否重新训练。"
+      }
+    ],
+    "coreDeliverable": "三折时间范围、处理拟合范围与未用测试记录。"
+  },
+  "w14-timeseries-d3": {
+    "hook": "滞后12的模型比分滞后1差，是模型差还是评估起点不相同？",
+    "steps": [
+      "用共同最大历史后的目标起点建立滞后1、3、12特征。",
+      "时间内验证线性/岭候选，缩放与正则均只由过去拟合。",
+      "冻结后比较同起点未来误差与残差自相关，不仅追系数。"
+    ],
+    "pitfalls": [
+      "不同滞后数有效起点不同，混入任务难度变化。",
+      "相关滞后系数不稳就认定预测必坏，或只追生成参数。"
+    ],
+    "quickCheck": "要公平比1与12滞后，能否让前者多评11个早期目标？残差周期说明的是线索还是唯一原因？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：线性模型",
+        "url": "https://scikit-learn.org/stable/modules/linear_model.html",
+        "focus": "在线性模型指南读Ridge与尺度约定，核对训练内惩罚选择。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查自回归与残差诊断主题，用同起点朴素对照验证价值。"
+      }
+    ],
+    "coreDeliverable": "共同起点的六模型候选表及冻结残差诊断。"
+  },
+  "w14-timeseries-d4": {
+    "hook": "明天班次可提前知道，明天实测温度也可以当预测输入吗？",
+    "steps": [
+      "列五候选外生量的测量、到达、计划和实际执行时间。",
+      "分成历史可见、未来已知和未来未知，拒绝未来实测量。",
+      "设计合法外生消融；需预测的外生量用预测值并记录误差，不换真值。"
+    ],
+    "pitfalls": [
+      "未来日历与实测环境因为形状相同就都当可用。",
+      "外生时钟错位或缺测后仍认为同一行同步。"
+    ],
+    "quickCheck": "预测下周负荷时计划班次和真实未来气温哪个可直接使用？如果气温由另一模型预测应如何评价？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查预测回归与外生变量的未来可得性假设。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的目标/未来泄漏，逐字段检查到达时间。"
+      }
+    ],
+    "coreDeliverable": "五外生特征可用性表及同历史同预算消融。"
+  },
+  "w14-timeseries-d5": {
+    "hook": "递归模型预测第2步时应读自己的第1步预测，还是真实第1步？",
+    "steps": [
+      "画递归回填与直接三输出的输入/目标关系。",
+      "固定起点，不接收未来真值，定义直接模型训练目标末端。",
+      "按三个步长报告同起点误差、参数和预算，声明是否另作滚动一步。"
+    ],
+    "pitfalls": [
+      "每一步用真实未来更新，却称固定起点多步预测。",
+      "直接模型三目标跨训练边界，或只报短步长主导平均。"
+    ],
+    "quickCheck": "第1步预测错了，递归第2步为什么可能继续受影响？直接模型减少这条路径但增加什么负担？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查多步预测生成与基线，核对起点更新规则。"
+      },
+      {
+        "title": "scikit-learn：时间序列交叉验证",
+        "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+        "focus": "阅读时间序列验证的目标跨度边界，直接多输出标签必须完全在训练内。"
+      }
+    ],
+    "coreDeliverable": "递归/直接的输入更新图与逐步误差评估协议。"
+  },
+  "w14-language-d1": {
+    "hook": "手设“同义词”向量很接近，能证明真实模型理解了同义吗？",
+    "steps": [
+      "用人工非零向量手算余弦，给正尺度缩放做不变性检查。",
+      "区分词、句、上下文向量与随机表，记录模型来源和长度接口。",
+      "设计词面/语义检索的同义、否定、数字、术语四类查询对照。"
+    ],
+    "pitfalls": [
+      "人工或随机向量叫预训练语义证据。",
+      "高相似当文档能回答问题，或忽略零向量余弦无定义。"
+    ],
+    "quickCheck": "向量乘正数3后余弦变吗？“低于80”和“高于80”同词高相似是否说明可互换？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本特征提取指南核对词面向量与余弦比较基线。"
+      },
+      {
+        "title": "BERT 原论文",
+        "url": "https://arxiv.org/abs/1810.04805",
+        "focus": "在BERT论文查看上下文表示的动机，区分同词不同句表示与静态表。"
+      }
+    ],
+    "coreDeliverable": "余弦手算与四类查询的词面/语义对照协议。"
+  },
+  "w14-language-d2": {
+    "hook": "同一句补齐更多零向量，未掩码平均为什么会变？",
+    "steps": [
+      "给有效词与padding画mask，算有效位置平均分母。",
+      "对手设查询按有效键Softmax汇总，检查每行和为1。",
+      "追加不同数量和值的padding，验证两种掩码池化输出不变并拒绝全空输入。"
+    ],
+    "pitfalls": [
+      "padding为零就认为不会影响平均分母。",
+      "没有位置/上下文的池化仍声称能区别词序。"
+    ],
+    "quickCheck": "两个有效词加两个零padding，除4与除2哪个是有效平均？注意力输出维度由词数还是值维决定？",
+    "readingGuide": [
+      {
+        "title": "Attention Is All You Need 原论文",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "focus": "在Attention论文定位加权值汇总公式，核对掩码归一化键轴。"
+      },
+      {
+        "title": "PyTorch：张量入门",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/tensorqs_tutorial.html",
+        "focus": "在张量教程查布尔索引和形状，核对padding追加不改变有效输出。"
+      }
+    ],
+    "coreDeliverable": "不同补齐长度的平均/注意力不变性表。"
+  },
+  "w14-language-d3": {
+    "hook": "中文100字就等于模型100个token吗？",
+    "steps": [
+      "用相邻字符对频数理解合并动机，区分手例与完整子词算法。",
+      "核对真实模型词表、嵌入行和特殊token配套关系。",
+      "审核中英术语、数字和长段的实际token数及截断证据位置。"
+    ],
+    "pitfalls": [
+      "任意换词表却沿用原权重，符号与嵌入错配。",
+      "按字符数预估token预算，编造未运行的未知率。"
+    ],
+    "quickCheck": "同一个特殊token索引换了语义，旧嵌入能直接用吗？截断首段为何可能删答案条件？",
+    "readingGuide": [
+      {
+        "title": "SentencePiece 原论文",
+        "url": "https://arxiv.org/abs/1808.06226",
+        "focus": "在SentencePiece论文查子词训练目标和原文本规范化，字符对计数仅作动机。"
+      },
+      {
+        "title": "BERT 原论文",
+        "url": "https://arxiv.org/abs/1810.04805",
+        "focus": "在BERT论文查WordPiece、特殊输入和长度设定，实际分词器接口需另核对。"
+      }
+    ],
+    "coreDeliverable": "术语/数字/长文token审核表与截断证据记录。"
+  },
+  "w14-language-d4": {
+    "hook": "上下文长度翻倍，注意力分数矩阵为什么约变四倍？",
+    "steps": [
+      "写分类可看全段、生成不能看未来的信息条件。",
+      "按batch×heads×length²计算单层FP32字节，核对两长度比例。",
+      "为分类与长手册检索选择截断/分段，记录证据损失和实际资源待测项。"
+    ],
+    "pitfalls": [
+      "分数矩阵理论字节当整个训练峰值。",
+      "更大窗口当解决来源/证据问题，或双向表示用于未来不可见任务。"
+    ],
+    "quickCheck": "长度128到256矩阵元素乘几？优化实现不存完整矩阵后，模型是否就没有其他内存？",
+    "readingGuide": [
+      {
+        "title": "Attention Is All You Need 原论文",
+        "url": "https://arxiv.org/abs/1706.03762",
+        "focus": "在Attention论文定位多头、前馈和序列长度相关运算，成本不止一个矩阵。"
+      },
+      {
+        "title": "BERT 原论文",
+        "url": "https://arxiv.org/abs/1810.04805",
+        "focus": "在BERT论文查看双向输入与适用任务，信息是否合法由预测时点决定。"
+      }
+    ],
+    "coreDeliverable": "两任务上下文方案和长度/资源/证据损失表。"
+  },
+  "w14-language-d5": {
+    "hook": "冻结小编码器省参数，为什么仍需要计算全部前向？",
+    "steps": [
+      "核对真实权重、分词器、语言、最大长度与许可证。",
+      "制定TF-IDF、冻结编码器、微调三方案的同来源验证对照。",
+      "记录梯度、优化器与前向成本，给领域难例和资源上限写停止条件。"
+    ],
+    "pitfalls": [
+      "随机Linear层冻结就写有真实预训练语言能力。",
+      "仅比较可训练参数，宣称整体延迟低且不计前向成本。"
+    ],
+    "quickCheck": "冻结编码器后head得到梯度，编码器前向能省掉吗？微调无收益但成本更高时怎么停止？",
+    "readingGuide": [
+      {
+        "title": "BERT 原论文",
+        "url": "https://arxiv.org/abs/1810.04805",
+        "focus": "在BERT论文查看预训练/下游微调和输入配套；实际权重来源需明确，不以论文名称替代加载记录。"
+      },
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本特征提取指南建立TF-IDF低算力基线，保持相同来源划分。"
+      }
+    ],
+    "coreDeliverable": "有真实接口核对的三方案协议及风险/停止规则。"
+  },
+  "w15-vision-d1": {
+    "hook": "同一目标被两个高置信框圈中，为什么只能算一次成功？",
+    "steps": [
+      "按连续边界手算两真框与三预测框的IoU矩阵。",
+      "按置信降序做同类一对一匹配，匹配过的真框不再使用。",
+      "比较两个IoU阈值的TP/FP/FN，声明简化计数不是完整AP。"
+    ],
+    "pitfalls": [
+      "重复预测都算TP，虚增成功数量。",
+      "坐标约定混用，或直接把简化匹配与官方AP比较。"
+    ],
+    "quickCheck": "一个真框对应两个IoU达标预测，最多几个TP？剩下一个是哪种错误？",
+    "readingGuide": [
+      {
+        "title": "Faster R-CNN 原论文",
+        "url": "https://arxiv.org/abs/1506.01497",
+        "focus": "在Faster R-CNN原论文查边界框、类别与评价协议角色；本课只演练几何/匹配，不要求训练检测器。"
+      }
+    ],
+    "coreDeliverable": "IoU手算矩阵、两阈值一对一匹配与误报/漏报表。"
+  },
+  "w15-vision-d2": {
+    "hook": "全背景预测几乎全对，为什么缺陷分割仍可能完全失败？",
+    "steps": [
+      "对小目标掩码数交集、并集与双方阳性数，手算IoU/Dice。",
+      "实现明确双空处理，测试完美、漏检、部分重叠、全空四例。",
+      "把含目标图与双空图分报，区分硬掩码评价与软概率损失。"
+    ],
+    "pitfalls": [
+      "双空高分图很多，平均指标掩盖目标漏检。",
+      "把每个像素当独立样本或未经阈值说明直接算硬Dice。"
+    ],
+    "quickCheck": "一个含缺陷真图预测全空，其目标IoU是多少？双空满分约定为什么要单独列数量？",
+    "readingGuide": [
+      {
+        "title": "U-Net 原论文",
+        "url": "https://arxiv.org/abs/1505.04597",
+        "focus": "在U-Net原论文查看像素输出与分割标签，区分结构与评价定义。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料核对计数和零分母约定；本课Dice/IoU按显式掩码公式验证。"
+      }
+    ],
+    "coreDeliverable": "四边界掩码的IoU/Dice结果与双空规则。"
+  },
+  "w15-vision-d3": {
+    "hook": "大量容易正常样本占据损失，Focal Loss具体改变了谁的权重？",
+    "steps": [
+      "对真类概率高/低两例算交叉熵和(1-pt)^γ因子。",
+      "将γ设0、类别权重设1，核对退回普通交叉熵。",
+      "固定来源划分规划普通、类别加权、Focal对照，预设少数类与误报指标。"
+    ],
+    "pitfalls": [
+      "拿不同损失的数值直接当同一种性能比较。",
+      "重复过采样当新增独立缺陷对象，或从测试选γ。"
+    ],
+    "quickCheck": "pt=0.9和0.1哪个被Focal因子压低更多？γ=0且无类权重时得到什么损失？",
+    "readingGuide": [
+      {
+        "title": "Focal Loss 原论文",
+        "url": "https://arxiv.org/abs/1708.02002",
+        "focus": "在Focal Loss论文定位损失公式、pt与聚焦参数，先验证γ=0边界。"
+      },
+      {
+        "title": "scikit-learn：概率校准",
+        "url": "https://scikit-learn.org/stable/modules/calibration.html",
+        "focus": "阅读概率校准指南的可靠性概念，注意修改损失后概率质量需另验。"
+      }
+    ],
+    "coreDeliverable": "Focal因子手算及三损失的公平对照计划。"
+  },
+  "w15-vision-d4": {
+    "hook": "正常零件只是挪了位置，为何平均模板也会报异常？",
+    "steps": [
+      "仅用正常训练图算均值模板，写对齐和变化有限的假设。",
+      "分别改变正常姿态/光照与加入缺陷，比较全图均值误差和区域误差。",
+      "用验证定区域与阈值，保留正常高误差和异常低误差案例。"
+    ],
+    "pitfalls": [
+      "把重建误差直接当缺陷概率。",
+      "用异常测试标签挑阈值，或平均全图稀释小缺陷。"
+    ],
+    "quickCheck": "一个小亮点的误差被整图平均会怎样？区域最大又为什么可能对正常噪声报警？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：异常与新颖性检测",
+        "url": "https://scikit-learn.org/stable/modules/outlier_detection.html",
+        "focus": "阅读异常/新颖性检测指南的仅正常训练与异常分数含义，区分训练污染。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南选误报/漏报评价，阈值依验证而非测试标签。"
+      }
+    ],
+    "coreDeliverable": "正常变化/缺陷变化的两评分对照及阈值选择协议。"
+  },
+  "w15-vision-d5": {
+    "hook": "误报便宜、漏检昂贵时，最高F1阈值一定是最佳行动吗？",
+    "steps": [
+      "给误报、漏报成本写单位与假设部署比例。",
+      "在同验证分数上扫描阈值，保留四格计数并算两情景成本。",
+      "冻结各情景阈值，分析阳性率改变怎样影响报警精确率。"
+    ],
+    "pitfalls": [
+      "按测试改阈值或成本权重，事后挑有利点。",
+      "混用每图、每零件与每天成本单位。"
+    ],
+    "quickCheck": "漏检代价翻十倍通常推动阈值往哪边？正类更稀少时旧精确率可直接搬用吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南查precision/recall与阈值曲线，成本用本课明确计数计算。"
+      },
+      {
+        "title": "scikit-learn：概率校准",
+        "url": "https://scikit-learn.org/stable/modules/calibration.html",
+        "focus": "在校准材料区分排序、概率质量与行动阈值，不用校准代替成本确认。"
+      }
+    ],
+    "coreDeliverable": "两成本情景的阈值、混淆计数及部署比例敏感性表。"
+  },
+  "w15-timeseries-d1": {
+    "hook": "正常工况切换很罕见，就一定是故障吗？",
+    "steps": [
+      "先写异常事件、合法工况和允许检测延迟的语义。",
+      "正常训练段计算均值/标准差与中位数/MAD，注入极端值对比。",
+      "对MAD=0规定替代规则，验证阈值并将高分称待确认报警。"
+    ],
+    "pitfalls": [
+      "MAD乘1.4826便认为任何分布都有正态概率保证。",
+      "尺度为0只塞极小数制造巨大分数，或全时段拟合正常统计。"
+    ],
+    "quickCheck": "常量正常设备MAD=0，直接除以它会怎样？高统计分数还需要哪种事件依据？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：异常与新颖性检测",
+        "url": "https://scikit-learn.org/stable/modules/outlier_detection.html",
+        "focus": "阅读异常/新颖性检测指南的训练污染与异常分数范围。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP找时间图与异常/工况诊断，先分语义再做统计评分。"
+      }
+    ],
+    "coreDeliverable": "事件定义及极端值/工况下两种尺度评分对照。"
+  },
+  "w15-timeseries-d2": {
+    "hook": "一个尖峰进去又回来，最后值残差为何能触发两次？",
+    "steps": [
+      "把每条预测绑定起点和目标时间，固定预测减真值的符号。",
+      "生成短尖峰、持续偏移和渐变，算原值与绝对预测残差。",
+      "用正常验证误差定阈值，按事件检查进入/回落及跟随漂移。"
+    ],
+    "pitfalls": [
+      "把尖峰进入与回落的大残差称两次独立故障。",
+      "训练残差定阈值过乐观，或残差错位一个时刻。"
+    ],
+    "quickCheck": "持续温度偏移时最后值预测是否可能很快跟上而残差变小？这对故障检测有什么局限？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：异常与新颖性检测",
+        "url": "https://scikit-learn.org/stable/modules/outlier_detection.html",
+        "focus": "在异常检测指南区别分数与事件标签，不将两点警报当两故障。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查残差概念与时间对齐，用本课预测减真值约定核对符号。"
+      }
+    ],
+    "coreDeliverable": "三异常形态的原值/残差对照及起点目标表。"
+  },
+  "w15-timeseries-d3": {
+    "hook": "普通对称填充的卷积，为何可能让今天的输出读取明天？",
+    "steps": [
+      "画两层时间核可读索引，只在左侧补齐并正确对齐下一步目标。",
+      "核算两核3步长1感受野5，再按扩张重新计算。",
+      "修改未来检查过去输出不变，与同历史长度线性基线对照。"
+    ],
+    "pitfalls": [
+      "左右对称padding引入未来，仍称在线因果。",
+      "历史长度增加的收益全部归于卷积结构。"
+    ],
+    "quickCheck": "因果卷积输出允许读已观察当前值吗？若预测下一步，标签还应往哪个方向移？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "阅读Conv2d API的核/填充/扩张形状机制；它并非时间因果保证，本课需显式索引验证。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查预测起点与历史边界，卷积输入遵守同一信息条件。"
+      }
+    ],
+    "coreDeliverable": "两层因果窗口/感受野图及未来修改检查。"
+  },
+  "w15-timeseries-d4": {
+    "hook": "设备A的末状态传给设备B，会让B第一步多读到什么？",
+    "steps": [
+      "手算固定权重RNN的输入与旧状态更新。",
+      "两设备分别以0起点与串接旧状态运行，对比B的输出。",
+      "演示detach保留数值但截求导，再区分清零与合法同设备上下文。"
+    ],
+    "pitfalls": [
+      "跨设备不重置，混入来源信息。",
+      "detach当清空状态，或验证结束状态回流训练。"
+    ],
+    "quickCheck": "hidden.detach()之后状态数值是否归零？跨设备与同设备连续段的重置规则为何不同？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：自动微分",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/autogradqs_tutorial.html",
+        "focus": "在自动微分教程查detach的图边界，不把它理解为数值清零。"
+      },
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "阅读网络构建的持久模块/每次输入关系，按设备明确状态归属。"
+      }
+    ],
+    "coreDeliverable": "两设备重置/串接输出表和detach/清零职责说明。"
+  },
+  "w15-timeseries-d5": {
+    "hook": "预测区间很宽，覆盖率满分也有用吗？",
+    "steps": [
+      "分训练、独立校准和测试时段，模型与半宽各有拟合范围。",
+      "对一步和三步分别取验证绝对误差分位，固定半宽。",
+      "按时期报告测试覆盖和宽度，注明时间相关与漂移限制。"
+    ],
+    "pitfalls": [
+      "用训练误差或反复选模型的校准集当独立校准。",
+      "只给覆盖率不报宽度，或宣称时间序列有无条件保证。"
+    ],
+    "quickCheck": "区间从±1放到±100可能提升覆盖，为什么还要报告宽度？测试后扩大半宽还算独立测试吗？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP定位预测区间和误差随步长变化，先理解范围与覆盖。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料核对测试职责；本课经验分位区间不自动享有共形保证。"
+      }
+    ],
+    "coreDeliverable": "两步长三时段协议及覆盖率/宽度表。"
+  },
+  "w15-language-d1": {
+    "hook": "长文多重复同一词，就应永远排在短而精确的答案前吗？",
+    "steps": [
+      "手算词频饱和、长度归一化和指定平滑IDF的贡献。",
+      "在相同固定文档库比较TF-IDF与BM25排名。",
+      "加入术语、同义和数字条件查询，记录同词但不支持条件的错误。"
+    ],
+    "pitfalls": [
+      "不同实现IDF约定混用却称数值复现。",
+      "含关键词就标相关，或用测试标签调检索参数。"
+    ],
+    "quickCheck": "同词从1次到2次与10次到11次，BM25影响为何不同？“80℃以下”匹配“80℃以上”算相关吗？",
+    "readingGuide": [
+      {
+        "title": "Stanford 信息检索教材：BM25",
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/okapi-bm25-a-non-binary-model-1.html",
+        "focus": "在Stanford BM25资料查看词频饱和、长度与IDF定义，逐项核对本课简化实现。"
+      },
+      {
+        "title": "Stanford 信息检索教材：排序评估",
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+        "focus": "在排序评估资料查相关性标注而非仅关键词出现。"
+      }
+    ],
+    "coreDeliverable": "TF-IDF/BM25三类查询排名与条件错误表。"
+  },
+  "w15-language-d2": {
+    "hook": "定义在段末、例外在下一段，切开后检索到前段够回答吗？",
+    "steps": [
+      "为合法长文保留原文版本、标题和字符/token起止位置。",
+      "比较短、长和重叠切段，核对五查询的必要证据是否完整。",
+      "先来源分组再切段，去除前k同区域重复，记录长度与检索成本。"
+    ],
+    "pitfalls": [
+      "字符段当token段，截断术语、表格或例外条件。",
+      "同文各段跨集合，或重叠重复命中当多份独立证据。"
+    ],
+    "quickCheck": "重叠增大后前3条都同一原文区域，增加的是证据多样性还是重复？",
+    "readingGuide": [
+      {
+        "title": "Retrieval-Augmented Generation 原论文",
+        "url": "https://arxiv.org/abs/2005.11401",
+        "focus": "在RAG论文查看检索文档如何进入回答上下文，原文支持边界应保留。"
+      },
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本提取指南核对固定索引与输入单位，分段参数只用开发问题选择。"
+      }
+    ],
+    "coreDeliverable": "三切段方案的五查询证据覆盖/位置与成本表。"
+  },
+  "w15-language-d3": {
+    "hook": "答案库里没有答案的题，Recall分母应该是多少？",
+    "steps": [
+      "为十查询标相关文档、必要证据和无答案状态，保留理由。",
+      "手算Recall@3与首相关倒数排名，跨查询平均MRR。",
+      "按原文去重命中，单列无答案及标注未知项，不混用任一证据与全部证据目标。"
+    ],
+    "pitfalls": [
+      "单查询RR当整体MRR。",
+      "无相关文档直接除零，或重复片段当多个独立相关来源。"
+    ],
+    "quickCheck": "第一个相关结果在第3位时RR是多少？若有两份必要证据只找到一份，任一命中和Recall如何不同？",
+    "readingGuide": [
+      {
+        "title": "Stanford 信息检索教材：排序评估",
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+        "focus": "在Stanford排序评估资料查precision/recall与排名评价，注明k和相关标注。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对跨样本平均及零分母约定，不让计分掩盖无答案。"
+      }
+    ],
+    "coreDeliverable": "十查询相关标注、Recall@3/MRR和无答案单列结果。"
+  },
+  "w15-language-d4": {
+    "hook": "检索到了正确段落，答案仍可能错在哪里？",
+    "steps": [
+      "先建立可追查的原句抽取基线，保存问题、检索排名和证据位置。",
+      "分别构造检索成功但回答错、检索失败与无答案三种案例。",
+      "逐句核对数字、单位、条件和来源支持，遇冲突或无证据按规则拒答。"
+    ],
+    "pitfalls": [
+      "检索Recall高便称回答事实可靠。",
+      "引用只有同词的标题，或抽取原句仍答非所问。"
+    ],
+    "quickCheck": "证据说“低于80才允许”，答案说“高于80允许”，检索和回答各应怎样计错？",
+    "readingGuide": [
+      {
+        "title": "Retrieval-Augmented Generation 原论文",
+        "url": "https://arxiv.org/abs/2005.11401",
+        "focus": "在RAG论文分开识别检索器、证据输入和生成器；本课抽取实现不冒充完整生成复现。"
+      },
+      {
+        "title": "Stanford 信息检索教材：排序评估",
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+        "focus": "在排序评估资料核对证据找回，回答支持须逐陈述另查。"
+      }
+    ],
+    "coreDeliverable": "三失败类型的问题/证据/回答及分层计错表。"
+  },
+  "w15-language-d5": {
+    "hook": "每句都有支持，但漏掉关键步骤，能算完整答案吗？",
+    "steps": [
+      "为十问题先列必要要点及可支持的原文位置。",
+      "将答案拆陈述，标支持、矛盾、无依据，再独立核对要点覆盖。",
+      "单列应答/无答案问题，报告回答覆盖与已答正确性，AI反馈保留证据理由。"
+    ],
+    "pitfalls": [
+      "支持比例代替完整性，忽略必要条件遗漏。",
+      "拒答全部还报100%可靠，或流畅/词重叠代替事实核查。"
+    ],
+    "quickCheck": "答案只给第一步且完全忠实，支持率100%能说明步骤完整吗？零回答时正确率该怎样显示？",
+    "readingGuide": [
+      {
+        "title": "Retrieval-Augmented Generation 原论文",
+        "url": "https://arxiv.org/abs/2005.11401",
+        "focus": "在RAG论文查看答案与证据的关系，数值/条件支持按原文逐句检查。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料核对覆盖和有效分母，零覆盖不赋满分。"
+      }
+    ],
+    "coreDeliverable": "十问的陈述支持、关键点覆盖与拒答/回答结果表。"
+  },
+  "w16-vision-d1": {
+    "hook": "噪声测试通过了，能说新相机也可靠了吗？",
+    "steps": [
+      "为噪声、光照、压缩分别规定保持标签的幅度。",
+      "固定模型和阈值逐档测指标，记录原对象ID及失败图。",
+      "另设真实来源留出，分开报告合成扰动和新来源证据。"
+    ],
+    "pitfalls": [
+      "同图多变体计成多个独立来源。",
+      "每个扰动强度重新调阈值，却报告固定模型稳健性。"
+    ],
+    "quickCheck": "同一图生成100种噪声，新增了几种真实来源？极端黑图为何不能要求保留缺陷标签？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料明确指标与每档n，固定评价口径。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的重复来源与测试使用历史，改模型后另安排确认。"
+      }
+    ],
+    "coreDeliverable": "三合理扰动的强度/性能表与独立来源留出计划。"
+  },
+  "w16-vision-d2": {
+    "hook": "一件零件拍了20张图，按图重采样为何可能使区间过窄？",
+    "steps": [
+      "写对象级目标及每对象包含的图片，区分对象等权与图片总体指标。",
+      "有放回抽对象并保留其所有记录，重复对象也重复计权。",
+      "两个模型用同次对象样本配对差，报告对象数和缺类别处理。"
+    ],
+    "pitfalls": [
+      "用set去重抽样对象，破坏有放回重采样。",
+      "对象很少却用大量bootstrap次数制造证据精度。"
+    ],
+    "quickCheck": "同一对象抽中两次应计一次还是两次？增加重采样次数能增加独立零件数吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对选用指标的聚合方式；对象bootstrap按本课显式流程完成，区间方法须单独写明。"
+      }
+    ],
+    "coreDeliverable": "对象重采样伪代码、配对差区间及对象覆盖限制。"
+  },
+  "w16-vision-d3": {
+    "hook": "输入变大后召回提高，是细节更多还是训练预算更大？",
+    "steps": [
+      "从一个已有错误模式提出单项增强、结构或尺寸假设。",
+      "冻结唯一改动与其余控制条件，列参数、更新、搜索与时间成本。",
+      "预写支持/反驳条件，必要时分别作固定更新和固定时间比较。"
+    ],
+    "pitfalls": [
+      "同时加残差、增强和分辨率，无法分离贡献。",
+      "挑最大改善种子或事后挑子组当确认结果。"
+    ],
+    "quickCheck": "提高尺寸但时间翻倍时，固定更新与固定时间分别回答什么比较问题？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南定位预设主指标和配对结果汇总。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的测试隔离，预注册消融后不根据测试改条件。"
+      }
+    ],
+    "coreDeliverable": "单项视觉消融协议与预算控制/反驳条件。"
+  },
+  "w16-vision-d4": {
+    "hook": "参数少的模型为何在同一CPU上反而更慢？",
+    "steps": [
+      "手算卷积与展平头参数，区分权重存储和激活/算子成本。",
+      "固定设备、线程、批次与输入，预热后重复计时。",
+      "分别声明含/不含预处理的测量范围，成本表关联同一精度模型版本。"
+    ],
+    "pitfalls": [
+      "参数字节当训练或推理峰值内存。",
+      "未预热单次计时，或两个模型用不同预处理范围。"
+    ],
+    "quickCheck": "卷积输入边长翻倍，权重数会变吗？计算量与临时激活可能怎样变化？",
+    "readingGuide": [
+      {
+        "title": "PyTorch：Conv2d API",
+        "url": "https://docs.pytorch.org/docs/stable/generated/torch.nn.Conv2d.html",
+        "focus": "在Conv2d API核对参数形状，区分核参数与输出空间。"
+      },
+      {
+        "title": "PyTorch：构建神经网络",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/buildmodel_tutorial.html",
+        "focus": "在网络构建教程用parameters统计存储，延迟仍需实际基准测量。"
+      }
+    ],
+    "coreDeliverable": "两基线参数/输入/测量条件和重复延迟成本表。"
+  },
+  "w16-vision-d5": {
+    "hook": "真实digits基线怎样成为一份能重跑的研究起点？",
+    "steps": [
+      "运行真实digits Notebook，核对来源、许可、快照与官方SVC指定划分。",
+      "完成训练内缩放消融，保存候选、预测、混淆矩阵和运行ID。",
+      "查看至少五错例，从一个失败提出可反驳假设，说明无书写者ID的外推限制。"
+    ],
+    "pitfalls": [
+      "报告字段齐全却只填计划或合成结果。",
+      "公开digits复用划分称新书写者研究，或假设无可反驳条件。"
+    ],
+    "quickCheck": "真实图片但没有书写者ID，能认证新书写者泛化吗？报告每个数字怎样连到一次运行？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "阅读模型评估中的混淆矩阵与宏指标，核对真实预测。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱中缩放与数据隔离，再检查模板的公开数据使用边界。"
+      }
+    ],
+    "coreDeliverable": "真实digits结果包、五错例和有限假设；合成管道不替代此交付。"
+  },
+  "w16-timeseries-d1": {
+    "hook": "误差突然升高后重训，能使用尚未到达的故障标签吗？",
+    "steps": [
+      "分别监测输入分布、目标关系和已到达标签误差。",
+      "设计固定、定期、误差触发三策略，写窗口、冷却与标签延迟。",
+      "按历史推进重训，记录触发时可用数据、累计误差、恢复延迟与训练成本。"
+    ],
+    "pitfalls": [
+      "用事后标签模拟提前恢复，夸大适应能力。",
+      "输入均值改变就必重训，把合法工况称异常。"
+    ],
+    "quickCheck": "今天目标标签明天才到，今天触发重训能使用它吗？固定模型对照能排除什么解释？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查更新预测与时间诊断主题，明确每次训练所见历史。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的未来标签泄漏，核对重训日志到达边界。"
+      }
+    ],
+    "coreDeliverable": "三重训策略协议与按时可用数据/成本日志。"
+  },
+  "w16-timeseries-d2": {
+    "hook": "十分钟故障报警五次，事件召回能算五个成功吗？",
+    "steps": [
+      "预定事件起止、合并间隔、容忍窗与首次有效报警。",
+      "手算早报、晚报、重复报、漏报四例并做一对一事件匹配。",
+      "分报点级、事件召回、每小时误报和延迟，声明是否使用点调整。"
+    ],
+    "pitfalls": [
+      "命中一点扩成全事件正确却不披露规则。",
+      "重复报警增加召回，或误报率缺实际时间分母。"
+    ],
+    "quickCheck": "一事件三个命中报警最多产生几个事件TP？提前报警是否成功由哪项协议决定？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对点级计数定义；事件规则按本课显式协议另算，不与点指标混比。"
+      },
+      {
+        "title": "scikit-learn：异常与新颖性检测",
+        "url": "https://scikit-learn.org/stable/modules/outlier_detection.html",
+        "focus": "阅读异常检测的分数/标签关系，先冻结阈值再构造事件。"
+      }
+    ],
+    "coreDeliverable": "四边界案例点/事件双评价及误报时间分母。"
+  },
+  "w16-timeseries-d3": {
+    "hook": "连续三点才报警能少误报，但短事件与延迟会付出什么代价？",
+    "steps": [
+      "用手造分数跟踪连续1、2、3点触发时刻，换算真实秒数。",
+      "小网格验证阈值/持续点数，保存召回、误报、延迟和成本。",
+      "固定因果平滑、解除和冷却完整规则，再评测试。"
+    ],
+    "pitfalls": [
+      "居中平滑用未来，提前获得好看的报警时刻。",
+      "只报最佳阈值，却省略解除/冷却和漏短事件代价。"
+    ],
+    "quickCheck": "采样每10秒，要求连续3点通常多等多少个间隔？单点短事件可能发生什么？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料查阈值取舍，事件成本按本课声明场景计算。"
+      },
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查时间平滑的输入范围，在线只能使用当前和过去。"
+      }
+    ],
+    "coreDeliverable": "阈值×持续点数候选表和冻结解除/冷却规则。"
+  },
+  "w16-timeseries-d4": {
+    "hook": "时间卷积多用了外生变量，误差改善能归到网络结构吗？",
+    "steps": [
+      "把结构、历史长度、外生信息和重训频率四因素分开。",
+      "从残差问题选唯一改动，固定起点、步长与可用信息。",
+      "保留每步、漂移/稳定期及预算结果，预写反驳条件。"
+    ],
+    "pitfalls": [
+      "多个因素同时变更却宣布架构贡献。",
+      "训练种子当新时期/设备，或删掉未超朴素基线的结果。"
+    ],
+    "quickCheck": "同结构加12步历史与换结构保持历史，分别检验什么？为什么都需要同起点朴素对照？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP查预测方法对照与残差诊断，假设要回应实际失败。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对逐步/分层汇总，平均不掩盖漂移期。"
+      }
+    ],
+    "coreDeliverable": "单因素序列消融与同信息同预算比较协议。"
+  },
+  "w16-timeseries-d5": {
+    "hook": "Sunspots的每年预测怎样证明只看到了那年以前的信息？",
+    "steps": [
+      "运行真实Sunspots Notebook，核对309年快照与最后值/漂移手算。",
+      "记录扩展窗验证、冻结滞后候选和逐年预测，抽查起点前数据范围。",
+      "整理原尺度错误和单序列边界，提出固定/更新模型的有限假设。"
+    ],
+    "pitfalls": [
+      "协议字段完整但没有真实预测与复跑产物。",
+      "滚动一步接收新真值却声称固定起点多步成绩。"
+    ],
+    "quickCheck": "预测1950年时能读1950实测值吗？单个历史太阳序列能证明新工业设备泛化吗？",
+    "readingGuide": [
+      {
+        "title": "Hyndman 与 Athanasopoulos：预测原理与实践",
+        "url": "https://otexts.com/fpp3/",
+        "focus": "在FPP读naïve、drift与滚动起点评价，核对模板公式和任务差异。"
+      },
+      {
+        "title": "scikit-learn：时间序列交叉验证",
+        "url": "https://scikit-learn.org/stable/modules/generated/sklearn.model_selection.TimeSeriesSplit.html",
+        "focus": "阅读时间序列交叉验证中的每折训练/验证索引，对照实际年度范围。"
+      }
+    ],
+    "coreDeliverable": "真实Sunspots逐年结果包、信息边界检查与可反驳假设。"
+  },
+  "w16-language-d1": {
+    "hook": "“正常”改成“不正常”时，应要求模型不变还是翻转？",
+    "steps": [
+      "为十二组否定、数字、条件和同义最小对照保留原文与改动项。",
+      "先根据语义写应变/不变目标，再固定模型运行。",
+      "按四类记录变化是否正确，衍生句保持同原文来源组。"
+    ],
+    "pitfalls": [
+      "所有扰动都要求标签不变，忽视否定/阈值改变。",
+      "看模型结果后改变体标签，或翻译派生样本当独立新来源。"
+    ],
+    "quickCheck": "“温度低于80安全”改“低于8安全”，条件是否保持？合理同义改写又应保持什么？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本提取指南核对词袋对否定、词序与数值的保留限制。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料选择分类或检索口径，分开应变与不变测试。"
+      }
+    ],
+    "coreDeliverable": "十二最小对照的预设目标与模型实际变化表。"
+  },
+  "w16-language-d2": {
+    "hook": "提高拒答阈值让已答正确率上升，遗漏了多少可以回答的问题？",
+    "steps": [
+      "确认信号是分类概率、检索相似还是生成输出，分别定义可检验含义。",
+      "用验证比较三个阈值，记录覆盖、已答错误及各组n。",
+      "冻结校准/阈值后来源测试，零覆盖标未定义而不报满分。"
+    ],
+    "pitfalls": [
+      "同一数值阈值跨不同置信信号通用。",
+      "测试拟合校准，或只报已答正确率隐藏大量拒答。"
+    ],
+    "quickCheck": "答0题时“已答正确率”有合法分母吗？分类0.9和检索余弦0.9是否含义相同？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：概率校准",
+        "url": "https://scikit-learn.org/stable/modules/calibration.html",
+        "focus": "阅读概率校准指南的可靠性图、分箱与校准拟合范围。"
+      },
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估材料同时定义覆盖与错误，按类别/来源列n。"
+      }
+    ],
+    "coreDeliverable": "三阈值覆盖/错误/分组n表及冻结校准协议。"
+  },
+  "w16-language-d3": {
+    "hook": "韩文样例全是难类别，分数低能直接归因于语言吗？",
+    "steps": [
+      "选三个任务子组，列语言/来源/长度/类别构成与n。",
+      "对各组逐条找错例，检查翻译样例共享原文来源。",
+      "设计匹配类别的对照或注明无法区分的混杂，再提出验证步骤。"
+    ],
+    "pitfalls": [
+      "语言与类别、来源绑定，仍写语言导致差距。",
+      "极小组精细百分比排名，或翻译派生当独立真实语料。"
+    ],
+    "quickCheck": "A语言100条简单类、B语言3条难类，比较准确率能识别纯语言效应吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对分组计数与各类覆盖，避免总体平均掩盖差异。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的来源重复和评价范围，翻译不增加原始独立来源。"
+      }
+    ],
+    "coreDeliverable": "三个子组覆盖/错误表与混杂核查、下一验证计划。"
+  },
+  "w16-language-d4": {
+    "hook": "检索找回更多但答案更不忠实，系统改善了吗？",
+    "steps": [
+      "从具体错误只选检索、分段、适配或回答一个组件改变。",
+      "固定文档、问题、相关标注和验证规则，分报检索与回答主指标。",
+      "记录索引、长度、延迟和调用成本，预写支持/反驳条件。"
+    ],
+    "pitfalls": [
+      "一次更换所有组件，把整体差归到某模型。",
+      "检索增益代替回答支持，或提示反复适配最终测试。"
+    ],
+    "quickCheck": "比较回答策略时为何应固定同一检索证据？找回率高但支持率低应修哪个层？",
+    "readingGuide": [
+      {
+        "title": "Retrieval-Augmented Generation 原论文",
+        "url": "https://arxiv.org/abs/2005.11401",
+        "focus": "在RAG论文识别检索/生成模块，使消融只改变目标层。"
+      },
+      {
+        "title": "Stanford 信息检索教材：排序评估",
+        "url": "https://nlp.stanford.edu/IR-book/html/htmledition/evaluation-of-ranked-retrieval-results-1.html",
+        "focus": "在Stanford排序评估材料核对Recall/MRR，不能替代答案事实检查。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的数据适配边界，保留测试题使用历史。"
+      }
+    ],
+    "coreDeliverable": "单项语言消融与分层指标/成本/反驳条件。"
+  },
+  "w16-language-d5": {
+    "hook": "真实SMS分类结果怎样连接到专业语言研究，而不夸大用途？",
+    "steps": [
+      "运行SMS Notebook，核对官方zip/文件SHA、5574行口径及来源许可。",
+      "近重复分组后训练内TF-IDF，验证选参数并保留全部预测。",
+      "查五个去标识错误，从词/字符鲁棒性提出有限假设，说明英语历史数据边界。"
+    ],
+    "pitfalls": [
+      "玩具字段或执行计划替代真实运行结果。",
+      "SMS新文本簇成绩推成新发送者、未来中文或专业问答能力。"
+    ],
+    "quickCheck": "没有发送者ID，规范化文本组互斥能证明新发送者吗？每个错例怎样追到真实行号？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：文本特征提取",
+        "url": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "focus": "在文本提取指南核对训练词表/IDF与测试transform。"
+      },
+      {
+        "title": "Retrieval-Augmented Generation 原论文",
+        "url": "https://arxiv.org/abs/2005.11401",
+        "focus": "在RAG论文了解不同任务输出，不用分类成果声称完成问答。"
+      },
+      {
+        "title": "scikit-learn：常见实践陷阱",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的来源分组与近重复，检查模板数据使用边界。"
+      }
+    ],
+    "coreDeliverable": "真实SMS结果包、五去标识错例与词/字符有限假设。"
+  },
+  "w17-d1": {
+    "hook": "搜索“人工智能”命中太杂，怎样让同一查询找到可比较的工作？",
+    "steps": [
+      "将兴趣拆成任务、对象、方法和资源/泛化约束四要素。",
+      "列三组中英同义检索词，比较严格词匹配与同义扩展的命中范围。",
+      "给真实候选记录日期、渠道、原式、论文标识与版本，虚构标题只留练习。"
+    ],
+    "pitfalls": [
+      "搜索排名或引用量当方法可靠性结论。",
+      "把合成检索标题混入真实引用，或混淆预印本与修订版。"
+    ],
+    "quickCheck": "“AI异常”与“跨设备振动异常检测 少标签”哪个更能规定纳入对象？同义扩展为什么还要读摘要？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "在Keshav阅读法中看第一遍如何辨认问题与方向，作为摘要初筛方法。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "在NeurIPS清单查问题、数据与方法透明性，确定检索后应核对什么。"
+      }
+    ],
+    "coreDeliverable": "四要素问题、三组检索式和真实版本化候选日志。"
+  },
+  "w17-d2": {
+    "hook": "相关性总分最高但没有可读全文，能承担综述的关键论证吗？",
+    "steps": [
+      "检索前写四纳入与三排除标准，先判断硬条件。",
+      "对五篇真实候选分别记录摘要/全文状态及具体理由。",
+      "改变阅读权重观察排序，把相关性与可核查性分列，保留反例。"
+    ],
+    "pitfalls": [
+      "加权总分抵消不满足硬条件，假装论文合格。",
+      "为支持先入观点删不利研究，或用转述当已读原表。"
+    ],
+    "quickCheck": "候选总分高但数据模态不同，能用优先级分数越过纳入标准吗？未读全文如何标记？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "阅读Keshav第一/第二遍的投入区别，给候选标实际阅读深度。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单找数据、实验与限制是否可核对，不能仅靠摘要判断。"
+      }
+    ],
+    "coreDeliverable": "七条筛选标准及五真实候选的硬条件/阅读队列表。"
+  },
+  "w17-d3": {
+    "hook": "论文有页码定位，就说明那一页支持你的主张吗？",
+    "steps": [
+      "第一遍写150字问题/贡献概述，标未懂基础而不照抄摘要。",
+      "第二遍提取三主张，分结果、作者解释和个人推断并附定位。",
+      "对照原文证据与条件画输入→输出方法图，核心算法再列第三遍补学项。"
+    ],
+    "pitfalls": [
+      "把自己的推断当作者结论。",
+      "定位覆盖100%当主张可信100%，忽略支持关系。"
+    ],
+    "quickCheck": "表格显示平均提高，“所有对象都提高”能否由该表支持？还需哪类逐对象证据？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "阅读Keshav三遍法的各次目标与虚拟重建边界，依本课完成前两遍。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "用NeurIPS清单核对实验条件、指标与局限，使主张带适用范围。"
+      }
+    ],
+    "coreDeliverable": "150字概述、三主张原文支持表与方法流程图。"
+  },
+  "w17-d4": {
+    "hook": "两篇都报准确率，为什么不能直接按最高分排名？",
+    "steps": [
+      "为五真论文录任务、数据、独立单位、划分、基线、指标与预算。",
+      "未知分成未报告和未查到，附原文定位而不填0。",
+      "选两同指标论文对比类别分布、来源和聚合方式，写不可直接比较原因。"
+    ],
+    "pitfalls": [
+      "窗口数量当独立设备数。",
+      "未知填0参与排序，或同名指标自动视为同协议。"
+    ],
+    "quickCheck": "随机窗口准确率与新设备准确率都90%，估计同一个问题吗？未知预算可当零成本吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南查分组/时间/随机目标差异，核对论文划分列。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单找数据、计算资源、随机因素与限制的证据位置。"
+      }
+    ],
+    "coreDeliverable": "五论文证据矩阵及两同指标不同协议的比较说明。"
+  },
+  "w17-d5": {
+    "hook": "五篇论文没写跨设备测试，能说世界上无人研究吗？",
+    "steps": [
+      "按2–3个问题组织800字综述，每段含观点、证据和条件。",
+      "对相反结论先比较协议，再分可能机制与未验证解释。",
+      "保留五真实引用、检索范围和已读深度，加入冲突段与补学单。"
+    ],
+    "pitfalls": [
+      "逐篇流水账没有共同问题。",
+      "有限纳入文献缺口升级为全球首次，或引用量等同质量。"
+    ],
+    "quickCheck": "“纳入五篇中未找到”和“领域从未做过”哪句证据要求更强？怎样写有限范围？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "回看Keshav阅读笔记的真实结论与未懂项，综述只依赖已核实部分。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "用NeurIPS清单审查结论强度、限制和引用，标题也需匹配证据范围。"
+      }
+    ],
+    "coreDeliverable": "800字问题组织综述、冲突证据段和补学/检索范围说明。"
+  },
+  "w18-d1": {
+    "hook": "换了数据后复现相同趋势，能称原论文数值复现吗？",
+    "steps": [
+      "从可读原论文指定一个表格/主张及原文位置。",
+      "列数据、划分、预处理、模型、预算、种子、指标的保留/偏离/未知。",
+      "在运行前规定成功层次与容差依据，每项简化写可能影响。"
+    ],
+    "pitfalls": [
+      "合成流程或换数据趋势声称原数值已复现。",
+      "看到结果后才放宽容差或改变成功定义。"
+    ],
+    "quickCheck": "同方法但不同数据、分数接近，哪项证据仍不足？成功是否必须超过原文？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单抽取方法、数据、实验与资源条件，创建可核对差异表。"
+      },
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch工作流入口辨认数据→训练→评价步骤，映射所选主张而非复制全部论文。"
+      }
+    ],
+    "coreDeliverable": "一项真实主张的复现范围、条件差异和提前成功标准。"
+  },
+  "w18-d2": {
+    "hook": "训练和测试行号不同，同设备重复窗口为何仍不独立？",
+    "steps": [
+      "写至少六字段字典，说明来源、单位、标签和到达时间。",
+      "将目标限定新记录、新主体或未来时间，画对应三集合。",
+      "用八设备例检查主体交集、重复内容与时间约束，保留独立单位数。"
+    ],
+    "pitfalls": [
+      "只检查行号集合，忽略设备和同文来源。",
+      "主体太少通过随机窗口拆分制造稳定高分。"
+    ],
+    "quickCheck": "1000窗来自两设备，独立主体数是多少？新设备目标为何不能训练/测试同设备？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南定位分组与时间划分，先匹配泛化目标。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "在常见陷阱中查重复和预处理泄漏，将规则定义与训练统计拟合分开。"
+      }
+    ],
+    "coreDeliverable": "六字段字典和八主体三集合的交集/时间检查。"
+  },
+  "w18-d3": {
+    "hook": "设置一个seed为何仍不能控制划分、初始化和所有硬件差异？",
+    "steps": [
+      "记录Python/库/设备/数据/代码版本，避免账号和私人路径。",
+      "分split_seed=7与run_seeds=11/12/13，写每个随机源职责。",
+      "核对固定测试及同环境复跑，列未控制并行/硬件差异。"
+    ],
+    "pitfalls": [
+      "训练种子改变时测试集合也变，混入数据难度。",
+      "固定seed就承诺跨设备逐位一致，或漏记库版本。"
+    ],
+    "quickCheck": "三训练运行什么应变、什么必须固定？局部random生成器能自动控制torch初始化吗？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：random",
+        "url": "https://docs.python.org/3/library/random.html",
+        "focus": "阅读random文档中局部Random实例与seed的作用范围。"
+      },
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch完整工作流查看数据、模型和保存环节，将配置与环境版本连到运行。"
+      }
+    ],
+    "coreDeliverable": "环境清单、随机源职责表与固定划分的三运行配置。"
+  },
+  "w18-d4": {
+    "hook": "没反向传播，只看测试分数选阈值，也算学习测试了吗？",
+    "steps": [
+      "预定主指标、阈值候选与平分规则，标验证/测试职责。",
+      "导出完整验证表并据它冻结阈值，再执行一次测试。",
+      "测试后继续改方案时登记旧测试已用于开发，安排新确认条件。"
+    ],
+    "pitfalls": [
+      "以为不更新梯度就没有测试泄漏。",
+      "主指标或候选事后改到最高测试值，隐藏选择史。"
+    ],
+    "quickCheck": "阈值A验证更好但B测试更好，冻结后应报告哪个？继续选B会改变什么声明？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "阅读交叉验证指南的训练/验证/测试分工。"
+      },
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对F1/阈值与零分母，明确主指标。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的测试适配，任何规则选择都可能消耗测试独立性。"
+      }
+    ],
+    "coreDeliverable": "完整阈值验证表、冻结决策与测试使用记录。"
+  },
+  "w18-d5": {
+    "hook": "配置哈希相同，就能保证代码正确且结果完全一致吗？",
+    "steps": [
+      "冻结数据、划分、指标、预算、种子与停止规则，显式写默认值。",
+      "规范化配置计算指纹，改数据版本或预算观察变化。",
+      "最小基线检查空集/标签/主体交集，修重叠后升协议版本并关联代码。"
+    ],
+    "pitfalls": [
+      "指纹当安全或正确性证明，不保留原配置。",
+      "有错误基线仍投入长实验，或不同版本混在同平均。"
+    ],
+    "quickCheck": "配置相同但代码改变，哈希能发现吗？截短指纹相同可以替代逐字段比对吗？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对配置、实现与可重现信息的完整性。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的数据检查，在真实长实验前过最小闭环。"
+      }
+    ],
+    "coreDeliverable": "冻结协议/指纹、重叠拒绝检查及版本化最小基线。"
+  },
+  "w19-d1": {
+    "hook": "平均改善为正，为什么仍要展示有退步的配对？",
+    "steps": [
+      "列两方法共同数据、信息、选择规则和合理预算。",
+      "按同实际划分/条件逐对算基线MAE减改动MAE。",
+      "加入一明显退步，保留每差值、均值及有限结论。"
+    ],
+    "pitfalls": [
+      "误差指标改善符号写反。",
+      "同seed编号就声称初始化完全匹配，或只选最好种子。"
+    ],
+    "quickCheck": "差值[0.05,-0.02,0.1]平均正，能说每个条件改善吗？相同seed实际共享哪些对象？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的mean与样本汇总，将每对差值先算再平均。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对对照信息、搜索/训练预算和全部运行。"
+      }
+    ],
+    "coreDeliverable": "共同条件表及含退步的逐配对差值/结论。"
+  },
+  "w19-d2": {
+    "hook": "试了100个seed只报最好的，究竟测到方法还是幸运抽样？",
+    "steps": [
+      "提前固定五种子及同一合成训练/测试数据，写随机抽样职责。",
+      "独立验证比较抽4/6训练点，按验证平均误差冻结规模。",
+      "固定规模重复均值估计，保留所选样本、估计和最终测试误差。"
+    ],
+    "pitfalls": [
+      "挑幸运种子，隐瞒其他结果。",
+      "训练随机性与测试重抽同时变，无法分离来源。"
+    ],
+    "quickCheck": "增加训练种子能增加测试对象吗？验证选择样本规模和最终测试各承担什么动作？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：random",
+        "url": "https://docs.python.org/3/library/random.html",
+        "focus": "阅读random局部生成器，分别记录数据与训练抽样状态。"
+      },
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南核对验证选方案/最终评价，固定测试不随seed变。"
+      }
+    ],
+    "coreDeliverable": "五预定种子的均值基线完整运行表及验证选规模记录。"
+  },
+  "w19-d3": {
+    "hook": "“均值±标准差”到底覆盖运行波动，还是未来所有数据不确定性？",
+    "steps": [
+      "列全部预定运行后算均值、中位数及n-1样本标准差。",
+      "添加异常运行对比统计，先查是否有效而不按低分删除。",
+      "写误差条类型、单位、n和随机源；确定性模型改报告时期/来源敏感性。"
+    ],
+    "pitfalls": [
+      "标准差当均值置信区间或未来可靠性保证。",
+      "删除真实低分异常点，或复制确定性输出凑种子数。"
+    ],
+    "quickCheck": "三个训练seed标准差能覆盖换设备差异吗？确定性模型重复三次相同值有什么验证含义？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的mean、median、stdev与pstdev分母区别。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单说明随机源、重复与统计范围，图表标题注明误差条定义。"
+      }
+    ],
+    "coreDeliverable": "完整结果、均值/中位数/标准差及覆盖范围明确的表题。"
+  },
+  "w19-d4": {
+    "hook": "配对比较为什么要一起抽同条件差值，而非独立抽两方法？",
+    "steps": [
+      "给真实观察或教学差值写抽样单位与独立性假设。",
+      "有放回抽配对差值计算均值，生成百分位区间。",
+      "加入负差值并记录范围，区分重抽次数和真实训练/主体数。"
+    ],
+    "pitfalls": [
+      "相关窗口当独立单位，获得过窄区间。",
+      "区间跨0当证明无效，或不跨0就推到新数据集。"
+    ],
+    "quickCheck": "2000次重采样5个差值拥有多少原观察？拆散配对会丢失什么共同条件信息？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的均值计算与数据单位，先保留逐对差值。"
+      },
+      {
+        "title": "Python 官方：random",
+        "url": "https://docs.python.org/3/library/random.html",
+        "focus": "在random文档查有放回抽取与固定局部状态，模拟次数不增加真实证据。"
+      }
+    ],
+    "coreDeliverable": "配对bootstrap区间、负差值敏感性和抽样单位说明。"
+  },
+  "w19-d5": {
+    "hook": "50候选的最好验证分数，能公平胜过只调1候选的基线吗？",
+    "steps": [
+      "冻结每方法候选数、种子、时间上限及停止/失败规则。",
+      "用等价噪声候选模拟两搜索预算，20次保留所有最高验证分数。",
+      "独立随机流仅评价已选候选，解释大搜索乐观与成本。"
+    ],
+    "pitfalls": [
+      "跑到满意或显著才停，停止本身筛高分。",
+      "只给改动更多搜索，隐藏预算和失败尝试。"
+    ],
+    "quickCheck": "候选实际等效，搜索越多最高验证值为何仍可能提高？哪个集合检验选择后的泛化？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单写计算资源、候选和失败透明性。"
+      },
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南看验证选择及独立评价，不能拿最好验证当最终无偏结果。"
+      }
+    ],
+    "coreDeliverable": "双方法预算/停止表及搜索噪声的验证/测试对照。"
+  },
+  "w20-d1": {
+    "hook": "参考MAE为秒、复现MAE为毫秒，先做百分比差有意义吗？",
+    "steps": [
+      "列至少八项版本、数据、划分、处理、模型、预算、指标与随机差异。",
+      "核对单位、聚合单位和测试ID一致后才算绝对/相对差。",
+      "固定验证流程逐项排查，未对齐条件留未知，禁止为追分调测试。"
+    ],
+    "pitfalls": [
+      "同名指标自动可比，遗漏单位与主体/窗口聚合。",
+      "参考近0仍用巨幅相对百分比制造重要性。"
+    ],
+    "quickCheck": "MAE都是0.2但一个按窗口另一个按设备平均，能直接比吗？先补哪项信息？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对数据/预算/版本，差异每项需证据位置。"
+      },
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对指标方向、单位与聚合，先停止不等条件数值排名。"
+      }
+    ],
+    "coreDeliverable": "八项偏差核查表及可比/不可比指标检查。"
+  },
+  "w20-d2": {
+    "hook": "预测与标签长度相同，但顺序错了，为什么指标仍可能完全失真？",
+    "steps": [
+      "三个ID逐个手算误差，用ID关联而非位置关联预测/标签。",
+      "原始记录转字典前拒重复ID，再拒缺失与多对一匹配。",
+      "为实际基线设形状、来源交集、微批或随机标签三健全性检查。"
+    ],
+    "pitfalls": [
+      "先建字典覆盖重复，再以键集合宣称唯一。",
+      "随机标签高分就直接认定某一种泄漏原因，不继续定位。"
+    ],
+    "quickCheck": "同长度预测和真值为何还需ID？重复键先被覆盖后还能从字典发现重复吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的评估关联与泄漏，低成本排查先于模型结论。"
+      },
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对y_true/y_pred的一一对应，按ID生成输入。"
+      }
+    ],
+    "coreDeliverable": "ID对齐/错位手算、重复缺失拒绝与三健全性检查。"
+  },
+  "w20-d3": {
+    "hook": "组件A单独有效，与B一起时没收益，如何辨别冗余和交互？",
+    "steps": [
+      "定义无、A、B、AB四配置，记录参数、输入和训练预算。",
+      "同条件逐对算单项/组合改善，再算超过单项和的交互。",
+      "改AB数值观察交互正负，解释只是当前控制条件的贡献。"
+    ],
+    "pitfalls": [
+      "删组件同时降低预算，差异全部归于组件。",
+      "AB条件收益当A的独立贡献，或不同种子混配。"
+    ],
+    "quickCheck": "A改善2、B改善3、AB改善4，交互是多少？能据一次负交互说永远冗余吗？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单列消融定义、信息和预算控制。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的逐组平均，先算同条件差再汇总，避免混配。"
+      }
+    ],
+    "coreDeliverable": "四配置消融/成本表与单项、条件、交互计算。"
+  },
+  "w20-d4": {
+    "hook": "运行成功但分数低，能像配置错误一样删除吗？",
+    "steps": [
+      "提前定义有效运行，区分低性能、配置错、中断和非有限。",
+      "给日志加status、reason、version、rerun_of，缺结果留空。",
+      "新增修复重跑并保留原日志，分报原失败率、有效配对数与性能。"
+    ],
+    "pitfalls": [
+      "表现低作为排除标准，选择性留成功。",
+      "缺失填0或覆盖原失败，隐瞒稳定性成本。"
+    ],
+    "quickCheck": "某方法崩溃一半，仅比较成功均值漏掉了什么工程信息？缺失一侧还能算完整配对吗？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单查失败/负结果与资源透明性，记录排除理由。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "在statistics汇总前先确定有效集合和缺失数，不让空值变0。"
+      }
+    ],
+    "coreDeliverable": "含重跑关联的日志、失败率和完整有效配对结果。"
+  },
+  "w20-d5": {
+    "hook": "只有指标截图，下一次怎样从干净目录复跑它？",
+    "steps": [
+      "报告开头标真实主张、原文版本和复现层次，列条件偏离。",
+      "打包配置、环境、索引、源代码、全部运行和生成图表方法。",
+      "为三结论分观察/解释/下一验证，从新目录实际复跑并对齐主要数字。"
+    ],
+    "pitfalls": [
+      "标题称全面复现、末页才承认合成数据。",
+      "表格数字手填无法回到运行ID，或清单有字段就当内容正确。"
+    ],
+    "quickCheck": "“均值降低”与“适合工业部署”哪个需要更多外部证据？包中哪个文件能再生成表格？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对方法、结果、局限与可复现条件。"
+      },
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "回看Keshav核心论文重建问题，列原文未知而不以习惯补齐。"
+      }
+    ],
+    "coreDeliverable": "有真实来源和数字追踪的复现报告、证据包与干净目录复跑记录。"
+  },
+  "w21-d1": {
+    "hook": "“提升模型效果”是愿望，怎样改成结果可以反对的假设？",
+    "steps": [
+      "将开放问题、交付目标与预期关系分开写。",
+      "给假设补对象、单项改动、基线、主指标和固定条件。",
+      "预先列改善未达阈值与成本/子组退步两种不支持结果。"
+    ],
+    "pitfalls": [
+      "愿望当结论，没有可反驳结果。",
+      "“更鲁棒”未定义扰动、指标和资源条件。"
+    ],
+    "quickCheck": "“希望准确率提升”与“同划分下macroF1增加≥0.02且成本不超限”哪个能直接检验？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单查主张、实验支撑与限制，使假设明确条件。"
+      },
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "回看Keshav方法/结果笔记，问题依据用真实文献而非模型名字。"
+      }
+    ],
+    "coreDeliverable": "五要素假设及两种明确不支持结果。"
+  },
+  "w21-d2": {
+    "hook": "新增组件后分数好，是去噪还是训练多了十倍？",
+    "steps": [
+      "把观察到的指标差与去噪机制解释分栏。",
+      "列更多预算、更多参数和来源泄漏三替代解释。",
+      "为各解释安排同预算、同容量或来源隔离对照，保留无法区分项。"
+    ],
+    "pitfalls": [
+      "最终分数直接证明机制。",
+      "方法和预算同时改变，称受控单因素实验。"
+    ],
+    "quickCheck": "新方法多训练100步，增加等步数基线能检验哪个替代解释？为何仍不能保证所有现实场景因果？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对实验对照与主张证据，明确组件之外变化。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的数据泄漏，先排信息差异再谈机制。"
+      }
+    ],
+    "coreDeliverable": "三替代解释—可区分检查的控制条件表。"
+  },
+  "w21-d3": {
+    "hook": "误差低0.01但耗时翻20倍，是否满足项目的实际目标？",
+    "steps": [
+      "写主要效果的单位与最小有意义变化来源。",
+      "记录一个成本上限，将误差/延迟候选做支配关系比较。",
+      "加入成本超限方案，区分帕累托候选与当前可接受选择。"
+    ],
+    "pitfalls": [
+      "看结果后才设改善阈值。",
+      "未被支配等同最佳，或用模拟耗时推工业吞吐。"
+    ],
+    "quickCheck": "一方案误差稍低但成本超限，能仍是帕累托候选吗？“可检测”与“有实际价值”相同吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对误差单位、方向与代价口径。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单披露资源和适用范围，阈值来源不事后改。"
+      }
+    ],
+    "coreDeliverable": "效果阈值/成本上限依据及帕累托与可接受选择表。"
+  },
+  "w21-d4": {
+    "hook": "文献矩阵一栏为空，是真的没做还是你没找到？",
+    "steps": [
+      "把未知、未报告和明确未实施分别编码。",
+      "为拟空白检索三组同义词，查两篇最可能已解决问题的真论文。",
+      "记录支持、反对与条件不同证据，更新有限假设或保留理由。"
+    ],
+    "pitfalls": [
+      "未知当否定，有限搜索断言世界首次。",
+      "只查支持论文，发现已有方法就改名冒充新颖。"
+    ],
+    "quickCheck": "两反证论文已经做过同一任务，你能转成哪种适用条件/协议问题？为什么要保存调整记录？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "用Keshav前两遍定位反证论文任务、条件与真实主张。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对贡献/相关工作范围，合成矩阵不作为领域事实。"
+      }
+    ],
+    "coreDeliverable": "三检索式、两反证核查与版本化研究问题。"
+  },
+  "w21-d5": {
+    "hook": "研究提案没有真实可用数据，怎样提前阻止计划越做越大？",
+    "steps": [
+      "一页写问题、证据、假设、数据边界、方法与主要交付。",
+      "按数据、标签、算力和实现风险列依据/未知及最小替代路线。",
+      "定三产物里程碑和两停止条件，估算配置×种子×单次耗时并预留重跑。"
+    ],
+    "pitfalls": [
+      "尚未获得的数据当现有资源。",
+      "里程碑只写“深入研究”，或合成替代仍承诺真实场景结论。"
+    ],
+    "quickCheck": "6配置×3seed×20分钟的机器预算是多少？调试与失败重跑为什么应另留缓冲？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对数据/计算/可复现与限制，提案承诺可检查产物。"
+      },
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch工作流将读取、训练、选择、保存拆里程碑，先做最小闭环。"
+      }
+    ],
+    "coreDeliverable": "一页提案、风险资源表、三里程碑与两停止条件。"
+  },
+  "w22-d1": {
+    "hook": "低误差设备记录很多，窗口平均会不会遮住高误差的小设备？",
+    "steps": [
+      "先写目标是随机窗口还是随机设备的误差。",
+      "计算所有窗口平均与设备内平均后设备等权平均。",
+      "加入C=[1.2]比较变化，冻结主聚合方式并列预定分层n。"
+    ],
+    "pitfalls": [
+      "两种平均都叫MAE，结果后选较好看的。",
+      "记录数量当独立主体量，区间抽样层级与目标不一致。"
+    ],
+    "quickCheck": "A有100个低误差窗、B只有1个高误差窗，窗口平均与设备宏平均谁更强调B？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南查macro/weighted等聚合思想，明确本课设备/窗口权重。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的mean，用显式两级列表实现主体平均。"
+      }
+    ],
+    "coreDeliverable": "估计目标、两聚合结果与权重/分层协议。"
+  },
+  "w22-d2": {
+    "hook": "未来预测可以复用已知历史，为何不能复用未来标签？",
+    "steps": [
+      "给核心特征写测量/到达时刻及预测时可用性。",
+      "画主体、截止、历史窗与跨度2的目标末端，区分合法共享历史与目标越界。",
+      "逐变换检查fit范围及预训练污染未知，保存具体时间协议。"
+    ],
+    "pitfalls": [
+      "窗口ID不同就认为没有共享来源，或任何历史重叠都称泄漏。",
+      "目标跨度末端越界，或归一化/插补读取全部未来。"
+    ],
+    "quickCheck": "测试用训练结束前已观察历史作上下文一定泄漏吗？若训练目标含测试日真实值，性质哪里不同？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南查时间/主体划分，评价目标决定隔离层级。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的fit范围和未来信息，分别核查标签与预处理。"
+      }
+    ],
+    "coreDeliverable": "特征到达时间表及跨度2的历史/目标边界检查。"
+  },
+  "w22-d3": {
+    "hook": "只有两台设备跑50个seed，能补齐新设备证据吗？",
+    "steps": [
+      "分列项目记录数、独立主体数和训练种子数。",
+      "在明确独立正态假设下比较噪声0.04/0.12与观测3/20的均值散布。",
+      "区分估计波动与数据覆盖，给先导探索和后续确认数据标用途。"
+    ],
+    "pitfalls": [
+      "训练重复当真实主体增加。",
+      "一次模拟给通用最小样本量，或不显著即证明零作用。"
+    ],
+    "quickCheck": "更多种子降低哪种随机估计误差？若场景覆盖仍只有两台设备，哪种结论依旧受限？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的均值/标准差，区分观察散布与均值估计波动。"
+      },
+      {
+        "title": "Python 官方：random",
+        "url": "https://docs.python.org/3/library/random.html",
+        "focus": "在random文档核对gauss与局部随机流；模拟参数是教学假设而非真实检测能力证据。"
+      }
+    ],
+    "coreDeliverable": "三层样本量表、两噪声模拟及真实覆盖限制。"
+  },
+  "w22-d4": {
+    "hook": "常数、拟合直线和固定2x+1候选，哪个真正从训练数据学习？",
+    "steps": [
+      "手算训练均值及最小二乘斜率/截距，拒绝x全相同的分母。",
+      "加入事先固定2x+1候选，分清固定规则与估计参数。",
+      "保存全部验证MSE并冻结赢家，测试只评价该候选。"
+    ],
+    "pitfalls": [
+      "用验证/测试拟合斜率，或零变化x仍套除法。",
+      "只有赢家日志，省略所有已试结构和停止条件。"
+    ],
+    "quickCheck": "固定2x+1的参数是否从训练估计？即使没fit，用测试选它还是会消耗独立性吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "阅读交叉验证指南的验证结构选择与最终测试职责。"
+      },
+      {
+        "title": "Mathematics for Machine Learning 作者官网",
+        "url": "https://mml-book.com/",
+        "focus": "在MML作者官网课程/书目录查线性回归与最小二乘，先对照本课单特征公式，未核验页码不指定。"
+      }
+    ],
+    "coreDeliverable": "三候选参数来源、完整验证表与一次测试结果。"
+  },
+  "w22-d5": {
+    "hook": "冻结后发现划分错误，是继续错误还是修改协议？",
+    "steps": [
+      "冻结主指标、方向、聚合、配对、随机因素、异常与预计图表。",
+      "每项标确定/探索/待决定，预写假设不支持条件。",
+      "对错误或测试已看情况登记版本和受影响运行，列两修订及新评价边界。"
+    ],
+    "pitfalls": [
+      "冻结当永不允许修复，或修订后抹掉旧协议。",
+      "字段齐全就当设计有效，没有反对假设的可能性。"
+    ],
+    "quickCheck": "测试未启封时修划分与根据测试改模型，后续确认条件为什么不同？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单审查主张、预算、数据与可重现条件，不能只看字段存在。"
+      },
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南核对测试若用于修改后如何改变开发/评价角色。"
+      }
+    ],
+    "coreDeliverable": "带时间和版本的分析计划、两修订与测试边界记录。"
+  },
+  "w23-d1": {
+    "hook": "同配置三seed为什么需要三个运行ID，但可以共用一个配置指纹？",
+    "steps": [
+      "把数据/代码/配置版本和seed映射到唯一运行ID。",
+      "修改sample_size建立新配置，保留旧记录及rerun_of关联。",
+      "结束时检查有限数、样本数、标签、集合角色和实际预算，再生成表。"
+    ],
+    "pitfalls": [
+      "运行中途改参，输出却归到未实际执行的配置。",
+      "手工抄数脱离ID，或日志写账号和无关私密内容。"
+    ],
+    "quickCheck": "配置指纹一样、seed不同能共用运行ID吗？哪项日志能追查一次修复重跑？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对版本、配置、输出和资源可追查性。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的指标汇总，输入须是同协议有效运行而非手填最佳数字。"
+      }
+    ],
+    "coreDeliverable": "版本化运行日志、配置变更与修复关联及结束检查。"
+  },
+  "w23-d2": {
+    "hook": "训练下降验证上升，一定只有过拟合这一解释吗？",
+    "steps": [
+      "画真实运行ID的训练/验证曲线并标损失定义与评价模式。",
+      "按预定耐心/最大预算选择验证快照，不用测试选轮次。",
+      "列过拟合与验证分布/量小或处理错误两个竞争诊断，再做低成本检查。"
+    ],
+    "pitfalls": [
+      "两条曲线直接认定唯一机制。",
+      "测试每轮选最佳，或不同方案耐心值/预算差异未披露。"
+    ],
+    "quickCheck": "eval忘切与验证样本少可能怎样影响曲线？为何微批拟合成功不能证明泛化？",
+    "readingGuide": [
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch工作流查训练/评价模式及保存加载，验证快照应实际恢复。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单披露轮次选择、预算与全部曲线，诊断写证据。"
+      }
+    ],
+    "coreDeliverable": "真实训练/验证曲线、冻结停止点与两诊断检查。"
+  },
+  "w23-d3": {
+    "hook": "正负残差抵消了，某个主体的绝对误差是否可能仍很大？",
+    "steps": [
+      "按ID存真值、预测与预测减真值残差，标正为高估。",
+      "预定两层分别算n、方向均值和MAE，增加相反残差核对抵消。",
+      "再列一个探索层，保存错误ID、选择规则与后续确认计划。"
+    ],
+    "pitfalls": [
+      "残差符号沿不同资料混用，高估/低估解释反。",
+      "看测试难例后改模型却继续称原测试独立，或挑例代表全体。"
+    ],
+    "quickCheck": "残差[-2,2]均值与MAE分别是多少？它说明无偏移还是没有预测误差？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南查MAE等误差，单独保留本课有向残差约定。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单标预定/探索分层，报告每层数量及选样规则。"
+      }
+    ],
+    "coreDeliverable": "两预定层与一探索层的n/残差/MAE及错误ID。"
+  },
+  "w23-d4": {
+    "hook": "模型与标签不一致，为什么不能直接把标签改成模型答案？",
+    "steps": [
+      "给至少六错例保留原ID、标签版本和出处。",
+      "编码缺失、处理、争议、分布、能力或未知，允许多候选原因。",
+      "按统一证据规则核查争议并保存原/新标签；多数类例解释高一致率局限。"
+    ],
+    "pitfalls": [
+      "模型预测作为改真值依据，制造有利评价。",
+      "少量挑例的类型占比当全体比例，或高一致率等同标签正确。"
+    ],
+    "quickCheck": "两套标签全说“正常”且一致率高，能证明少数故障标注可靠吗？修测试标签应怎样标版本？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单披露标注来源、争议规则和数据修订。"
+      },
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对类别构成与分母，简单一致率不替代可靠性证据。"
+      }
+    ],
+    "coreDeliverable": "六错例的证据/候选类型及标签争议版本化规则。"
+  },
+  "w23-d5": {
+    "hook": "假设未支持与标签对齐错，为什么应采取不同下一步？",
+    "steps": [
+      "核对预定种子/确定性复跑、配对覆盖、预算与错例。",
+      "分流程修复、协议调整和新探索，给每项版本与受影响结果。",
+      "依据成本/子组/阈值写继续、修复或停止，并保留负结果与重跑链。"
+    ],
+    "pitfalls": [
+      "探索得到最佳值包装成初始假设证实。",
+      "缺失配对无声省略，或范围事后缩小却不安排确认。"
+    ],
+    "quickCheck": "修标签错位属于同协议修复还是新组件探索？若仅某子组改善，下一轮为何要新评价？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对完整运行与负结果，决定基于证据而非是否涨分。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "在statistics汇总前保留完整配对与缺失数，不能自动滤到有利集合。"
+      }
+    ],
+    "coreDeliverable": "执行覆盖检查、继续/修复/停止依据与版本化后续动作。"
+  },
+  "w24-d1": {
+    "hook": "“合成数据平均误差下降”怎样被写成过度的“解决工业检测”？",
+    "steps": [
+      "按问题→假设→设计→证据→范围写结果和讨论各300字。",
+      "逐句分观察、机制解释和远期推断，三个主结论附运行/图表。",
+      "将未达阈值、负结果、数据与预算限制放关键结论附近。"
+    ],
+    "pitfalls": [
+      "限制藏末页但标题仍称全面成功。",
+      "未支持假设换积极措辞，或模型名字替代完整方法说明。"
+    ],
+    "quickCheck": "配对MAE下降能支持什么观察？要声称工业部署还缺哪类真实条件证据？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单查主张与实验/限制是否一致，标题摘要也核对。"
+      },
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "用Keshav阅读法的原文结果/解释区分检查自己的叙述。"
+      }
+    ],
+    "coreDeliverable": "结果/讨论初稿及三结论的类型、位置和证据范围。"
+  },
+  "w24-d2": {
+    "hook": "先四舍五入再算改善，为什么小差异可能被你抹掉？",
+    "steps": [
+      "从真实运行表生成全部配置，标指标方向、单位、聚合与n。",
+      "用原值算差后统一展示舍入，对比先舍一位再求差。",
+      "表注明误差条随机源、失败和未知，成本/不利子组同样保留。"
+    ],
+    "pitfalls": [
+      "未知未运行填0，造成假性能或假低成本。",
+      "展示精细小数当精度高，或舍入后再算差。"
+    ],
+    "quickCheck": "0.14与0.11先保留一位都0.1，但原改善是多少？误差条“±SD”还应写哪种随机源？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的原值mean/stdev计算，舍入只在输出层。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单披露全部配置、失败和条件，表格能脱离正文读懂。"
+      }
+    ],
+    "coreDeliverable": "真实完整结果表、准确位数与含误差条定义的表注。"
+  },
+  "w24-d3": {
+    "hook": "只画均值让三次结果看似稳定，配对点怎样揭露退步？",
+    "steps": [
+      "决定展示差异/运行分布/成本，轴写单位、条件与n。",
+      "画全部种子点和正确SD或区间，用配对线保留共同条件。",
+      "核对纵轴范围与标题真实来源，保留生成代码和运行ID。"
+    ],
+    "pitfalls": [
+      "截断轴制造巨大改进，或误差条不说明类型。",
+      "误差条重叠与否直接当所有统计显著性判据。"
+    ],
+    "quickCheck": "均值提高但一条配对线下降，图中应保留吗？SD条能直接代表主体抽样区间吗？",
+    "readingGuide": [
+      {
+        "title": "Matplotlib 官方：坐标轴与子图",
+        "url": "https://matplotlib.org/stable/users/explain/axes/axes_intro.html",
+        "focus": "在Matplotlib坐标轴/子图资料查标签、范围与图形布局，本课以全部点和准确图注为先。"
+      },
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的样本散布，将SD与均值区间分开定义。"
+      }
+    ],
+    "coreDeliverable": "真实主图、全部配对点、图注和再生成脚本。"
+  },
+  "w24-d4": {
+    "hook": "摘要只给模型名与最高分，别人为什么仍不知道你做了什么？",
+    "steps": [
+      "200字摘要写问题、改动、数据/协议、主要发现和限制。",
+      "500字方法按来源/划分→处理→模型→预算→选择→评价展开。",
+      "每来源核对标识/版本，自己的修改与关键库默认逐项对应代码。"
+    ],
+    "pitfalls": [
+      "引用用来支撑原文没做的实验。",
+      "报告参数与真实代码不一致，或虚构教学论文进入参考表。"
+    ],
+    "quickCheck": "公开代码能替代测试何时使用的文字说明吗？“复现BERT”与实际只运行随机线性层有什么差距？",
+    "readingGuide": [
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "用Keshav前两遍检查引用的真实主张与版本，不依据转述补细节。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对方法复查、默认值、资源与限制，逐句摘要能回到证据。"
+      }
+    ],
+    "coreDeliverable": "200字摘要、500字方法与来源/改动/默认值对照。"
+  },
+  "w24-d5": {
+    "hook": "十分钟里怎样把一项比较讲清，而不是罗列十个模型名？",
+    "steps": [
+      "围绕问题、假设、协议、一张主图和限制编十分钟讲稿。",
+      "准备划分、预算、误差条、随机性与替代解释五质疑，答复先定位证据。",
+      "自行录制/计时回听，AI反馈定位最低两项，列补图注或划分检查等具体改进。"
+    ],
+    "pitfalls": [
+      "记术语替代输入/指标解释。",
+      "肯定语气掩盖未知，或为了表达漂亮删负结果。"
+    ],
+    "quickCheck": "被问“误差条包含换设备吗”时，应指哪份运行定义？不会的问题怎样提出可执行核查？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "用NeurIPS清单逐个形成方法、资源、统计与限制质疑，答案关联证据。"
+      },
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "回看Keshav读核心论文的未懂项，诚实区分已核对与下一步核查。"
+      }
+    ],
+    "coreDeliverable": "十分钟讲稿/计时、五证据定位答复及两具体改进。"
+  },
+  "w25-d1": {
+    "hook": "论文一句读不懂，为什么不该重新从头看所有基础课？",
+    "steps": [
+      "从报告/答复找三具体错误，保存错误输出或误解句子。",
+      "画其形状、梯度或划分先修依赖，优先最靠前且影响结论的缺口。",
+      "每项写新题、自己的解释和项目回用，防止依赖循环与复习无限扩张。"
+    ],
+    "pitfalls": [
+      "“基础差”没有具体可练错误。",
+      "看懂原答案就当修复，或依赖图循环后不断重复整课。"
+    ],
+    "quickCheck": "残差突然是n×n，首先补哪项形状/广播知识？为什么先修评价错比堆更大模型重要？",
+    "readingGuide": [
+      {
+        "title": "Mathematics for Machine Learning 作者官网",
+        "url": "https://mml-book.com/",
+        "focus": "在MML作者官网目录选实际错误对应的线性代数/微积分/概率主题，不重新通读全书。"
+      },
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch工作流定位错误发生的数据、模型或损失环节，只回到对应小节。"
+      }
+    ],
+    "coreDeliverable": "三错误的先修依赖、换题与项目应用修复单。"
+  },
+  "w25-d2": {
+    "hook": "损失乘10后继续用旧步长，为什么可能在最小值两边来回跳？",
+    "steps": [
+      "手推10(w-3)²导数20(w-3)，注明局部梯度不是最优点。",
+      "同起点比较η=0.1与0.01五步参数/损失，中心差分核对符号。",
+      "回实际项目查看损失尺度和梯度量级，验证选步长不看测试。"
+    ],
+    "pitfalls": [
+      "改变损失尺度不改梯度或盲抄原学习率。",
+      "有限差分h无限变小当越准确，或损失下降就当梯度推导全对。"
+    ],
+    "quickCheck": "该函数η=0.1时误差乘几？η=0.01时误差乘几？哪个绝对值在缩小？",
+    "readingGuide": [
+      {
+        "title": "Mathematics for Machine Learning 作者官网",
+        "url": "https://mml-book.com/",
+        "focus": "在MML目录检索微分与连续优化，重点梯度链和尺度；未核验页码不指定。"
+      },
+      {
+        "title": "PyTorch 官方：完整学习工作流",
+        "url": "https://docs.pytorch.org/tutorials/beginner/basics/intro.html",
+        "focus": "在PyTorch工作流核对损失、zero_grad/backward/step与验证选择，回项目测梯度量级。"
+      }
+    ],
+    "coreDeliverable": "放大损失的解析/差分梯度与两步长五轮轨迹。"
+  },
+  "w25-d3": {
+    "hook": "90%正常的任务，全报正常有90%准确率却解决了异常发现吗？",
+    "steps": [
+      "手算全正常与规则预测的TN/FP/FN/TP，固定异常正类。",
+      "增加两个误报，分别核对准确率、精确率、召回率分母。",
+      "回项目对齐类别比例、朴素基线、阈值选择集合与零分母规则。"
+    ],
+    "pitfalls": [
+      "高准确率当找到了稀少异常。",
+      "训练seed增加当新增正例，或零预测正类时赋精确率满分。"
+    ],
+    "quickCheck": "加误报但没改真异常检出数，精确率与召回率谁直接改变？部署阳性率下降又影响哪个比例？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对混淆矩阵、precision/recall和零分母。"
+      },
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南检查阈值用验证，测试类别分布及主体角色需报告。"
+      }
+    ],
+    "coreDeliverable": "两方案混淆表、加误报实验与项目基线/比例复查。"
+  },
+  "w25-d4": {
+    "hook": "把视觉代码换成文本数组，为什么不算完成研究能力迁移？",
+    "steps": [
+      "选另一模态写新输出、独立来源与预测时可见输入。",
+      "保留三原则：训练/验证/测试职责、公平基线、完整结果。",
+      "改写三条件：来源分组、输入处理、主指标，运行或制定最小新基线并检查特有风险。"
+    ],
+    "pitfalls": [
+      "只改输入维度，沿用旧划分和评价。",
+      "旧数据改善搬成新任务结论，或预训练来源未核查仍称独立。"
+    ],
+    "quickCheck": "图片对象、文本原文、时序设备分别对应什么分组单位？同一交集算法为何需不同来源语义？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南对比新主体/未来时间目标，保留原则但重选策略。"
+      },
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的重复/预处理信息边界，按新模态列特有风险。"
+      }
+    ],
+    "coreDeliverable": "新模态协议、三保留/三改写条件及最小基线产物。"
+  },
+  "w25-d5": {
+    "hook": "刚看解法做对，一周后换输入还会做吗？",
+    "steps": [
+      "从三个已知错误各生成不同数据的新题，预定7–14天后复测。",
+      "先独立答并解释，再看分步反馈，记录提示/参考后状态。",
+      "将再错项细化到先修点，安排一项回项目应用；已稳定通过转间隔复测。"
+    ],
+    "pitfalls": [
+      "同题同数字再做当迁移保持证据。",
+      "复习表无限增长，按打卡时长而非修复结果判断。"
+    ],
+    "quickCheck": "看过原解法后正确应记录哪种完成方式？新数据又错时，应重播所有视频还是定位具体错因？",
+    "readingGuide": [
+      {
+        "title": "Mathematics for Machine Learning 作者官网",
+        "url": "https://mml-book.com/",
+        "focus": "在MML作者目录回到实际缺口对应概念，用新输入验证而非整书重读。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单将补弱优先级连到结论/评价风险，复测产生实际产物。"
+      }
+    ],
+    "coreDeliverable": "三换题延迟复测、提示级别及一项项目应用的闭环档案。"
+  },
+  "w26-d1": {
+    "hook": "条件变了，能否从空白重建问题、划分和一个低成本基线？",
+    "steps": [
+      "从未用于旧调试的来源/时期或封存扰动取新条件，写目标与信息边界。",
+      "给数据字典、三集合、输入输出与指标做手算和最小检查。",
+      "运行廉价基线及事先单项改动，验证冻结后评价，保存全部失败和来源。"
+    ],
+    "pitfalls": [
+      "把旧答案换标题当迁移，沿用旧阈值不验证。",
+      "增加相关窗口凑独立主体，或删负结果以通过。"
+    ],
+    "quickCheck": "新主体与未来时期任务应分别怎么划分？旧模型阈值能未经新验证直接保证同效果吗？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南选择对应新条件的分组/时间方案，三集合角色不变。"
+      },
+      {
+        "title": "Mathematics for Machine Learning 作者官网",
+        "url": "https://mml-book.com/",
+        "focus": "在MML作者目录回看基线所需线性代数/回归内容，仅用最小方法验证闭环。"
+      }
+    ],
+    "coreDeliverable": "新条件数据/协议、最小基线和冻结结果包。"
+  },
+  "w26-d2": {
+    "hook": "代码删掉测试访问后，已经看过的信息会重新变成未知吗？",
+    "steps": [
+      "画综合项目每步读取数据，查主体重叠、测试拟合和测试选阈值。",
+      "实际修三种示例风险并列受影响运行，旧分数保留错误版本。",
+      "核对来源/到达时间/外部预训练未知，若旧测试引导修改则封存新评价条件。"
+    ],
+    "pitfalls": [
+      "布尔字段全绿就声称没有任何语义泄漏。",
+      "删除测试访问后仍把原测试称从未见过，或旧新成绩混平均。"
+    ],
+    "quickCheck": "测试参与选词表、以后改成训练词表，旧测试历史还能抹掉吗？集合交集检查发现不了哪种未来字段？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：常见陷阱与数据泄漏",
+        "url": "https://scikit-learn.org/stable/common_pitfalls.html",
+        "focus": "阅读常见陷阱的预处理、主体与目标泄漏，逐操作核对读取范围。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单披露数据使用、未知限制与重跑版本，审计不能只核字段。"
+      }
+    ],
+    "coreDeliverable": "三风险修复、信息路径图、重跑清单与新评价边界。"
+  },
+  "w26-d3": {
+    "hook": "五种子候选选完后，为什么仍要保留每个最终结果而不挑赢家？",
+    "steps": [
+      "按验证汇总选结构与预算，固定测试对象和随机源。",
+      "随机方法跑全部预定种子，确定性方法固定复跑并查时期/来源敏感性。",
+      "逐对算最终效应、波动和退步，与提前阈值/成本比较并追到运行ID。"
+    ],
+    "pitfalls": [
+      "只报最好测试seed，把正差自动称显著。",
+      "循环lambda晚绑定，所有已保存模型读最后一组参数。"
+    ],
+    "quickCheck": "lambda x:a*x+b在循环里保存时为什么可能都用最后的a、b？冻结后应报告哪些seed？",
+    "readingGuide": [
+      {
+        "title": "Python 官方：statistics",
+        "url": "https://docs.python.org/3/library/statistics.html",
+        "focus": "阅读statistics的mean/stdev，将完整配对差和随机来源写明。"
+      },
+      {
+        "title": "scikit-learn：交叉验证与数据划分",
+        "url": "https://scikit-learn.org/stable/modules/cross_validation.html",
+        "focus": "在交叉验证指南核对结构选取只看验证，最终比较是冻结流程的全部测试结果。"
+      }
+    ],
+    "coreDeliverable": "完整随机/确定性评价表、配对效应与阈值/成本结论。"
+  },
+  "w26-d4": {
+    "hook": "把随机窗口改成新主体评价，原来的高分还估计同一能力吗？",
+    "steps": [
+      "生成五新情景：主体、比例、预算、随机性、消融，先解释哪个假设变了。",
+      "限时把随机窗协议改为主体隔离，实际核对划分/指标与基线。",
+      "十分钟说明每数字的ID与边界，AI反馈记录提示程度并安排新题补弱。"
+    ],
+    "pitfalls": [
+      "提示后复述当完全独立新条件完成。",
+      "核心泄漏未修复，靠表达或图表高分抵消。"
+    ],
+    "quickCheck": "正类比例下降，旧精确率能搬用吗？新主体划分使任务改变后原分数应怎样描述？",
+    "readingGuide": [
+      {
+        "title": "scikit-learn：模型评估与指标",
+        "url": "https://scikit-learn.org/stable/modules/model_evaluation.html",
+        "focus": "在模型评估指南核对比例、阈值与指标分母，解释变化条件。"
+      },
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单形成证据、预算、机制和限制质疑，回答指向真实产物。"
+      }
+    ],
+    "coreDeliverable": "五新条件答复、主体协议修订与提示/换题复测记录。"
+  },
+  "w26-d5": {
+    "hook": "下一90天怎样围绕真实缺口前进，而不是再列几十门课？",
+    "steps": [
+      "整理代码、版本、来源、协议、全结果、错例和报告，检查核心缺项。",
+      "选两证据明确的补弱和一真实课题/数据核查动作，保留负结果路线。",
+      "分配90天资源，定三个可检查里程碑、预算与新评价边界，用复测结果更新。"
+    ],
+    "pitfalls": [
+      "课程过程分当身份或学位认证。",
+      "下个项目继续把旧测试当通用调参集，或计划承诺固定时间发表。"
+    ],
+    "quickCheck": "“学习深度模型”怎样改成一个可交付里程碑？旧失败路线为何仍应放进证据包？",
+    "readingGuide": [
+      {
+        "title": "NeurIPS 官方论文检查清单",
+        "url": "https://neurips.cc/public/guides/PaperChecklist",
+        "focus": "按NeurIPS清单核对最终数据、方法、全部结果与限制，缺项转下一动作。"
+      },
+      {
+        "title": "Keshav：How to Read a Paper（作者最新版）",
+        "url": "https://svr-sk818-web.cl.cam.ac.uk/keshav/papers/07/paper-reading.pdf",
+        "focus": "用Keshav方法给90天核心论文定义阅读深度与证据产物，不堆标题清单。"
+      }
+    ],
+    "coreDeliverable": "综合版本化证据包和含三里程碑/两补弱/真实数据动作的90天计划。"
+  }
+}

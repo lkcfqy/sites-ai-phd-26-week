@@ -1,0 +1,48 @@
+{
+  "version": "7",
+  "dialect": "sqlite",
+  "entries": [
+    {
+      "idx": 0,
+      "version": "6",
+      "when": 1791379800046,
+      "tag": "0000_abnormal_khan",
+      "breakpoints": true
+    },
+    {
+      "idx": 1,
+      "version": "6",
+      "when": 1791380703317,
+      "tag": "0001_volatile_the_twelve",
+      "breakpoints": true
+    },
+    {
+      "idx": 2,
+      "version": "6",
+      "when": 1791382101913,
+      "tag": "0002_minor_black_bolt",
+      "breakpoints": true
+    },
+    {
+      "idx": 3,
+      "version": "6",
+      "when": 1791418416549,
+      "tag": "0003_learning_evidence",
+      "breakpoints": true
+    },
+    {
+      "idx": 4,
+      "version": "6",
+      "when": 1791554400000,
+      "tag": "0004_autonomous_learning",
+      "breakpoints": true
+    },
+    {
+      "idx": 5,
+      "version": "6",
+      "when": 1791555745920,
+      "tag": "0005_research_protocols",
+      "breakpoints": true
+    }
+  ]
+}

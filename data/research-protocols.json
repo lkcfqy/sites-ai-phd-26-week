@@ -1,0 +1,210 @@
+{
+  "version": "research-v2",
+  "verifiedOn": "2026-10-08",
+  "testedEnvironment": "Python 3.12.14 / NumPy 2.3.5 / scikit-learn 1.9.1；CPU；不需要GPU",
+  "review": {
+    "scope": "自动评分只判断概念题。自查和完成方式是自报。独立实践、迁移与研究能力需外部评审核验代码/日志并现场解释。",
+    "hardGates": [
+      "核心泄漏先修复并重新安排独立评价",
+      "不得伪造、隐瞒或覆盖关键运行证据",
+      "关键实验须由评审从新目录复跑"
+    ],
+    "rubric": [
+      "问题与协议25分",
+      "实现与可重跑25分",
+      "评价与分析25分",
+      "解释与迁移25分"
+    ],
+    "pass": "概念≥80%；人工四项0–3级换算总分≥80且每项≥2；独立完成并且三个硬门槛均满足。无指标改善仍可通过规范方法。",
+    "retention": "保留独立/提示后/参考解法后、所有失败和负结果；7–14天后以新数据或条件延迟复测。"
+  },
+  "workflow": [
+    "第8周：按研究兴趣、许可、公开数据与预算确定方向",
+    "第13–16周：真实小数据方法复现、可靠基线与完整产物",
+    "第17周：3–5篇原始文献矩阵、任务/独立单位/差异表",
+    "第18周：预注册可反驳假设、指标/效应阈值/预算/测试边界",
+    "第19–20周：同预算复现、消融、全部结果和错误分析",
+    "第21–23周：一个有限改动，开发/验证完成选择后封存配置并评价",
+    "第24周：报告与答辩，审计替代解释和负结果",
+    "第25–26周：新条件迁移、现场调试与延迟复测"
+  ],
+  "paperReproduction": "默认入口为真实小数据的方法实践。论文复现从已核验原文提取具体公式、实验与差异；研究页提供三条CPU路线和服务端协议记录。未对齐项不能声称已复现；潜在创新需最接近原始文献与可重现差异支持，系统保留未证实状态。",
+  "tracks": [
+    {
+      "id": "vision",
+      "title": "真实digits：分类与扰动鲁棒性",
+      "summary": "官方SVC完整方法/划分复现 + 训练内缩放消融；不证明原论文数值或新书写者泛化。",
+      "data": {
+        "name": "UCI Optical Recognition / scikit-learn digits，1797个真实8×8图像",
+        "source": "https://archive.ics.uci.edu/dataset/80/optical+recognition+of+handwritten+digits",
+        "license": "CC BY 4.0；引用Alpaydin & Kaynak (1998)，DOI 10.24432/C50P49",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "independentUnit": "图片/原始来源；子集缺书写者ID，不能认证新书写者",
+        "limits": "公开小图、低分辨率；迁移扰动是人为条件，不是自然工业分布。"
+      },
+      "reproduction": {
+        "kind": "官方示例的完整方法与划分复现",
+        "source": "https://scikit-learn.org/stable/auto_examples/classification/plot_digits_classification.html",
+        "steps": [
+          "加载digits并保存内容哈希",
+          "前898图训练、后899图测试，shuffle=False",
+          "SVC gamma=.001，其余官方默认；保留指标/混淆矩阵/环境",
+          "第二管道三个随机划分种子，缩放/不缩放各三C验证选择，全部候选保存"
+        ],
+        "acceptance": "官方方法/划分与混淆矩阵逐项核对；差异解释版本；不把重用数据的第二管道称独立新测试。"
+      },
+      "protocol": {
+        "primaryMetric": "macro-F1；辅以准确率、逐类指标与混淆矩阵",
+        "split": "三划分种子11/29/47，约70/15/15；官方例另按顺序50/50",
+        "preprocessing": "StandardScaler只fit训练；冻结后按预定规则fit训练+验证",
+        "search": "C∈{.1,1,10}；缩放两条件同三候选；验证macroF1最大，平分保留先列候选",
+        "testBoundary": "官方及后续管道重用公开图像属方法练习；新研究先封存新的来源或未知扰动，测试只在冻结后启封",
+        "leakageAudit": [
+          "原始来源/增强衍生图跨集合",
+          "像素哈希与近重复人工抽查",
+          "明确书写者ID缺失及公开测试使用历史"
+        ],
+        "budget": "方法复现CPU，建议2GB可用内存（容量规划，未测峰值）；预留5分钟机器时间。独立项目≤18小时CPU，六候选/每条件、相同信息与训练预算。",
+        "uncertainty": "三个重叠划分的均值/标准差只描述敏感性；随机训练扩展≥3训练种子，同封存划分；不把划分种子当训练种子或新数据集。"
+      },
+      "independentProject": {
+        "question": "轻微平移增强能否改善未用于选择的扰动图像分类而不过度损伤干净表现？",
+        "hypothesis": "事先约定：扰动macroF1增加≥.02，干净macroF1下降≤.01，训练预算相同；阈值仅示例，须在看封存结果前定稿。",
+        "disproof": "未达改善阈值或干净退步超限即不支持原假设；报告负结果和样本范围。",
+        "conditions": [
+          "评审先封存新原始来源，或未用于选择的扰动生成条件/种子",
+          "开发数据选增强强度；原始图先划分，再做训练增强",
+          "若只有已公开digits，明确仅未知条件迁移训练，不认证新书写者研究"
+        ],
+        "ablation": "无增强/轻微平移；可再加只多训练的同预算对照，共最多三条件；≥3训练种子或确定性配对来源误差。",
+        "budget": "第21–24周每周4–5小时研究；≤18小时CPU，低算力用线性分类器和最多1000开发图，并报告抽样边界。",
+        "deliverables": [
+          "3–5篇最接近文献矩阵与方法差异表",
+          "预注册协议/封存条件/假设阈值",
+          "环境、源代码/Notebook、配置/划分、所有预测/日志",
+          "消融/误差/负结果、报告和10分钟答辩"
+        ]
+      }
+    },
+    {
+      "id": "timeseries",
+      "title": "真实sunspots：时间信息与模型更新",
+      "summary": "复现最后值/漂移公式与滚动起点方法，在历史年度序列上比较滞后岭模型；不复现教材股票/生产数值。",
+      "data": {
+        "name": "statsmodels sunspots 1700–2008，309个真实年度值",
+        "source": "https://raw.githubusercontent.com/statsmodels/statsmodels/main/statsmodels/datasets/sunspots/sunspots.csv",
+        "license": "官方源元数据声明public domain；原来源NGDC",
+        "licenseUrl": "https://github.com/statsmodels/statsmodels/blob/main/statsmodels/datasets/sunspots/data.py",
+        "snapshotSha256": "f67889b1d9002cd5227f0e0ef54e35b419cdd85a31279adef6f73fb41e5c0a9b",
+        "independentUnit": "连续年度目标与相关周期；不是309个独立主体",
+        "limits": "单历史序列；老太阳黑子口径与新SILSO系列不可直接拼接；不代表工业故障。"
+      },
+      "reproduction": {
+        "kind": "FPP3最后值/漂移公式与滚动评价方法，数据与语言适配",
+        "source": "https://otexts.com/fpp3/simple-methods.html",
+        "steps": [
+          "核对CSV快照/年份/309值",
+          "手算最后值和漂移一步公式，验证起点只能用过去",
+          "三扩展窗各20验证年，共四lag/alpha候选",
+          "冻结后评价1950–2008，保留59年三方法预测"
+        ],
+        "acceptance": "手算与预测一致、所有时间边界可查；方法适配表注明改数据/语言，未宣称原表数值复现。"
+      },
+      "protocol": {
+        "primaryMetric": "MAE，辅以RMSE与逐年绝对误差；单位为数据的太阳黑子活动数",
+        "split": "1712–1949开发；三次扩展窗，每折20年验证；1950–2008最终测试",
+        "preprocessing": "每折StandardScaler仅fit过去；最终Ridge在全部开发重拟合",
+        "search": "lag∈{3,12}、alpha∈{.1,10}，四候选、三折平均MAE最小；同最大lag目标起点",
+        "testBoundary": "滚动一步允许此前真实测试观测更新输入；Ridge参数固定，漂移基线在线历史统计更新已声明；不等于固定起点预测59年",
+        "leakageAudit": [
+          "目标/特征可得时间",
+          "未来统计或双向填补",
+          "多步任务的跨界目标/窗口重叠",
+          "若新工业数据按设备/批次隔离主体"
+        ],
+        "budget": "方法复现CPU，建议1GB可用内存（容量规划，未测峰值）；预留3分钟。项目≤12小时CPU，固定候选与相同更新机会。",
+        "uncertainty": "确定性Ridge不伪造换种子重复；同年配对损失11年移动块1000重抽样只作敏感性描述。随机模型扩展≥3训练种子；约五测试周期，平稳/块长假设须说明。"
+      },
+      "independentProject": {
+        "question": "相同一步任务中，定期用已到达数据更新Ridge是否比固定模型更稳定？",
+        "hypothesis": "预定：MAE降低≥5%，峰值期MAE不恶化超过5%，增加CPU时间≤2倍；看新测试前定稿。",
+        "disproof": "任一效应或预算门槛未达即不支持；固定/更新各自失败年份完整报告。",
+        "conditions": [
+          "只在旧开发范围比较更新周期{5,10,20年}，验证决定一次",
+          "先登记未用于选择的时间段，或选未用真实序列重新建立协议；冻结后由系统记录启封。",
+          "新sunspots系列需先核验口径并分开报告，不能悄悄接入旧序列"
+        ],
+        "ablation": "固定模型/仅更新标准化/标准化与回归均更新，三条件同一可得信息与候选数；首要两条件完成后再做第三。",
+        "budget": "第21–24周每周3–4小时；CPU≤12小时。低算力只Ridge/最后值，不强求LSTM。",
+        "deliverables": [
+          "时间可得性表和后续数据口径说明",
+          "文献矩阵/可反驳假设/时间协议",
+          "候选/逐年预测/运行日志/更新成本",
+          "峰值错误/块敏感性/负结果/报告答辩"
+        ]
+      }
+    },
+    {
+      "id": "language",
+      "title": "真实SMS：表示与文本扰动",
+      "summary": "复现官方TF-IDF/线性分类方法，在真实英语SMS上适配；近重复与来源边界必须解释。",
+      "data": {
+        "name": "UCI SMS Spam Collection，官方文件5574物理行，ham/spam",
+        "source": "https://archive.ics.uci.edu/dataset/228/sms+spam+collection",
+        "download": "https://archive.ics.uci.edu/static/public/228/sms+spam+collection.zip",
+        "license": "CC BY 4.0；引用Almeida & Hidalgo (2011)，DOI 10.24432/C5CC84",
+        "licenseUrl": "https://creativecommons.org/licenses/by/4.0/",
+        "snapshotSha256": "7d039a24a6083ed9ef0f806ebad56bbb976e3aeb8de05669173bfdc4996c239d",
+        "zipSha256": "1587ea43e58e82b14ff1f5425c88e17f8496bfcdb67a583dbff9eefaf9963ce3",
+        "independentUnit": "规范化文本及保守近重复连通簇；无完整发送者/时间ID",
+        "limits": "混合英语历史短信；不证明未来时间、新发送者或中文维修泛化；示例用去标识摘要/行号，不发布原短信个人内容。"
+      },
+      "reproduction": {
+        "kind": "官方TF-IDF/线性文本方法的真实SMS适配；非2011论文数值复现",
+        "source": "https://scikit-learn.org/stable/modules/feature_extraction.html",
+        "paper": "https://doi.org/10.1145/2034691.2034742",
+        "paperStatus": "标题/作者/DOI由UCI和Crossref核验；ACM全文403，未以未读正文编造原协议。",
+        "steps": [
+          "下载203KB zip或SMS_ZIP指定同一离线包；检查两个SHA与5574行",
+          "精确规范化+固定.80余弦近重复连通簇；冲突标签簇按预定规则剔除、留数量与哈希",
+          "三组划分种子，各六候选按验证macroF1选，冻结后一次评价",
+          "保留全部预测/组ID及高相似近重复审计"
+        ],
+        "acceptance": "来源/解析/分组互斥与训练词表可核查，方法适配差异明确；如要复现关联论文，先获取可读原文并逐项对齐。"
+      },
+      "protocol": {
+        "primaryMetric": "macro-F1；辅以spam精确率/召回率、准确率和多数类对照",
+        "split": "三个划分种子11/29/47，约70/15/15来源簇；固定URL/数字/小写/空白规则，独立无标签审计TF-IDF余弦≥.80连通分量；分类TF-IDF重新训练内fit",
+        "preprocessing": "TF-IDF词表/IDF只fit训练；min_df=2、max_features=12000、sublinear_tf=True；测试只transform",
+        "search": "word ngram∈{(1,1),(1,2)}、C∈{.1,1,10}共六候选；验证macroF1最大；固定0.5阈值",
+        "testBoundary": "冻结后测试；若已看此公开方法结果，新确认用未用于选择的真实来源或评审封存的新扰动条件，记录旧测试历史",
+        "leakageAudit": [
+          "精确/规范化模板组跨集合",
+          "冻结训练词表下余弦≥.95的疑似近重复人工核查",
+          "无发送者/时间ID不冒充主体/时间隔离",
+          "标签边界与同组冲突处理"
+        ],
+        "budget": "首次下载约203KB；CPU，建议2GB可用内存（容量规划，未测峰值）；预留5分钟。项目CPU≤18小时，两表示各最多六配置。",
+        "uncertainty": "重叠划分std描述敏感性；近重复多需保守外推。随机训练扩展≥3训练种子、同封存划分；需要时按文本组配对重抽样，假设独立必须讨论。"
+      },
+      "independentProject": {
+        "question": "字符TF-IDF是否在数字/拼写扰动下比词TF-IDF保留更好的spam识别？",
+        "hypothesis": "预定：扰动macroF1提高≥.02，干净macroF1下降≤.01，推理时间≤2倍；看封存结果前确认阈值。",
+        "disproof": "不满足效应/干净性能/预算即不支持；保留全部结果并解释否定/短句等失败。",
+        "conditions": [
+          "评审封存未用于选择的扰动类型与参数，不伪装自然攻击数据",
+          "同原始文本组划分，所有衍生句留在同组",
+          "词/字符模型同信息/样本/调参次数；真实新来源需要许可与去标识协议"
+        ],
+        "ablation": "word/char表示各同六配置；另外只做一种去数字规范化消融。正式结果疑似近重复经人工核验，不能事后仅删除不利测试。",
+        "budget": "第21–24周每周4–5小时，CPU≤18小时；低算力max_features=6000并在两方法统一。无需付费API或LLM。",
+        "deliverables": [
+          "文献矩阵与官方/论文差异表",
+          "文本标签/来源/许可/隐私协议",
+          "封存条件、配置/组ID/全部预测/近重复核查",
+          "表示消融/负结果/错误分析/报告答辩"
+        ]
+      }
+    }
+  ]
+}
