@@ -1,0 +1,15 @@
+{
+  "depth-language.json": "4fcbd7108697ef39451a0be15b5d870a33cbe9334b03f8f2a40e691f04bfd3ff",
+  "depth-models.json": "208c4f60ec4370673bd7d54764ead960fe6a6a378cf1f86b9799da19b0188a43",
+  "self-study-language.json": "ba000a7fba06216446eca827fdb3e3ee598d29e877599cab6e343488fa714350",
+  "depth-research.json": "6ad0022d24a1b07952de2ff39f14df1ac7d0944f13f3cc2ec25a08d04a7fbda7",
+  "depth-vision.json": "cb0f8f535d7ccb46619382196084908135e4a92526aacfd845889331c4994d4f",
+  "curriculum.json": "9e5e3c6b7b9be0d2e02819a22e264d21fd6cfd3b0b15ffe13626f99b0c53a515",
+  "self-study-models.json": "ec6d3844a4b16cdcd20f54ecadce9ec20cb6ae2efed3d9d6ae7a0a2356c791f6",
+  "self-study-research.json": "9a359433f9f2aa0ef7d31687499306131a8ebfcf69c1d21d6ae9147c0ab823a1",
+  "self-study-vision.json": "62397fdbbebbfd274acac2bce5875b96bc78eb19cb521e2543cccbe800fec118",
+  "self-study-foundations.json": "9af909d05ef60049a4ace368470a75c73c7c9d01d8d22875e9e1ab1024b9ea5f",
+  "self-study-timeseries.json": "4bf3bbf4d9f285ca72881d70c1e73fc897f55ff261c0a7525bcda53fe7f5ec66",
+  "depth-foundations.json": "294d6f5c38a9049e55044d3418c0e212a79f7f16a58b910bd715e1985b9fa9c0",
+  "depth-timeseries.json": "09d79cf03504859ed4feaf04a38276661f05f3eca89043a4cc558bc96a60ac1a"
+}

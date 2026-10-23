@@ -9,7 +9,7 @@ const wrapper=resolve(temporary,'worker.mjs');
 writeFileSync(wrapper,`import app from '../../dist/server/index.js';
 export default {async fetch(request,env,ctx){
  const url=new URL(request.url),headers=new Headers(request.headers);
- if(url.pathname.startsWith('/_next/static/')||url.pathname==='/python-worker.js'||url.pathname==='/favicon.svg')return env.ASSETS.fetch(request);
+ if(url.pathname.startsWith('/_next/static/')||url.pathname.startsWith('/systems/')||url.pathname==='/python-worker.js'||url.pathname==='/favicon.svg')return env.ASSETS.fetch(request);
  for(const key of [...headers.keys()])if(key.startsWith('oai-authenticated-user-'))headers.delete(key);
  if(url.pathname==='/signin-with-chatgpt')return new Response(null,{status:302,headers:{Location:'/', 'Set-Cookie':'__qa_auth='+ (url.searchParams.get('qa')==='B'?'B':'A') +'; HttpOnly; SameSite=Lax; Path=/'}});
  if(url.pathname==='/signout-with-chatgpt')return new Response(null,{status:302,headers:{Location:'/', 'Set-Cookie':'__qa_auth=; Max-Age=0; HttpOnly; SameSite=Lax; Path=/'}});
@@ -26,4 +26,4 @@ const db=await mf.getD1Database('DB');
 for(const name of ['0000_abnormal_khan.sql','0001_volatile_the_twelve.sql','0002_minor_black_bolt.sql','0003_learning_evidence.sql','0004_autonomous_learning.sql','0005_research_protocols.sql']){const sql=readFileSync(resolve('drizzle',name),'utf8').split(';').map(s=>s.replace(/--> statement-breakpoint/g,'').trim()).filter(Boolean);await db.batch(sql.map(s=>db.prepare(s)))}
 console.log('Disposable QA preview: '+await mf.ready);console.log('DB: '+temporary);console.log('Login: /signin-with-chatgpt?return_to=/');
 for(const signal of ['SIGINT','SIGTERM'])process.on(signal,async()=>{await mf.dispose();process.exit(0)});
-await new Promise(()=>{});
+if(process.env.SYSTEMS_QA_TEST==='1'){globalThis.__systemsTestDispatch=(url,init)=>mf.dispatchFetch(url,init);try{await import('./check-systems-api.mjs')}finally{await mf.dispose()}}else await new Promise(()=>{});

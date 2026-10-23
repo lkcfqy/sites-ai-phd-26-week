@@ -49,5 +49,11 @@ next-env.d.ts
 __pycache__/
 *.pyc
 
-# Safe configuration documentation
+# Safe configuration documentation and local-only results
 !.env.example
+/verification/
+**/verification/
+/artifacts/
+*.sqlite*
+*.db
+*.log
