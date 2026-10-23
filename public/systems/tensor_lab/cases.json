@@ -1,0 +1,11 @@
+{
+  "schema": "mlsys-tensor-cases-v1",
+  "source": "synthetic-teaching-data",
+  "tokens": [[1, 0], [0, 1], [1, 1]],
+  "weights": [[1, 2, 3], [4, 5, 6]],
+  "bias": [0.5, 1, 1.5],
+  "upstream": [[1, 0, -1], [2, 1, 0], [0, 1, 1]],
+  "query_weights": [[1, 0], [0, 1]],
+  "key_weights": [[1, 0], [0, 1]],
+  "value_weights": [[10, 0], [0, 20]]
+}

@@ -408,7 +408,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "import numpy as np\nx = np.array([[1., 2., 3.], [4., 5., 6.]])\nb = np.array([10., 20., 30.])\ny = x + b\nprint(y.shape)  # (2, 3)\nprint(y[0])     # [11. 22. 33.]",
-        "exercise": "用不同bias形状预测广播结果；构造一个能运行但沿错误轴加偏置的例子，并写显式shape检查。",
+        "exercise": "在数组到 Attention 连续项目先完成 as_tokens，再预测 (3,) 与 (3,1) 偏置的区别；线性层练习要求显式 shape 检查，拒绝能广播但语义错轴的输入。保留首次失败和修复回执。",
         "acceptance": [
           "每个轴有语义名称",
           "至少一个非法shape被测试捕获",
@@ -576,7 +576,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "X=[[1,2],[3,4]]，W=[[2],[1]]。第一行输出1×2+2×1=4，第二行输出3×2+4×1=10。X是(2,2)，W是(2,1)，结果是(2,1)。",
-        "exercise": "手算一个2×3乘3×2，再用NumPy核验；把batch和特征轴在报告中命名。",
+        "exercise": "先手算一个2×3乘3×2；再在数组到 Attention 项目完成 linear，逐项核对 X(T,D) @ W(D,O) + b(O,) 的单元值、非方阵和单 token 测试。明确 token/特征轴，不能用 * 代替矩阵乘法。",
         "acceptance": [
           "手算与代码一致",
           "能拒绝维度不匹配输入",
@@ -639,7 +639,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "f(x)=x²，在x=3处解析导数6。h=0.001时，((3.001)²-(2.999)²)/0.002≈6。把h从1e-1改到1e-8，观察有限精度下结果不一定单调更好。",
-        "exercise": "为二参数平方损失写解析梯度与有限差分检查；故意写错一项系数观察测试失败。",
+        "exercise": "先推导标量平方损失梯度，再在连续 NumPy 项目实现 linear_backward，核对 dX/dW/db 与独立有限差分；故意把 bias 梯度求和改成平均，保留失败并解释上游梯度约定。",
         "acceptance": [
           "梯度误差阈值有解释",
           "包含至少两个参数点",
@@ -964,7 +964,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "线性层y=XW+b。X是(2,3)、W是(3,4)、b是(4)，y应为(2,4)。用固定小整数手算一个输出元素，再核对框架的该元素；注意不同API的权重存储方向可能不同。",
-        "exercise": "手写NumPy线性层并与CPU框架实现对照；将权重显式转到匹配布局并解释。",
+        "exercise": "先完成连续 NumPy 项目的线性层、shape 与手工梯度累计检查，再使用模型/框架项目在可用 CPU 框架做对照。NumPy 不是 autograd；框架未安装或未执行时该部分保留未核验。",
         "acceptance": [
           "shape与权重方向写清",
           "固定输入逐元素误差在阈值内",
@@ -1092,7 +1092,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "两位置分数为[0,0]时softmax=[0.5,0.5]，V=[2,6]得到加权值4。若因果规则只允许第一个位置，第一个输出只能取2。数值稳定实现先减去最大分数再指数运算。",
-        "exercise": "实现两到四个token的单头attention，显示score、mask、weights和output；与手算对照。",
+        "exercise": "在连续 NumPy 项目复用 linear 构造 Q/K/V，再实现 attention，核对 scores、bool mask、逐行稳定 softmax 与 output。运行未展示的矩形/随机参数变式和未来 token 扰动测试；公开检查不证明独立完成。",
         "acceptance": [
           "权重和约为1",
           "未来位置权重为0",

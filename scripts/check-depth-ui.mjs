@@ -13,18 +13,19 @@ function load(relative){
  if(!extname(file)){try{readFileSync(file+'.ts');file+='.ts'}catch{file+='.tsx'}}
  if(file.endsWith('.json'))return JSON.parse(readFileSync(file,'utf8'));
  if(modules.has(file))return modules.get(file).exports;
- const module={exports:{}};modules.set(file,module);
+ const loadedModule={exports:{}};modules.set(file,loadedModule);
  const output=ts.transpileModule(readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
  function localRequire(id){if(id.startsWith('@/'))return load(id.slice(2));if(id.startsWith('.'))return load(resolve(dirname(file),id));return require(id)}
- new Function('require','module','exports',output)(localRequire,module,module.exports);return module.exports;
+ new Function('require','module','exports',output)(localRequire,loadedModule,loadedModule.exports);return loadedModule.exports;
 }
 const {DepthReading,DepthQuiz}=load('app/lesson-depth.tsx'),{DraftProvider}=load('app/lesson-view.tsx');
 const {default:SelfStudyReading}=load('app/self-study-reading.tsx');
+const {publicQuestion}=load('lib/public-teaching.ts');
 let checked=0,studyChecked=0,figures=0;
 for(const group of ['foundations','models','vision','timeseries','language','research']){
  const data=load(`data/depth-${group}.json`),guides=load(`data/self-study-${group}.json`);
  for(const [lessonId,lesson] of Object.entries(data)){
-  const {questions,...content}=lesson,payload={lessonId,version:'depth-v2',content,questions:questions.map(({answer:_answer,explanation:_explanation,...question})=>question)};
+  const {questions,...content}=lesson,payload={lessonId,version:'depth-v2',content,questions:questions.map(publicQuestion)};
   const reading=renderToStaticMarkup(React.createElement(DepthReading,{data:payload,onQuiz:()=>{}}));
   for(const section of lesson.sections)assert(reading.includes('id="depth-'+section.id+'"'));
   assert(reading.includes('id="depth-example"'));assert(reading.includes('id="depth-pitfalls"'));
