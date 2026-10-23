@@ -166,8 +166,8 @@ export const stages: Stage[] = [
             "body": "代码为三个预定种子的简单均值估计器产生真实计算的指标，并用配置指纹关联运行。数据是固定合成数值，模型仅是均值预测。教师变式并列预算或数据版本变化的配置，以及同设定重跑事件；阅读时区分内容变化与事件变化。最终实验日志需要记录真实实现版本和划分，而不是借用教学分数。"
           }
         ],
-        "workedExample": "最小记录：\nrun_id: cpu-demo-001\ncommand: python hello.py\ninput: [8, 15, 22]\nunit: ms\nresult_mean: 15\nstatus: success\nlimitation: 手工输入的教学数据，不是硬件测量",
-        "exercise": "为上一课生成run_manifest.json，包含命令、输入、环境、结果、时间及限制；修改一个输入再生成第二份。",
+        "workedExample": "最小 JSON（可在编辑器手工填写，字段名和文字使用英文双引号）：\n{\n  \"run_id\": \"cpu-demo-001\",\n  \"command\": \"python hello.py\",\n  \"input\": [8, 15, 22],\n  \"unit\": \"ms\",\n  \"result_mean\": 15,\n  \"status\": \"success\",\n  \"limitation\": \"手工教学数据，不是硬件测量\"\n}\n大括号包围记录；冒号连接字段名与值，逗号分隔字段。此处只手工记录，不要求提前会 json 模块。",
+        "exercise": "先用文本编辑器照例子手工保存 run_manifest.json，补充实际环境与运行时间；修改一个输入再保存第二份，不覆盖旧文件。自动读写 JSON 在 s1-l2 学习。",
         "acceptance": [
           "JSON格式有效且两次记录不覆盖",
           "输入、单位与结果可追溯",
@@ -1706,7 +1706,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "线程t读取A[t]与A[32*t]数学上都是一次读取，但地址跨度不同。教学图可假设固定缓存行和事务大小比较覆盖块数；报告必须写明这些假设，不能推广为所有GPU精确事务计数。",
-        "exercise": "在访存图中比较连续、跨步和反转访问；解释哪些访问可能共享事务，并设计真实硬件验证计划。",
+        "exercise": "先手画线程号→字节地址表，比较连续、跨步和反转访问；可用缓存模拟器辅助核对缓存行，但它不模拟 Warp 事务。解释共享事务所需对齐假设，再设计真实硬件验证计划。",
         "acceptance": [
           "地址序列推导正确",
           "将教学假设写清",
@@ -1734,7 +1734,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "2×2输出tile，每个k步取一列A和一行B进行外积累加。C[i,j]依次加A[i,k]×B[k,j]。先用CPU朴素三循环建立参考，再改变分块顺序，结果应在浮点容忍范围内一致。",
-        "exercise": "实现CPU分块矩阵乘或使用tile图验证；已获授权的NVIDIA轨再实现CUDA并与参考测试。",
+        "exercise": "使用真实动手中的 C++ 矩阵项目实现/修改 CPU 分块矩阵乘，手画 tile 与边缘块；保留非整除 shape 测试。只有已获授权的 NVIDIA 环境再使用 CUDA 包运行并与参考对照。",
         "acceptance": [
           "非整除尺寸正确",
           "数值容忍阈值明确",
@@ -1829,7 +1829,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "s=0.5,z=0，x=1.2映射round(2.4)=2，重构为1.0，绝对误差0.2。若可用整数范围很窄，outlier还会被clip；不同取整规则要在实验中保持一致。",
-        "exercise": "使用量化图比较有无outlier、不同scale与per-channel；计算最大误差和MSE。",
+        "exercise": "先在量化模拟器的固定八个标量上比较位宽/裁剪范围，手算一个还原值与最大误差；再在本地 lab_pack.py 的 quantization 副本中改变 outlier 输入。图不支持 per-channel；需自己实现逐通道 scale 后另写测试，不把单 scale 结果当作已验证。",
         "acceptance": [
           "scale为正且常量输入单独处理",
           "整数范围与clipping明确",
@@ -1940,7 +1940,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "教学场景：四个短请求分别在0、10、20、30ms到达。等到30ms再成batch，首请求至少增加30ms聚合等待。即使batch计算更快，也要检查端到端尾延迟。",
-        "exercise": "在队列图中固定seed与长度分布，比较两种batch策略；提交吞吐、P95 TTFT、拒绝率与分组结果。",
+        "exercise": "先在 Batch 图手算匀速到达的凑批等待，再运行 lab_pack.py queue，以相同 --rate 比较两个 --batch，检查逐请求等待、有限窗口 p95 和容量余量。该脚本无随机种子、token 时间戳或拒绝策略，不能报告实测 TTFT/拒绝率；这些指标留到本地服务项目补齐。",
         "acceptance": [
           "同一到达序列用于比较",
           "吞吐与尾延迟同时报告",
@@ -2007,7 +2007,7 @@ export const stages: Stage[] = [
           }
         ],
         "workedExample": "y=relu(x+b)可概念上分为加法、写中间张量、读中间张量、relu与写输出。合法融合可能避免中间张量往返，但x、b、y的语义与数值容忍仍需验证。不同后端是否真实融合必须看实际图或profile。",
-        "exercise": "在图编辑器中比较分离与融合版本，统计中间张量大小；用CPU小实现核对输出。",
+        "exercise": "在算子融合模拟器中比较分离与融合的访存量，手画两张计算图并标出中间张量；自己用 CPU 小程序实现两版 ReLU(x+1)，先核对负值、0 和正值输出。页面不提供图编辑器，也不运行你的代码。",
         "acceptance": [
           "数据依赖没有被破坏",
           "理论读写减少与实测收益分开",

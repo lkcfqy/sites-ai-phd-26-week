@@ -1,8 +1,8 @@
 // Local-only QA fixture at port 5175. Never uses production credentials/data.
 import {createRequire} from 'node:module';
 import {mkdirSync,writeFileSync} from 'node:fs';
-const require=createRequire(import.meta.url);const {chromium}=require('playwright');
-const browser=await chromium.launch({executablePath:'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+const require=createRequire(import.meta.url);const {chromium}=require(process.env.PLAYWRIGHT_MODULE??'playwright');
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
 const context=await browser.newContext({viewport:{width:1365,height:900}});const page=await context.newPage();
 const base='http://127.0.0.1:5175';const results=[];const errors=[];page.on('pageerror',e=>errors.push(String(e)));
 const check=(name,condition)=>{if(!condition)throw Error(name);results.push(name)};

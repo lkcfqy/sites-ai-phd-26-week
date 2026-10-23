@@ -1,0 +1,28 @@
+{
+  "schema": "mlsys-log-cases-v1",
+  "source": "synthetic-teaching-data",
+  "unit": "ms",
+  "mean_values": [12, 18, 30],
+  "records": [
+    {"id": "a", "status": "ok", "latency_ms": 12},
+    {"id": "b", "status": "ok", "latency_ms": 18},
+    {"id": "c", "status": "ok", "latency_ms": 30},
+    {"id": "d", "status": "error", "latency_ms": 101},
+    {"id": "e", "status": "ok", "latency_ms": 0},
+    {"id": "f", "status": "ok", "latency_ms": 100},
+    {"id": "g", "status": "ok", "latency_ms": 101},
+    {"id": "h", "status": "ok", "latency_ms": "20"},
+    {"id": "i", "status": "ok", "latency_ms": -3},
+    {"id": "j", "status": "ok"}
+  ],
+  "transfer_records": [
+    {"id": "t1", "status": "ok", "latency_ms": 0},
+    {"id": "t2", "status": "ok", "latency_ms": 100},
+    {"id": "t3", "status": "ok", "latency_ms": 200},
+    {"id": "t4", "status": "error", "latency_ms": 300},
+    {"id": "t5", "status": "ok", "latency_ms": "5"},
+    {"id": "t6", "status": "ok", "latency_ms": true},
+    {"id": "t7", "status": "ok", "latency_ms": -1},
+    {"id": "t8", "status": "cancelled", "latency_ms": 1}
+  ]
+}

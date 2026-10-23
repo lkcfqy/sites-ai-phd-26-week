@@ -21,7 +21,7 @@
     "check:autonomous": "node scripts/check-autonomous.mjs",
     "check:depth": "node scripts/check-depth.mjs && node scripts/check-depth-math.mjs && node scripts/check-depth-ui.mjs",
     "check:self-study": "node scripts/check-self-study.mjs",
-    "check:systems": "node --experimental-strip-types scripts/check-systems.mjs"
+    "check:systems": "node --experimental-strip-types scripts/check-systems.mjs && node --experimental-strip-types scripts/check-log-workshop.mjs"
   },
   "dependencies": {
     "@base-ui/react": "^1.7.0",

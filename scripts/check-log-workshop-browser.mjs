@@ -1,0 +1,90 @@
+// Real browser QA against the repository's disposable loopback fixture only.
+import assert from 'node:assert/strict';
+import {createRequire} from 'node:module';
+import {mkdtemp,readFile,rm,mkdir} from 'node:fs/promises';
+import {tmpdir} from 'node:os';
+import {join,resolve} from 'node:path';
+import {spawnSync} from 'node:child_process';
+const require=createRequire(import.meta.url);
+const {chromium}=require(process.env.PLAYWRIGHT_MODULE??'playwright');
+const base='http://127.0.0.1:5175';
+const folder=await mkdtemp(join(tmpdir(),'mlsys-log-browser-'));
+const browser=await chromium.launch({executablePath:process.env.CHROMIUM_PATH??'/usr/bin/chromium',headless:true,args:['--no-sandbox']});
+const context=await browser.newContext({viewport:{width:1365,height:900}});
+const page=await context.newPage(),errors=[],results=[];
+page.on('pageerror',error=>errors.push(String(error)));
+function check(name,ok){assert.ok(ok,name);results.push(name)}
+const noOverflow=()=>page.evaluate(()=>document.documentElement.scrollWidth<=window.innerWidth+2);
+const dirty=()=>page.evaluate(()=>{const event=new Event('beforeunload',{cancelable:true});window.dispatchEvent(event);return event.defaultPrevented});
+try{
+ const output=join(folder,'mean-before.json');
+ const run=spawnSync('python3',[resolve('public/systems/log_lab/run.py'),'mean','--output',output],{encoding:'utf8',timeout:12000});assert.equal(run.status,1);
+ const raw=await readFile(output,'utf8');
+ await page.goto(base+'/signin-with-chatgpt?return_to=/');
+ await page.getByText('当前账号记录已连接',{exact:true}).waitFor();
+ await page.keyboard.press('Tab');
+ check('keyboard skip link is first stop',await page.locator(':focus').getAttribute('href')==='#systems-main');
+ await page.keyboard.press('Enter');
+ await page.getByRole('button',{name:'中文课堂',exact:true}).click();
+ await page.getByRole('button',{name:'打开本课日志排障练习',exact:true}).click();
+ check('lesson link focuses workshop heading',await page.locator(':focus').getAttribute('id')==='log-workshop-title');
+ for(let i=0;i<3;i++)await page.getByRole('button',{name:'执行下一次循环',exact:true}).click();
+ check('stepped loop matches offline fixture',await page.getByText('已处理 3/3 个值；total = 60 ms；循环结束，平均数 = 60 / 3 = 20 ms。',{exact:true}).isVisible());
+ const prediction=page.getByRole('spinbutton',{name:'换成 [8,15,22]，平均数是多少 ms？',exact:true});
+ await prediction.fill('45');await page.getByRole('button',{name:'核对这一步',exact:true}).click();
+ check('wrong prediction explains mean denominator',await page.getByText(/还没吻合.*45 \/ 3 = 15 ms/).isVisible());
+ await prediction.fill('15');await page.getByRole('button',{name:'核对这一步',exact:true}).click();
+ check('correct prediction is explicitly not certification',await page.getByText(/这一步与约定一致.*不计为独立能力通过/).isVisible());
+ for(const width of [1365,390,320]){
+  await page.setViewportSize({width,height:844});
+  for(const label of ['1 累加与平均数','2 记录与过滤规则','3 排序与 p95']){
+   const button=page.getByRole('button',{name:label,exact:true});await button.focus();await page.keyboard.press('Enter');
+   check(`keyboard step ${label} at ${width}px`,await button.getAttribute('aria-pressed')==='true');
+   check(`no document overflow ${label} at ${width}px`,await noOverflow());
+  }
+ }
+ const table=page.getByRole('region',{name:'可横向滚动的日志与过滤说明',exact:true});
+ await page.getByRole('button',{name:'2 记录与过滤规则',exact:true}).click();
+ await table.focus();await page.keyboard.press('ArrowRight');
+ await page.waitForFunction(()=>document.querySelector('.sys-log-workshop [role="region"]')?.scrollLeft>0,null,{timeout:2000});
+ check('narrow data table is keyboard scrollable',await table.evaluate(element=>element.scrollLeft>0));
+ await mkdir('verification/systems',{recursive:true});
+ await page.screenshot({path:'verification/systems/log-mobile-320.png',fullPage:true});
+ await page.locator('#log-receipt').fill('{');await page.getByRole('button',{name:'检查日志回执与逐组反馈',exact:true}).click();
+ check('malformed receipt has actionable feedback',await page.getByRole('alert').filter({hasText:'JSON 无法解析'}).isVisible());
+ await page.locator('#log-receipt').fill(raw);await page.getByRole('button',{name:'检查日志回执与逐组反馈',exact:true}).click();
+ check('actual failed scaffold receipt displays all failed checks',await page.getByText(/mean \/ practice · needs-work · 0\/5/).isVisible());
+ const save=page.getByRole('button',{name:'保存日志排障交接（自报证据）',exact:true});
+ await save.click();check('receipt alone cannot substitute for handoff',await page.getByRole('alert').filter({hasText:'请填完四项交接'}).isVisible());
+ for(const [id,value]of [['problem','QA: empty learner raises NotImplementedError.'],['change','QA: implementation pending; no repair claimed.'],['verification','python3 run.py mean --output mean-before.json; 0/5 checks.'],['limits','QA: synthetic inputs, no performance or independence claim.']])await page.locator('#log-'+id).fill(value);
+ check('new handoff protects page unload',await dirty());
+ await page.getByRole('button',{name:'岗位工单',exact:true}).click();await page.getByRole('button',{name:'真实动手',exact:true}).click();
+ check('handoff and receipt survive module switch',(await page.locator('#log-problem').inputValue()).startsWith('QA: empty')&&await page.locator('#log-receipt').inputValue()===raw);
+ const dialogPromise=page.waitForEvent('dialog').then(async dialog=>{check('signout warns for unsaved workshop draft',dialog.message().includes('尚未保存'));await dialog.dismiss()});
+ await page.getByRole('link',{name:'退出',exact:true}).click();await dialogPromise;
+ await page.route('**/api/systems',route=>route.request().method()==='POST'?route.fulfill({status:503,contentType:'application/json',body:JSON.stringify({error:'QA temporary failure'})}):route.continue());
+ await save.click();await page.getByText(/云端未确认保存，草稿仍在/).waitFor();
+ check('failed save keeps draft dirty',await dirty());
+ await page.unroute('**/api/systems');
+ let release;const gate=new Promise(resolve=>{release=resolve});
+ await page.route('**/api/systems',async route=>{if(route.request().method()==='POST')await gate;await route.continue()});
+ await save.click();await page.getByRole('button',{name:'正在保存排障交接…',exact:true}).waitFor();
+ await page.locator('#log-change').fill('QA: edit made while save was pending.');
+ await page.locator('#log-receipt').fill(raw+'\n');release();
+ await page.getByText(/已保存本次排障交接（自报证据）/).waitFor();
+ check('edits during pending save remain dirty',await dirty());
+ check('pending save does not restore feedback for an edited receipt',await page.getByText(/mean \/ practice · needs-work · 0\/5/).count()===0);
+ await page.unroute('**/api/systems');
+ await save.click();await page.getByRole('button',{name:'正在保存排障交接…',exact:true}).waitFor({state:'hidden'});
+ check('confirmed save clears only the matching draft',!(await dirty()));
+ const response=await context.request.get(base+'/api/systems',{headers:{'x-study-user-id':'qa-browser-A'}});
+ const records=(await response.json()).records;
+ const record=records.find(row=>row.body.includes('QA: edit made while save was pending.'));
+ check('handoff stored through existing per-account evidence API',record?.kind==='practice'&&JSON.parse(record.body).independence==='not-verified'&&JSON.parse(record.body).receipt.status==='needs-work');
+ await page.setViewportSize({width:1365,height:900});await page.screenshot({path:'verification/systems/log-desktop.png',fullPage:true});
+ await page.goto(base+'/signin-with-chatgpt?qa=B');await page.getByText('当前账号记录已连接',{exact:true}).waitFor();
+ const other=await context.request.get(base+'/api/systems',{headers:{'x-study-user-id':'qa-browser-B'}});
+ check('second account cannot see workshop handoff',!(await other.json()).records.some(row=>row.item_id===record.item_id));
+ check('no uncaught browser errors',errors.length===0);
+ console.log(JSON.stringify({passed:results.length,results,errors,scope:'real Chromium at 1365/390/320px; synthetic identities and fresh local database only'},null,2));
+}finally{await browser.close();await rm(folder,{recursive:true,force:true})}
