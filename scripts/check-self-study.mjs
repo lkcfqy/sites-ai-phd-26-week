@@ -44,12 +44,12 @@ for(const group of ['foundations','models','vision','timeseries','language','res
 }
 if(!partial){assert.equal(seen.size,170);assert.equal(questions.size,510);for(const id of expected)assert(seen.has(id))}
 // The source indexes must round-trip through presentation order, without mutation.
-const module={exports:{}};
+const testModule={exports:{}};
 const source=ts.transpileModule(readFileSync(new URL('../lib/choice-order.ts',import.meta.url),'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS}}).outputText;
-new Function('require','module','exports',source)(require,module,module.exports);
+new Function('require','module','exports',source)(require,testModule,testModule.exports);
 let cyclic=0;
 for(const lesson of curriculum.flatMap(week=>week.lessons)){
- const positions=lesson.quiz.map((question,index)=>{const original=[...question.options],ordered=module.exports.orderedChoices(question.options,lesson.id+':basic:'+index+':'+question.question);assert.deepEqual(question.options,original);assert.deepEqual(ordered.map(item=>item.index).sort(),[0,1,2,3]);const position=ordered.findIndex(item=>item.index===question.answer);assert.equal(ordered[position].text,question.options[question.answer]);return position});
+ const positions=lesson.quiz.map((question,index)=>{const original=[...question.options],ordered=testModule.exports.orderedChoices(question.options,lesson.id+':basic:'+index+':'+question.question);assert.deepEqual(question.options,original);assert.deepEqual(ordered.map(item=>item.index).sort(),[0,1,2,3]);const position=ordered.findIndex(item=>item.index===question.answer);assert.equal(ordered[position].text,question.options[question.answer]);return position});
  if(positions[1]===(positions[0]+1)%4&&positions[2]===(positions[0]+2)%4)cyclic++;
 }
 assert(cyclic<35,'Presentation must eliminate the old cross-course answer cycle');

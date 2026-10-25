@@ -9,7 +9,7 @@ const number=(value:string,label:string)=>{if(!value.trim()||!Number.isFinite(Nu
 const fieldLabels:Record<string,string>={scope:'复现范围',codeSha256:'代码校验值',dataSha256:'数据校验值',trainIds:'训练样本编号',validationIds:'验证样本编号',predictions:'测试预测',candidates:'候选方案',limits:'局限说明',trainingValues:'训练段原值',sampleId:'样本编号',truth:'真实值',prediction:'预测值',id:'方案编号',status:'状态',validationScore:'验证分数',selected:'最终选定'};
 export function checkedManifest(value:unknown):ResearchManifest{
  const parsed=researchManifest.safeParse(value);
- if(!parsed.success)throw new Error(parsed.error.issues.slice(0,4).map(issue=>{const field=issue.path.map(key=>typeof key==='number'?`第${key+1}项`:fieldLabels[key]??key).join(' · ');return field+'：'+(issue.code==='too_small'?'内容或条数不足。':issue.code==='too_big'?'内容或条数超出限制。':issue.code==='invalid_string'?'格式不正确，校验值需要64位十六进制字符。':'请检查填写格式。')}).join(' '));
+ if(!parsed.success)throw new Error(parsed.error.issues.slice(0,4).map(issue=>{const field=issue.path.map(key=>typeof key==='number'?`第${key+1}项`:typeof key==='string'?(fieldLabels[key]??key):String(key)).join(' · ');return field+'：'+(issue.code==='too_small'?'内容或条数不足。':issue.code==='too_big'?'内容或条数超出限制。':issue.code==='invalid_format'?'格式不正确，校验值需要64位十六进制字符。':'请检查填写格式。')}).join(' '));
  return parsed.data;
 }
 export function reportManifest(draft:ReportDraft,metric:string):ResearchManifest{

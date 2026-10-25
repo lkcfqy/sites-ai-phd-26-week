@@ -74,9 +74,31 @@ export const capabilityLevels:CapabilityLevel[] = [
     ]
   },
   {
+    "id": "simulation-systems",
+    "title": "机制推理：并行、内存与调度仿真",
+    "scope": "本次 GPU/LLM 学习采用机制仿真；先形成可解释、可反驳的模型结论，不声称实机性能。",
+    "entry": [
+      "完成基础代码与 CPU 工程练习",
+      "能区分原始计时、模型题设和合成输入"
+    ],
+    "evidence": [
+      "参数/种子/完整合成轨迹及重算结果",
+      "在同一输入上改变单个条件，保留负结果",
+      "模型假设、质量未验证范围、反馈和重试"
+    ],
+    "notEquivalent": [
+      "仿真时间不是硬件吞吐",
+      "假设 token 数不是语言模型生成或任务质量",
+      "仿真不能替代真实 CUDA/vLLM 证据"
+    ],
+    "gateLabIds": [
+      "simulation-systems"
+    ]
+  },
+  {
     "id": "gpu-specialist",
-    "title": "GPU专项：能在授权NVIDIA设备上验证与优化",
-    "scope": "真实编译与运行CUDA，处理边界、同步、访存和测量；没有实机证据时此层保持未验收。",
+    "title": "可选后续 · GPU专项：能在授权NVIDIA设备上验证与优化",
+    "scope": "本次仿真学习发布不要求完成此项；真实编译与运行CUDA，处理边界、同步、访存和测量；没有实机证据时此层保持未验收。",
     "entry": [
       "C++内存/并发出口通过",
       "能读时间线、Roofline和Amdahl",
@@ -105,7 +127,7 @@ export const capabilityLevels:CapabilityLevel[] = [
     "title": "岗位验收：能独立处理陌生约束与回归",
     "scope": "目标是可检验的独立工作能力，不给“学完自动精通”承诺。每项证据需有来源与核验方式。",
     "entry": [
-      "目标岗位相关基础、模型和GPU门槛已完成",
+      "按目标岗位选择相应证据；当前平台先练 CPU 工程和机制仿真，真实设备能力另行验证",
       "会写README、变更说明、实验报告与回滚方案"
     ],
     "evidence": [
@@ -496,7 +518,7 @@ export const practiceLabs:PracticeLab[] = [
     ],
     "transfer": "增加离群输入和不同分布，找出量化不收益或质量失败的条件。",
     "limits": [
-      "课程构建环境没有PyTorch，框架量化路径未在此实测",
+      "Mac CPU / PyTorch 2.14.1 / qnnpack 参考已实测；INT8 在本次小负载更慢，不能推广为加速",
       "量化API会变化，按指南和实际版本核验"
     ]
   },
@@ -571,7 +593,7 @@ export const practiceLabs:PracticeLab[] = [
       "cpp-matmul"
     ],
     "evidenceType": "cpu-measured",
-    "verificationStatus": "完整脚本可用；本构建环境缺torch/ONNX/ORT，未执行框架路径",
+    "verificationStatus": "Mac CPU 参考通过：ONNX 随机模型五个 batch、已有训练模型六个 batch 与留出质量一致；torch.compile 五个 batch 一致但更慢，结果不代表学习者独立能力",
     "summary": "单列真实框架门槛，不能用标准库模型或阅读文章抵扣。",
     "packageHref": "/systems/framework_project/framework_project.zip",
     "guideHref": "/systems/framework_project/README.md",
@@ -588,7 +610,7 @@ export const practiceLabs:PracticeLab[] = [
         "commands": [
           "python deploy.py --mode onnx --output-dir result-onnx-01"
         ],
-        "expected": "真实环境中生成ONNX与结果；本环境未执行，不预先宣称通过。"
+        "expected": "Mac CPU 参考已生成 ONNX 并通过对照；自己复跑需保存实际环境、完整原始样本与失败输入。"
       },
       {
         "title": "编译与冷启动",
@@ -617,13 +639,62 @@ export const practiceLabs:PracticeLab[] = [
     ],
     "transfer": "把随机模型替换为实际训练模型，在新batch与短生命周期请求下重新选择部署方案。",
     "limits": [
-      "构建环境仅可验证语法和缺依赖路径",
+      "ONNX 原始 Runtime 不强制 batch 上限或拒绝 NaN，服务入口必须显式校验；本次没有 ONNX HTTP 后端验收",
       "框架/操作系统支持需要实际环境核验；不锁未经测试的组合"
     ]
   },
   {
+    "id": "simulation-systems",
+    "title": "GPU / LLM 机制仿真：并行、内存与调度",
+    "levelId": "simulation-systems",
+    "prerequisites": [
+      "model-service"
+    ],
+    "evidenceType": "simulation-not-device-measurement",
+    "verificationStatus": "确定性模型与来源流程需按本轮回归验收；不运行 GPU 或语言模型",
+    "summary": "复用八个可视化模型，形成有种子、假设、完整轨迹和反证的报告。当前学习主线使用仿真；不会用它声称实机通过。",
+    "packageHref": null,
+    "guideHref": "/systems/SIMULATION_GUIDE.md",
+    "steps": [
+      {
+        "title": "固定条件，先做预测",
+        "body": "进入并行、KV、Batch 和 Trace 页，先按指南手算小例子；记录题设与未覆盖条件。",
+        "commands": [],
+        "expected": "能区分并行槽、实际设备、逻辑 KV、页分配和预算。"
+      },
+      {
+        "title": "保留完整仿真对照",
+        "body": "同一种子仅改 batch、并行槽或调度策略，分别下载 JSON；检查最长等待、p95 与有限窗口吞吐。",
+        "commands": [],
+        "expected": "完整请求不被删除，负结果可复现。"
+      },
+      {
+        "title": "重算、解释和变式",
+        "body": "在真实动手页导入仿真文件，补充解释并保存；再用另一种子或约束复做，记录反馈与修订。",
+        "commands": [],
+        "expected": "保存和导出仍为 simulation，不能变成 GPU / LLM 实测。"
+      }
+    ],
+    "deliverables": [
+      "两个条件的仿真原件与参数/种子",
+      "对照表、模型假设、失败条件与反证",
+      "变式代码练习、评阅和重试记录"
+    ],
+    "acceptance": [
+      "参数与完整轨迹能被服务端重建",
+      "并行/容量/排队的手算小例子与程序一致",
+      "解释收益失效或长请求变差的条件",
+      "全过程保留仿真来源，不宣称设备、vLLM 或真实模型质量通过"
+    ],
+    "transfer": "更改种子和内存预算，保留无收益或不可行结果，说明还需要什么实际测量才能推广。",
+    "limits": [
+      "仿真不执行 CUDA 或 vLLM，不生成真实语言模型输出",
+      "仿真通过不满足真实设备证据门槛，也不自动证明个人独立能力"
+    ]
+  },
+  {
     "id": "cuda-index",
-    "title": "09 真正的CUDA起步：编译、设备内存与边界",
+    "title": "可选实机 · 09 真正的CUDA起步：编译、设备内存与边界",
     "levelId": "gpu-specialist",
     "prerequisites": [
       "cpp-memory",
@@ -631,7 +702,7 @@ export const practiceLabs:PracticeLab[] = [
     ],
     "evidenceType": "cuda-measured",
     "verificationStatus": "完整源码可用；当前无nvcc/NVIDIA，未编译或实测",
-    "summary": "下载两kernel基线，只有在授权NVIDIA环境真实执行后才形成GPU证据。",
+    "summary": "本次仿真学习发布不要求完成此项。下载两kernel基线，只有在授权NVIDIA环境真实执行后才形成GPU证据。",
     "packageHref": "/systems/cuda_project/cuda_project.zip",
     "guideHref": "/systems/cuda_project/README.md",
     "steps": [
@@ -679,14 +750,14 @@ export const practiceLabs:PracticeLab[] = [
   },
   {
     "id": "cuda-cooperate",
-    "title": "10 CUDA独立改动：融合与资源取舍",
+    "title": "可选实机 · 10 CUDA独立改动：融合与资源取舍",
     "levelId": "gpu-specialist",
     "prerequisites": [
       "cuda-index"
     ],
     "evidenceType": "cuda-measured",
     "verificationStatus": "独立实现任务；基线源可用，优化结果需学习者实测",
-    "summary": "不提供可复制的优化结论；学习者写融合kernel并用同协议验证。",
+    "summary": "本次仿真学习发布不要求完成此项。不提供可复制的优化结论；学习者写融合kernel并用同协议验证。",
     "packageHref": "/systems/cuda_project/cuda_project.zip",
     "guideHref": "/systems/cuda_project/README.md",
     "steps": [
@@ -733,7 +804,7 @@ export const practiceLabs:PracticeLab[] = [
   },
   {
     "id": "cuda-profile",
-    "title": "11 GPU诊断：从profile到可证伪优化",
+    "title": "可选实机 · 11 GPU诊断：从profile到可证伪优化",
     "levelId": "gpu-specialist",
     "prerequisites": [
       "cuda-index",
@@ -741,7 +812,7 @@ export const practiceLabs:PracticeLab[] = [
     ],
     "evidenceType": "cuda-measured",
     "verificationStatus": "需授权硬件与可用计数器；当前未实测",
-    "summary": "采集本人真实GPU证据，解释访存、launch、同步和瓶颈迁移。",
+    "summary": "本次仿真学习发布不要求完成此项。采集本人真实GPU证据，解释访存、launch、同步和瓶颈迁移。",
     "packageHref": "/systems/cuda_project/cuda_project.zip",
     "guideHref": "/systems/cuda_project/README.md",
     "steps": [
@@ -782,7 +853,7 @@ export const practiceLabs:PracticeLab[] = [
   },
   {
     "id": "llm-serving",
-    "title": "12 真实LLM服务专项：vLLM与token级测量",
+    "title": "可选实机 · 12 真实LLM服务专项：vLLM与token级测量",
     "levelId": "gpu-specialist",
     "prerequisites": [
       "model-service",
@@ -791,7 +862,7 @@ export const practiceLabs:PracticeLab[] = [
     ],
     "evidenceType": "cuda-measured",
     "verificationStatus": "计划/解析工具CPU自测通过；没有vLLM/GPU实测",
-    "summary": "补齐小模型服务无法检验的prefill/decode、KV、token延迟与真实LLM负载。",
+    "summary": "本次仿真学习发布不要求完成此项。补齐小模型服务无法检验的prefill/decode、KV、token延迟与真实LLM负载。",
     "packageHref": "/systems/labs/llm-serving/llm_serving.zip",
     "guideHref": "/systems/labs/llm-serving/README.md",
     "steps": [
@@ -906,13 +977,13 @@ export const graduationProjects:GraduationProject[] = [
   },
   {
     "id": "capstone-gpu",
-    "title": "毕业作品C：真实CUDA优化与陌生kernel",
+    "title": "可选后续实机 · 毕业作品C：真实CUDA优化与陌生kernel",
     "requiredLabIds": [
       "cuda-index",
       "cuda-cooperate",
       "cuda-profile"
     ],
-    "brief": "在明确授权设备上独立修改kernel，真实编译、验证边界、采集计时/profile，再迁移到一个未预给最终代码的协作算子。CUDA缺硬件时该作品不能通过。",
+    "brief": "这是长期专项，不是本次仿真学习发布的前置条件。在明确授权设备上独立修改kernel，真实编译、验证边界、采集计时/profile，再迁移到一个未预给最终代码的协作算子。CUDA缺硬件时该作品不能通过。",
     "deliverables": [
       "授权设备/版本/构建命令及源码",
       "CPU oracle、边界/随机输入、sanitizer记录",
@@ -935,13 +1006,13 @@ export const graduationProjects:GraduationProject[] = [
   },
   {
     "id": "capstone-llm",
-    "title": "岗位专项作品D：LLM推理服务的真实容量与SLO决策",
+    "title": "可选后续实机 · 岗位专项作品D：LLM推理服务的真实容量与SLO决策",
     "requiredLabIds": [
       "llm-serving",
       "framework-runtime",
       "cuda-profile"
     ],
-    "brief": "用授权本地LLM引擎完成长短输入/输出与并发对照，设定质量/SLO/资源门槛，定位至少一个瓶颈或回归，给出可复查上线或拒绝建议。",
+    "brief": "这是长期专项，不是本次仿真学习发布的前置条件。用授权本地LLM引擎完成长短输入/输出与并发对照，设定质量/SLO/资源门槛，定位至少一个瓶颈或回归，给出可复查上线或拒绝建议。",
     "deliverables": [
       "模型来源/许可、版本、硬件与预算",
       "固定负载和质量数据协议",
@@ -964,13 +1035,13 @@ export const graduationProjects:GraduationProject[] = [
   },
   {
     "id": "capstone-research",
-    "title": "研究深化作品E：软硬协同/PIM可证伪提案",
+    "title": "可选后续实机 · 研究深化作品E：软硬协同/PIM可证伪提案",
     "requiredLabIds": [
       "cpp-matmul",
       "cuda-profile",
       "llm-serving"
     ],
-    "brief": "从真实软件基线出发，选择一个数据移动或计算瓶颈，构建包含主机通信、同步和不支持算子的架构模型；不以玩具模型收益冒充真实PIM。",
+    "brief": "这是长期专项，不是本次仿真学习发布的前置条件。从真实软件基线出发，选择一个数据移动或计算瓶颈，构建包含主机通信、同步和不支持算子的架构模型；不以玩具模型收益冒充真实PIM。",
     "deliverables": [
       "工作负载画像与基线",
       "参数来源、量纲检查、模型代码和敏感性",

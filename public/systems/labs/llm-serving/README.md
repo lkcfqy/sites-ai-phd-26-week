@@ -4,7 +4,7 @@
 
 小型分类器的HTTP服务能教会接口、校验和测量，但没有真实token生成、prefill/decode、KV cache和LLM调度。本项目把这些能力单独设为验收门槛，不能用浏览器队列模拟或Python小模型抵扣。
 
-**当前验证状态（2026-10-23）：**`prepare.py`与`inspect_result.py`的3组标准库测试已在CPU运行；这里没有vLLM/NVIDIA运行环境，没有加载模型、启动GPU服务、生成token或取得GPU性能数据。命令按当日官方CLI核查，仍必须与学习者实际安装版本的`--help`核对。本包不是已经通过的真实服务实验。
+**当前验证状态（2026-10-24）：**原计划生成器仍只准备命令；增强后的检查器有 5 组纯 CPU 合成回归，并与网站 TypeScript 重算交叉校验；这里没有vLLM/NVIDIA运行环境，没有加载模型、启动GPU服务、生成token或取得GPU性能数据。命令按当日官方CLI核查，仍必须与学习者实际安装版本的`--help`核对。本包不是已经通过的真实服务实验。
 
 ## 先修与资源
 
@@ -58,7 +58,11 @@ vllm bench serve --help
 python3 inspect_result.py run-plan-01/benchmark.json --expected-requests 32 --output artifact-check-01.json
 ```
 
-该工具仅检查已知schema字段与内部一致性，不证明机器身份、日志真实性或模型质量。若实际版本输出结构变化，明确失败并修改解析器和测试，不能填造缺失字段。查看：完成/失败数、原始TTFT/TPOT/ITL（若工具提供）、实际输入输出长度、测量时长与吞吐；没有详细ITL数据时，不从平均值伪造分布。
+检查器现在要求 `input_lens/output_lens/ttfts/itls/latencies/errors` 六组逐请求数组都等于计划请求数。秒与毫秒明确转换；按成功请求重算 token 总量、请求/输出/总 token 吞吐、TTFT、TPOT、ITL 和端到端统计，保留失败记录。TPOT 按 `(latency-ttft)/(output_tokens-1)` 计算，单 token 不进入 TPOT 聚合；全无适用样本按 vLLM 的 0 汇总约定报告，这不代表测得零延迟。分位数采用 NumPy 默认线性插值，与起步 CPU 脚本的 nearest-rank 不同。
+
+2026-10-24 对照了 vLLM 官方 `main` 的详细结果字段与指标定义。旧版本（例如检查到的 v0.11.0）没有导出逐请求 `latencies`，会明确拒绝，不能由平均 TPOT 反造原始时长，也不能因旧文件解析失败就自动升级运行环境。`--save-detailed` 必须开启；具体可执行版本和 CLI 仍需在授权设备核对。
+
+输出 `mlsys-llm-v2` 保留计量所需完整逐请求数值与错误信息，不复制 prompt/generated_text；原始文件和环境版本仍在本地保留供复核。可将转换结果导入网站再次重算。不要上传含私有内容的错误字符串；文件过大时保存原件、减小下一次有界实验，不能删掉失败行凑上限。它不证明机器身份、执行真实性、tokenizer 正确性、质量、显存或客户端排队边界。
 
 随机token负载用于长度/调度测量，不评价语言质量。另建立有权限的、可追溯的小任务质量集，冻结模型、采样设置和评价协议；不能由benchmark正确返回HTTP 200推断答案质量合格。
 
@@ -81,3 +85,5 @@ python3 inspect_result.py run-plan-01/benchmark.json --expected-requests 32 --ou
 - [vLLM benchmark serve CLI](https://docs.vllm.ai/en/latest/cli/bench/serve/)
 - [vLLM production metrics](https://docs.vllm.ai/en/latest/usage/metrics/)
 - [vLLM documentation](https://docs.vllm.ai/en/latest/)
+
+补充来源：2026-10-24 核对 [vLLM 详细结果与统计实现](https://github.com/vllm-project/vllm/blob/main/vllm/benchmarks/serve.py)；本地实际 GPU 执行仍未完成。

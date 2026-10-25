@@ -1,5 +1,5 @@
 'use client';
-import {useEffect,useState} from 'react';
+import {useEffect,useMemo,useState} from 'react';
 import {BookOpen,CheckCircle2,RefreshCw} from 'lucide-react';
 import type {PublicDepthPayload,DepthScore} from '@/lib/depth-types';
 import {CURRICULUM_REVISION} from '@/lib/content-version';
@@ -9,14 +9,17 @@ import type {RetentionScore} from '@/lib/self-study-types';
 
 const kindNames={reasoning:'原理推理',calculation:'计算与推演',transfer:'情境迁移',boundary:'边界判断'};
 export function useLessonDepth(lessonId:string){
- const [data,setData]=useState<PublicDepthPayload|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+ const [retry,setRetry]=useState(0);
+ const request=useMemo(()=>({lessonId,retry}),[lessonId,retry]);
+ const [result,setResult]=useState<{request:typeof request;data:PublicDepthPayload|null;error:string}|null>(null);
  useEffect(()=>{
   const controller=new AbortController();let active=true;
-  setData(null);setError('');
-  fetch('/api/lesson-depth?lesson='+encodeURIComponent(lessonId)+'&revision='+encodeURIComponent(CURRICULUM_REVISION),{signal:controller.signal}).then(async response=>{const result=await response.json() as PublicDepthPayload&{error?:string};if(!response.ok)throw new Error(result.error||'深化内容暂时无法读取。');return result}).then(result=>{if(active)setData(result)}).catch(error=>{if(active)setError(error instanceof Error?error.message:'内容读取失败，请重试。')});
+  fetch('/api/lesson-depth?lesson='+encodeURIComponent(request.lessonId)+'&revision='+encodeURIComponent(CURRICULUM_REVISION),{signal:controller.signal}).then(async response=>{const data=await response.json() as PublicDepthPayload&{error?:string};if(!response.ok)throw new Error(data.error||'深化内容暂时无法读取。');return data}).then(data=>{if(active)setResult({request,data,error:''})}).catch(error=>{if(active)setResult({request,data:null,error:error instanceof Error?error.message:'内容读取失败，请重试。'})});
   return()=>{active=false;controller.abort()};
- },[lessonId,retry]);
- return {data,error,reload:()=>setRetry(value=>value+1)};
+ },[request]);
+ // A different lesson or retry immediately hides the previous request's result.
+ const current=result?.request===request?result:null;
+ return {data:current?.data??null,error:current?.error??'',reload:()=>setRetry(value=>value+1)};
 }
 
 export function DepthStatus({error,reload}:{error:string;reload:()=>void}){
@@ -72,14 +75,17 @@ export function DepthQuiz({data,save,busy,readOnly,record,onLearn,variant='depth
 
 export function RetentionQuiz({active,data,save,busy,readOnly,record,onLearn}:{active:boolean;data:PublicDepthPayload;save:Save;busy:boolean;readOnly:boolean;record?:RetentionScore;onLearn:()=>void}){
  const userId=useStudyIdentity();
- const [loaded,setLoaded]=useState<PublicDepthPayload|null>(null),[error,setError]=useState(''),[retry,setRetry]=useState(0);
+ const [loaded,setLoaded]=useState<PublicDepthPayload|null>(null),[retry,setRetry]=useState(0);
+ const request=useMemo(()=>({active,data,readOnly,userId,retry}),[active,data,readOnly,userId,retry]);
+ const [failure,setFailure]=useState<{request:typeof request;message:string}|null>(null);
+ const error=failure?.request===request?failure.message:'';
  useEffect(()=>{
-  if(!active||readOnly||!userId||loaded)return;
-  const controller=new AbortController();let live=true;setError('');
-  fetch('/api/retention?lesson='+encodeURIComponent(data.lessonId),{cache:'no-store',headers:{'x-study-user-id':userId},signal:controller.signal}).then(async response=>{const body=await response.json() as Partial<PublicDepthPayload>&{error?:string;due_at?:number};if(!response.ok)throw new Error((body.error??'复测暂时不能读取。')+(body.due_at?' 开放时间：'+new Date(body.due_at).toLocaleString():''));if(live)setLoaded({...data,version:body.version!,questions:body.questions!})}).catch(error=>{if(live)setError(error instanceof Error?error.message:'读取失败')});
+  if(!request.active||request.readOnly||!request.userId||loaded)return;
+  const controller=new AbortController();let live=true;
+  fetch('/api/retention?lesson='+encodeURIComponent(request.data.lessonId),{cache:'no-store',headers:{'x-study-user-id':request.userId},signal:controller.signal}).then(async response=>{const body=await response.json() as Partial<PublicDepthPayload>&{error?:string;due_at?:number};if(!response.ok)throw new Error((body.error??'复测暂时不能读取。')+(body.due_at?' 开放时间：'+new Date(body.due_at).toLocaleString():''));if(live)setLoaded({...request.data,version:body.version!,questions:body.questions!})}).catch(error=>{if(live)setFailure({request,message:error instanceof Error?error.message:'读取失败'})});
   return()=>{live=false;controller.abort()};
- },[active,data,loaded,readOnly,userId,retry]);
- if(loaded)return <><DepthQuiz data={loaded} save={save} busy={busy} readOnly={readOnly} record={record} onLearn={onLearn} variant="retention"/>{record&&record.best_score<100&&<button className="secondary" onClick={()=>{setLoaded(null);setError('');setRetry(value=>value+1)}}>重新读取下一次复测安排</button>}</>;
+ },[request,loaded]);
+ if(loaded)return <><DepthQuiz data={loaded} save={save} busy={busy} readOnly={readOnly} record={record} onLearn={onLearn} variant="retention"/>{record&&record.best_score<100&&<button className="secondary" onClick={()=>{setLoaded(null);setRetry(value=>value+1)}}>重新读取下一次复测安排</button>}</>;
  if(record?.best_score===100)return <section className="panel"><h2>延迟复测已通过</h2><p>首次{record.first_score??record.score}分，最高100分，共{record.attempts}次作答。可以回顾讲解，继续后续课程。</p></section>;
  return <section className="panel"><h2>间隔后再检验</h2><p>新版深化考查首次通过满7天后，开放3道独立变式；未通过时先补弱，本次提交满24小时后可重做本组。</p>{error?<div role="status"><p>{error}</p><button className="secondary" onClick={()=>setRetry(value=>value+1)}>重新读取到期状态</button></div>:<p role="status">{active?'正在读取复测安排…':'进入此页时读取安排。'}</p>}</section>;
 }

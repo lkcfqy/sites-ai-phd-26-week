@@ -1,6 +1,6 @@
 # CPU模型 → 量化 → 本机推理服务：分阶段项目
 
-这是**真实CPU代码与HTTP测量**，不是公式模拟。但是模型仅为8维合成二分类，**不是生产LLM、工业数据或GPU基准**。标准库主线不能替代PyTorch框架技能；可选PyTorch部分在开发环境缺包，明确尚未运行。
+这是**真实CPU代码与HTTP测量**，不是公式模拟。但是模型仅为8维合成二分类，**不是生产LLM、工业数据或GPU基准**。标准库主线不能替代 PyTorch 框架技能。新增 `engineering.py` 已在 Mac CPU / PyTorch 2.14.1 上完成训练→torch.export 保存/加载→HTTP 验收；这是课程参考运行。`torch_optional.py` 也已在同一 Mac CPU / PyTorch 2.14.1、qnnpack 后端另行实测；它使用已弃用的旧量化 API，只作为教学对照。
 
 ## 文件与依赖
 - `core.py`参考训练/推理：256条合成训练数据，独立种子64条教学测试数据；浮点点积和实际整数点积。
@@ -8,10 +8,10 @@
 - `test_project.py`检验不同batch形状、坏输入、全零与误差；学习者测试默认明确跳过。
 - `experiment.py`基线、量化质量、逐次原始耗时。
 - `server.py`仅127.0.0.1本机HTTP；`load.py`有界闭环负载。
-- `torch_optional.py`小PyTorch MLP训练和动态INT8。**未实跑**；缺包/缺后端会失败退出2，不填虚构结果。
+- `torch_optional.py` 小 PyTorch MLP 训练和动态 INT8。Mac CPU / qnnpack 参考已实跑；缺包/缺后端仍失败退出 2，不回退为模拟结果。
 - `run_acceptance.py`可复跑参考实现整体验收。
 
-主线需Python3.10–3.13，开发实测3.12，只有标准库。无pip/外网下载/API key/GPU/费用。所有文件放到新目录；输出拒绝覆盖。服务固定127.0.0.1、最大32KB请求、最多64样本，负载最多300请求/4并发。不改成0.0.0.0，不发布公网，Ctrl-C停服务。本服务器没有生产认证/HTTPS/可用性保障。
+标准库主线在本次 Mac Python 3.9.6、工程参考在既有 Python 3.14.7 / PyTorch 2.14.1 环境运行。不同版本仍需自己记录并核验；标准库主线只有标准库依赖。无pip/外网下载/API key/GPU/费用。所有文件放到新目录；输出拒绝覆盖。服务固定127.0.0.1、最大32KB请求、最多64样本，负载最多300请求/4并发。不改成0.0.0.0，不发布公网，Ctrl-C停服务。本服务器没有生产认证/HTTPS/可用性保障。
 
 ## 1. 从手算到独立实现
 先修：函数、循环、列表、点积。先手算w=[1,−2],x=[3,4],b=1，z=−4。实际模型8维：z=Σw[j]x[j]+b；z≥0为正类。先不要看core.py的参考实现，补learner.linear_batch。
@@ -57,7 +57,7 @@ python3 run_acceptance.py --out ./authoring-check-01
 输出目录必须不存在。会在本机启动短暂18765端口、完成有限请求后停止。不调用GPU。作者结果不是你的成绩，也不是就业资格证明。
 
 ## 6. 可选且必须另验的PyTorch框架阶段
-当前开发机没有torch；没有安装大包。`torch_optional.py`代码已提供，**不可把它列为已经验证通过的框架技能**。
+本次只读复用已有 PyTorch 2.14.1 / Python 3.14.7 环境，没有安装大包。`engineering.py` 与 `torch_optional.py` 分别实际运行；后者的 qnnpack CPU 单线程结果中，float32 和动态 INT8 的 64 条合成留出准确率均为 0.984375，最大 logit 差为 0.07545。各 100 次原始耗时中 p95 为 0.006875 / 0.044166 ms，INT8 更慢。这是保留的负结果，不是硬件加速承诺。旧 API 弃用与 qnnpack reduce_range 警告仍明确保留；没有为示例降级或迁移科研依赖。
 已有兼容环境时，先检查独立venv中的torch版本与CPU量化后端，再运行：
 ```sh
 python3 torch_optional.py --output torch-result.json
@@ -68,4 +68,25 @@ python3 torch_optional.py --output torch-result.json
 - https://docs.pytorch.org/docs/2.14/quantization.html
 - https://docs.pytorch.org/ao/stable/index.html
 
-独立框架验收：把相同权重放入nn.Linear，核对不同batch输出与梯度；解释eval和inference_mode不同职责；验证CPU量化算子确实转换；保存依赖清单和真实原始耗时。若后端不支持，提交失败证据与适配计划，不冒充通过。进一步查阅当前torchao CPU路径、建立独立迁移分支和正确性测试；**该迁移不在本包已实测范围**。
+独立框架验收：把相同权重放入nn.Linear，核对不同batch输出与梯度；解释eval和inference_mode不同职责；验证CPU量化算子确实转换；保存依赖清单和真实原始耗时。若后端不支持，提交失败证据与适配计划，不冒充通过。进一步查阅当前torchao CPU路径、建立独立迁移分支和正确性测试；**该迁移不在本包已实测范围**。`torch-cpu-project-v1` 留有原始计时但没有逐条预测记录，不能当作网站可独立重算质量的导入格式；在项目报告中引用原件，不能仅修改版本字段。
+
+
+## 7. 完整 CPU 工程参考与质量回归
+
+先审阅源码，在已有 PyTorch 环境中运行：
+
+```sh
+python engineering.py --output-dir cpu-run-01
+```
+
+不自动安装依赖、联网或使用 GPU。输出目录不能存在，缺 torch 则写 `dependency-unavailable` 并退出，不伪造成功。该程序实际以 CPU float64 训练 180 步二分类器，固定训练 256 条、独立种子留出 64 条；保存模型和动态 batch 的 torch.export 图，再加载验证 batch 1/7/31/64。导出只是图导出/运行，不宣称 torch.compile、ONNX 或 CUDA 已验证。
+
+每条留出样本保留特征、标签、logit；质量阈值先定为 ≥0.9。故意反转预测作为质量退化负对照，必须低于 0.8。该负对照检验质量门，不能取代真实项目里的所有错误分析。随后依次启动 Python 与 torch-export 回环 HTTP 服务，每种并发 1/4，各 40 请求，另存 5 次预热；检查错误 shape、NaN、坏 JSON、媒体类型、来源，并确认进程结束和端口释放。
+
+查看 `results.json` 索引、`framework.json`、四份服务 JSON、源码哈希、日志与 HANDOFF.md。记录导出/启动/稳态成本、p95、吞吐和服务进程峰值 RSS；RSS 包括框架与解释器，不等于权重、实时使用量或 GPU 显存。闭环回环测试不是生产到达流量，40 个请求也不是可靠生产尾部估计。没有编造云费用。
+
+本次参考：合成留出准确率 0.90625，负对照 0.09375，160 个计量请求全部成功；这不是学习者的完成状态，也不能保证工业质量。把完整结果导入网站重算后仍只显示参考一致性。自己的 `learner.py` 两个 TODO 保留，必须亲手实现并用 `CHECK_LEARNER=1` 检验，未实现时预期失败。
+
+`experiment.py` 现输出 model-project-v2（完整 64 条质量记录）；`load.py` 输出 model-service-v2（计划数、预热、每请求输出、错误与耗时）。旧 v1 文件缺少必要质量/请求证据，不能仅改版本字段冒充 v2，原件应保留并重新运行。框架参考输出为 framework-cpu-v1。
+
+参考定义：[PyTorch export](https://docs.pytorch.org/docs/2.14/export.html)。

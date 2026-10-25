@@ -13,10 +13,10 @@ function load(relative){
  if(!extname(file)){try{readFileSync(file+'.ts');file+='.ts'}catch{file+='.tsx'}}
  if(file.endsWith('.json'))return JSON.parse(readFileSync(file,'utf8'));
  if(modules.has(file))return modules.get(file).exports;
- const module={exports:{}};modules.set(file,module);
+ const testModule={exports:{}};modules.set(file,testModule);
  const output=ts.transpileModule(readFileSync(file,'utf8'),{compilerOptions:{module:ts.ModuleKind.CommonJS,target:ts.ScriptTarget.ES2022,jsx:ts.JsxEmit.ReactJSX,esModuleInterop:true}}).outputText;
  function localRequire(id){if(id.startsWith('@/'))return load(id.slice(2));if(id.startsWith('.'))return load(resolve(dirname(file),id));return require(id)}
- new Function('require','module','exports',output)(localRequire,module,module.exports);return module.exports;
+ new Function('require','module','exports',output)(localRequire,testModule,testModule.exports);return testModule.exports;
 }
 const {DepthReading,DepthQuiz}=load('app/lesson-depth.tsx'),{DraftProvider}=load('app/lesson-view.tsx');
 const {default:SelfStudyReading}=load('app/self-study-reading.tsx');
